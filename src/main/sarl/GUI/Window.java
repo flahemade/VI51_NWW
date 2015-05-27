@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,16 +14,19 @@ public class Window extends JFrame{
 	private static Window instance;
 	private WorldPanel mainPane;
 	private Environment env;
+	private SelectionPanel selectPane;
 	public Window(){
 		this.setTitle("New Wave World");
 		Dimension size = new Dimension(500, 500);
 		this.env = new Environment(size);
 		this.mainPane = new WorldPanel(env);
-		
+		this.selectPane = new SelectionPanel();
 		this.setSize(size);
 		this.setVisible(true);
-		
-		while(true){
+		add(mainPane,BorderLayout.CENTER);
+		add(selectPane,BorderLayout.SOUTH);
+		this.setVisible(true);
+		for(int k=0;k<1000000;++k){
 			int i = (int) (Math.random()*500);
 			int j = (int) (Math.random()*500);
 			Point2f tmp = new Point2f(i,j);
@@ -30,8 +34,7 @@ public class Window extends JFrame{
 			Map<Point2f,Integer> change = new HashMap<Point2f,Integer>();
 			change.put(tmp, env.getHeight().get(tmp)-var);
 			this.mainPane.setWater(env.getHeight(),change);
-			this.setContentPane(mainPane);
-			this.setVisible(true);
 		}
+		this.dispose();
 	}
 }

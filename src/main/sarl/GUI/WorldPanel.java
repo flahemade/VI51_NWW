@@ -17,21 +17,6 @@ public class WorldPanel extends JPanel{
 	private int height;
 	private BufferedImage water;
 	
-	public BufferedImage getWater() {
-		return water;
-	}
-
-	public void setWater(BufferedImage water) {
-		this.water = water;
-	}
-	
-	public void setWater(Map<Point2f,Integer> map, Map<Point2f,Integer> change) {
-		for(Point2f p : change.keySet()){
-			water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, 128-change.get(p))).getRGB());
-		}
-		repaint();
-	}
-	
 	public WorldPanel(){
 		this.width = this.height = 0;
 	}
@@ -59,4 +44,19 @@ public class WorldPanel extends JPanel{
         }
         repaint();
     }
+    
+	public BufferedImage getWater() {
+		return water;
+	}
+
+	public void setWater(BufferedImage water) {
+		this.water = water;
+	}
+	
+	public void setWater(Map<Point2f,Integer> map, Map<Point2f,Integer> change) {
+		for(Point2f p : change.keySet()){
+			water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, 128-change.get(p))).getRGB());
+		}
+		repaint();
+	}
 }
