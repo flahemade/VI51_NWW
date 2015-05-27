@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.JFrame;
 
 import Environment.Environment;
+import fr.utbm.info.vi51.framework.environment.Body;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Window extends JFrame{
@@ -21,10 +22,9 @@ public class Window extends JFrame{
 		this.env = new Environment(size);
 		this.mainPane = new WorldPanel(env);
 		this.selectPane = new SelectionPanel();
-		this.setSize(size);
-		this.setVisible(true);
+		this.setSize((int)(size.getHeight()+selectPane.getHeight()),(int)(size.getWidth()));
 		add(mainPane,BorderLayout.CENTER);
-		add(selectPane,BorderLayout.SOUTH);
+		add(selectPane,BorderLayout.WEST);
 		this.setVisible(true);
 		for(int k=0;k<1000000;++k){
 			int i = (int) (Math.random()*500);
