@@ -19,12 +19,13 @@ public class InfluenceSolver {
 	
 	void solveConflicts(){
 		
-		ArrayList<Circle2f> influenceRadius;
-		
 		for (Influence influence : influences) {
-			influenceRadius.add(influence.radius); //Radius should be a Circle2f attribute of influence
 			//Intersections with walls
-			for (Circle2f radius : influenceRadius) {
+			for (Influence influence2 : influences ) {
+					if(influence.circle.intersects(influence2.circle)){
+						// addWaves(influence.getEmitter(),influence2.getEmitter());
+					}
+				}
 				
 				//Construction of the map as a Rectangle
 				
@@ -33,39 +34,41 @@ public class InfluenceSolver {
 				Rectangle2f map = new Rectangle2f(topLeft,botRight);
 				
 				
-				if(radius.intersects(map)) {
+				if(influence.circle.intersects(map)) {
 					//Finding the intersection point with the map
-					Point2f center = new Point2f(radius.getCenter());
+					Point2f center = new Point2f(influence.circle.getCenter());
 					
 					
-					if(map.getWidth() >= center.getX() + radius.getRadius() && !influence.getEmitter().touchR){ //touchR is true if the wave has already touched this side
+					if(map.getWidth() >= center.getX() + influence.circle.getRadius() && !influence.getEmitter().touchR){ //touchR is true if the wave has already touched this side
 						//Right
-						Point2f contactPoint = new Point2f(center.getX() + radius.getRadius(),center.getY());
+						Point2f contactPoint = new Point2f(center.getX() + influence.circle.getRadius(),center.getY());
 						//How to find an Agent from its UUID ?
 						
 						//influence.getEmitter().setTouchR(true);						
 						//wallContact(contactPoint,influence.getEmitter());
 						
 					}
-					if(map.getWidth() <= center.getX() - radius.getRadius() && !influence.getEmitter().touchL){ //So on with the other sides
+					if(map.getWidth() <= center.getX() - influence.circle.getRadius() && !influence.getEmitter().touchL){ //So on with the other sides
 						//Left
-						Point2f contactPoint = new Point2f(center.getX() + radius.getRadius(),center.getY());
+						Point2f contactPoint = new Point2f(center.getX() + influence.circle.getRadius(),center.getY());
+						//influence.getEmitter().setTouchL(true);
 						//wallContact(contactPoint,influence.getEmitter());
 					}
-					if(map.getHeight() >= center.getY() + radius.getRadius() && !influence.getEmitter().touchB){ //So on with the other sides
+					if(map.getHeight() >= center.getY() + influence.circle.getRadius() && !influence.getEmitter().touchB){ //So on with the other sides
 						//Bottom
-						Point2f contactPoint = new Point2f(center.getX(),center.getY() + radius.getRadius());
+						Point2f contactPoint = new Point2f(center.getX(),center.getY() + influence.circle.getRadius());
+						//influence.getEmitter().setTouchB(true);
 						//wallContact(contactPoint,influence.getEmitter());
 					}
-					if(map.getHeight() <= center.getY() - radius.getRadius() && !influence.getEmitter().touchT){ //So on with the other sides
+					if(map.getHeight() <= center.getY() - influence.circle.getRadius() && !influence.getEmitter().touchT){ //So on with the other sides
 						//Top
-						Point2f contactPoint = new Point2f(center.getX(),center.getY() - radius.getRadius());
+						Point2f contactPoint = new Point2f(center.getX(),center.getY() - influence.circle.getRadius());
+						//influence.getEmitter().setTouchT(true);
 						//wallContact(contactPoint,influence.getEmitter());
 					}
-				}			
+				}
 			}
 		}
-	}
 	
 	void wallContact(Point2f contactPoint, Agent a){
 		// 1 = speed / frequency
