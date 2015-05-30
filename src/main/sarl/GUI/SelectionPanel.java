@@ -14,7 +14,6 @@ public class SelectionPanel extends JPanel{
 	private JButton obstacle;
 	
 	public SelectionPanel(){
-		this.setLayout(new GridLayout(2,2));
 		addSlider(frequence,SwingConstants.VERTICAL,0, 500, 100);
 	    addSlider(force,SwingConstants.VERTICAL,0,1500,100);
 	    addSelectionButton();
@@ -34,7 +33,9 @@ public class SelectionPanel extends JPanel{
 	public void addSelectionButton(){
 		this.source_point = new JButton("X");
 		this.add(this.source_point);
+		this.source_point.setSize(20, 20);
 		this.obstacle = new JButton("|");
 		this.add(this.obstacle);
+		this.obstacle.setSize(20, 20);
 	}
 }

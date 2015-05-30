@@ -20,6 +20,9 @@
  */
 package fr.utbm.info.vi51.framework.math;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.base.Objects;
 
 
@@ -106,6 +109,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	 * @return <code>true</code> if an intersection exists.
 	 */
 	public boolean intersects(Shape2f<?> s) {
+		
 		if (s instanceof Circle2f) {
 			Circle2f r = (Circle2f) s;
 			float x = r.getCenter().getX() - this.center.getX();
@@ -120,6 +124,46 @@ public class Circle2f extends Shape2f<Circle2f> {
 			return ((MotionHull2f) s).intersects(this);
 		}
 		throw new IllegalArgumentException();
+	}
+	
+	public List<Point2f> point_intersects(Circle2f s){
+		List<Point2f> intersects = new ArrayList<Point2f>();
+		float radius0 = this.getRadius();
+		float centerx0 = this.getCenter().getX();
+		float centery0 = this.getCenter().getY();
+		
+		float radius1 = s.getRadius();
+		float centerx1 = s.getCenter().getX();
+		float centery1 = s.getCenter().getY();
+		
+		float radius0square = (float) Math.pow(radius0,2);
+		float centerx0square = (float) Math.pow(centerx0,2);
+		float centery0square = (float) Math.pow(centery0,2);
+		
+		float radius1square = (float) Math.pow(radius1,2);
+		float centerx1square = (float) Math.pow(centerx1,2);
+		float centery1square = (float) Math.pow(centery1,2);
+		
+		float ratiocenter = (centerx0 - centerx1)/(centery0 - centery1);
+		
+		float N = (radius1square - radius0square - centerx1square + centerx0square - centery1square + centery0square)/(2*(centery0-centery1));
+		
+		float A = (float) Math.pow(ratiocenter,2)+1;
+		float B = 2*centery0*ratiocenter - 2*N*ratiocenter - 2*centerx0;
+		float C = (float) (centerx0square + centery0square + Math.pow(N, 2) - radius0square - 2*centery0*N);
+		float delta = (float) Math.sqrt(Math.pow(B, 2) - 4*A*C);
+		
+		float x1 = (-B+delta)/(2*A);
+		float y1 = N - x1 * ratiocenter;
+		intersects.add(new Point2f(x1,y1));
+		
+		float x2 = (-B-delta)/(2*A);
+		float y2 = N - x2 * ratiocenter;
+		intersects.add(new Point2f(x2,y2));
+		
+		return intersects;
+		
+		
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class Window extends JFrame{
 		this.mainPane = new WorldPanel(this.env);
 		this.selectPane = new SelectionPanel();
 		add(mainPane,BorderLayout.CENTER);
-		add(selectPane,BorderLayout.WEST);
+		add(selectPane,BorderLayout.EAST);
 		this.setSize(700,700);
 		this.setVisible(true);
 	}

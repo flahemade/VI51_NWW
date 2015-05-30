@@ -12,7 +12,6 @@ public class Main {
 	  public static void main(String[] args) throws InterruptedException{
 		Environment env = new Environment(new Dimension(500,500));
 	    JFrame window = new Window(env);
-	    
 	    for(int k=0;k<10000000;++k){
 			int i = (int) (Math.random()*500);
 			int j = (int) (Math.random()*500);
