@@ -28,7 +28,15 @@ public class Window extends JFrame{
 		this.setVisible(true);
 	}
 	
+	public static Window getInstance() {
+		return instance;
+	}
+	
 	public WorldPanel getmainPane(){
 		return mainPane;
+	}
+	
+	public SelectionPanel getSelectionPanel(){
+		return selectPane;
 	}
 }
