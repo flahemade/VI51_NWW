@@ -19,24 +19,37 @@ public class ExpandInfluence extends Influence {
 	 */
 	private static final long serialVersionUID = 5438430175395138512L;
 
-	protected ExpandInfluence(UUID influencedObject) {
+	public ExpandInfluence(UUID influencedObject, float amp, float speed, Point2f center , ArrayList<Point2f> points) {
 		super(influencedObject);
+		
+		this.amplitude = amp;
+		this.speed = speed;
+		this.center = center;
+		this.pointList = points;
+		
 	}
 	
-	float getAmplitude(){
+	public float getAmplitude(){
 		return amplitude;
 	}
 	
-	float getSpeed(){
+	public float getSpeed(){
 		return speed;
 	}
 	
-	Point2f getCenter(){
+	public Point2f getCenter(){
 		return center;
 	}
 	
-	ArrayList<Point2f> getPointList(){
-		return pointList;
+	/*
+	 * return the radius of the circle 
+	 */
+	public float rayon(){
+		float res = 0;
+		if (!pointList.isEmpty()){
+			center.distance(pointList.get(0));
+		}
+		return res;
 	}
 
 }
