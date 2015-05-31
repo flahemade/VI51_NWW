@@ -10,7 +10,7 @@ public class Wave implements Agent{
 	WaveBody body;
 	
 	
-	public Wave(float freq, float ampl, float speed,Point2f source ){
+	public Wave(float freq, float ampl, float speed,Point2f source){
 		this.body = new WaveBody(freq, ampl, speed, source);
 	}
 	
@@ -26,12 +26,12 @@ public class Wave implements Agent{
 		
 		if(body.getAmplitude() <= 0 || body.getPointList().isEmpty()){
 			//The wave has no amplitude or no points: it asks to be killed
-			body.setInfluence(new KillInfluence(null));
+			body.setInfluence(new KillInfluence(null, body.getID()));
 			return true;
 		}
 		else{
 			//The wave expands
-			body.setInfluence(new ExpandInfluence(null, body.getAmplitude(), body.getSpeed(), body.getCenter(), body.getPointList()));
+			body.setInfluence(new ExpandInfluence(null, body.getID(), body.getAmplitude(), body.getSpeed(), body.getCenter(), body.getPointList()));
 			return true;
 		}
 	}

@@ -14,13 +14,18 @@ public class ExpandInfluence extends Influence {
 	Point2f center;
 	ArrayList<Point2f> pointList;
 	
-	/**
-	 * 
+	/*
+	 * We can retrieve the body of the emmiter by calling getAgentBodyFor(emmiter) on the environment
 	 */
+	private UUID emitter;
+
+
 	private static final long serialVersionUID = 5438430175395138512L;
 
-	public ExpandInfluence(UUID influencedObject, float amp, float speed, Point2f center , ArrayList<Point2f> points) {
+	public ExpandInfluence(UUID influencedObject,UUID influenceEmitter, float amp, float speed, Point2f center , ArrayList<Point2f> points) {
 		super(influencedObject);
+		assert(influenceEmitter!=null);
+		this.emitter = influenceEmitter;
 		
 		this.amplitude = amp;
 		this.speed = speed;
@@ -44,12 +49,16 @@ public class ExpandInfluence extends Influence {
 	/*
 	 * return the radius of the circle 
 	 */
-	public float rayon(){
+	public float radius(){
 		float res = 0;
 		if (!pointList.isEmpty()){
 			center.distance(pointList.get(0));
 		}
 		return res;
+	}
+	
+	public ArrayList<Point2f> getPointList(){
+		return pointList;
 	}
 
 }
