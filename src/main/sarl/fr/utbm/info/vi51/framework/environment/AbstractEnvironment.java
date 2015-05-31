@@ -43,8 +43,8 @@ public abstract class AbstractEnvironment implements Environment {
 
 	private final Map<UUID,AgentBody> agentBodies = new TreeMap<UUID,AgentBody>();
 	private final TimeManager timeManager;
-	private final float width;
-	private final float height;
+	private final int width;
+	private final int height;
 	private final Collection<EnvironmentListener> listeners = new ArrayList<EnvironmentListener>();
 	private final AtomicBoolean stateChanged = new AtomicBoolean();
 	private final AtomicBoolean init = new AtomicBoolean(true);
@@ -54,7 +54,7 @@ public abstract class AbstractEnvironment implements Environment {
 	 * @param height is the height of the environment.
 	 * @param timeManager is the time manager to use.
 	 */
-	public AbstractEnvironment(float width, float height, TimeManager timeManager) {
+	public AbstractEnvironment(int width, int height, TimeManager timeManager) {
 		this.width = width;
 		this.height = height;
 		this.timeManager = timeManager;
@@ -114,14 +114,14 @@ public abstract class AbstractEnvironment implements Environment {
 	/**
 	 * {@inheritDoc}
 	 */
-	public float getWidth() {
+	public int getWidth() {
 		return this.width;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public float getHeight() {
+	public int getHeight() {
 		return this.height;
 	}
 

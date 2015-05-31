@@ -42,13 +42,13 @@ public interface Environment {
 	 * 
 	 * @return the width of the environment.
 	 */
-	public float getWidth();
+	public int getWidth();
 	
 	/** Replies the height of the environment.
 	 * 
 	 * @return the height of the environment.
 	 */
-	public float getHeight();
+	public int getHeight();
 	
 	/** Replies number of bodies in the environment.
 	 * 

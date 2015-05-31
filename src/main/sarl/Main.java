@@ -10,7 +10,7 @@ import GUI.Window;
 
 public class Main {
 	  public static void main(String[] args) throws InterruptedException{
-		Environment env = new Environment(new Dimension(500,500));
+		Environment env = new Environment();
 	    JFrame window = new Window(env);
 	    System.out.println("bite");
 	    for(int k=0;k<10000000;++k){
@@ -19,7 +19,7 @@ public class Main {
 			Point2f tmp = new Point2f(i,j);
 			int var = (int) (Math.random()*200-100);
 			Map<Point2f,Integer> change = new HashMap<Point2f,Integer>();
-			change.put(tmp, env.getHeight().get(tmp)-var);
+			change.put(tmp, env.getZ().get(tmp)-var);
 			((Window) window).getmainPane().setWater(change);
 		}
 	    window.dispose();

@@ -1,15 +1,10 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JFrame;
 
 import Environment.Environment;
-import fr.utbm.info.vi51.framework.environment.Body;
-import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Window extends JFrame{
 	private static Window instance;
@@ -18,7 +13,8 @@ public class Window extends JFrame{
 	private SelectionPanel selectPane;
 	public Window(Environment env){
 		this.setTitle("New Wave World");
-		Dimension size = env.getSize();
+		float width = env.getWidth();
+		float heigth = env.getHeight();
 		this.env = env;
 		this.mainPane = new WorldPanel(this.env);
 		this.selectPane = new SelectionPanel();

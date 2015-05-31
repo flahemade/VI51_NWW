@@ -22,9 +22,8 @@ public class WorldPanel extends JPanel{
 	}
 	
 	public WorldPanel(Environment env){
-		Dimension size = env.getSize();
-		width = (int) size.getWidth();
-		height = (int) size.getHeight();
+		width = env.getWidth();
+		height = env.getHeight();
 		water = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         paintWater(Color.BLUE);
 	}
