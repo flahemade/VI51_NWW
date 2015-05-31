@@ -1,15 +1,10 @@
 package wave.body;
 
 import java.util.ArrayList;
-import java.util.UUID;
-
-import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
-public class WaveBody {
+public class WaveBody extends AgentBody {
 
-	UUID ID;
-	
 	float frequency;
 	float amplitude;
 	float speed; //expressed in pixels/seconds
@@ -17,21 +12,17 @@ public class WaveBody {
 	Point2f center;
 	ArrayList<Point2f> pointList;
 	
-	Influence influence;
 	
 	
 	public WaveBody(float freq, float ampl, float speed,Point2f source){
+		super();
 		this.frequency = freq;
 		this.amplitude = ampl;
 		this.speed = speed;
 		
 		this.center = source.clone();
 		this.pointList.add(source);
-		this.ID = UUID.randomUUID();
-	}
-	
-	public UUID getID(){
-		return this.ID;
+
 	}
 	
 	public ArrayList<Point2f> getPointList(){
@@ -50,7 +41,4 @@ public class WaveBody {
 		return this.speed;
 	}
 	
-	public void setInfluence(Influence I){
-		this.influence = I;
-	}
 }
