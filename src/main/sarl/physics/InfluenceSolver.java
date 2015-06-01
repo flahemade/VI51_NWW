@@ -3,8 +3,11 @@ package physics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
+import wave.agent.Wave;
+import wave.behavior.ExpandInfluence;
+import wave.body.AgentBody;
+import wave.body.WaveBody;
 import Environment.Environment;
 import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Circle2f;
@@ -12,105 +15,183 @@ import fr.utbm.info.vi51.framework.math.Point2f;
 import fr.utbm.info.vi51.framework.math.Rectangle2f;
 
 public class InfluenceSolver {
-	//Arguements
 	
-	ArrayList<Influence> influences;
+	//Arguments
+	
+	ArrayList<ExpandInfluence> influences;
 	Environment environment;
-	Map<Point2f, Integer> map;
+	Map<Point2f, Integer> z;
+	
+	//Constructors
+	
+	public InfluenceSolver(){
+		this.influences = new ArrayList<ExpandInfluence>();
+		this.environment = null;
+		this.z = null;
+	}
+	
+	public InfluenceSolver(ArrayList<ExpandInfluence> i , Environment e, Map<Point2f, Integer> m){
+		this.influences=i;
+		this.environment=e;
+		this.z=m;
+	}
 	
 	//Methods
 	
-	void solveConflicts(){
+	
+	Map<Point2f,Integer> solveConflicts(){
 		
-		for (Influence influence : influences) {
-			ArrayList<Point2f> dots = influence.getEmitter().getListOfPoints();
-			for (Point2f dot : dots) {
-				
-				//Finding the direction
-				int x =dot.getX()-influence.getCircle().getCenter().getX();
-				
-				if(x>0){
-					Integer newX=(int)dot.getX()+1;// 1 is the speed (will be changed)
-				}else if(x<0){
-					Integer newX=(int)dot.getX()-1;
-				}else{
-					Integer newX=(int)dot.getX();
-				}
-				
-				int y=dot.getY()-influence.getCircle().getCenter().getY();
-				if(y>0){
-					Integer newX=(int)dot.getY()+1;
-				}else if(y<0){
-					Integer newX=(int)dot.getY()-1;
-				}else{
-					Integer newX=(int)dot.getX();
-				}
-				
-				//Setting the newPoint
+		/**
+		 * 
+		 * This function updates the map taking into account all the influences
+		 * 
+		 **/
+		
+		Rectangle2f map = constructMap(environment);
+		
+//Updating each agent according to its influence
+		
+		for (ExpandInfluence influence : influences) {
+			
+//Treating the influence as a Circle
+			Circle2f influenceCircle1=new Circle2f(influence.getCenter(),influence.radius());
+
+			
+//Building a new pixel circle
+			float newRadius = influence.radius()+1;
+			Integer amplitude = 2;
+			ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
+			
+//Updating the map
+			for (Point2f circlePoint : pixelCircle) {
+				z.put(circlePoint, amplitude);
 			}
-				for (Influence influence2 : influences ) {
-					if(influence.circle.intersects(influence2.circle)){
-						//Finding the dot(s) of contact
-						Circle2f first=new Circle2f();
-						Circle2f second = new Circle2f();
-						List<Point2f> intersections = first.point_intersects(second);
-						if(intersections.size()>1){
-							map.put(intersections.get(0), addWaves(influence.getEmitter(),influence2.getEmitter()));
-							map.put(intersections.get(1), addWaves(influence.getEmitter(),influence2.getEmitter()));
-						}else{
-							map.put(intersections.get(0), addWaves(influence.getEmitter(),influence2.getEmitter()));
-						}
+				
+//Looping on the influence list to find intersections
+			for (ExpandInfluence influence2 : influences ) {
+				Circle2f influenceCircle2=new Circle2f(influence.getCenter(),influence.radius());
+				if(influenceCircle1.intersects(influenceCircle2)){
+					Circle2f first=new Circle2f();
+					Circle2f second = new Circle2f();
+					List<Point2f> intersections = first.point_intersects(second);
+//Adding the waves then at these points
+					if(intersections.size()>1){
+						z.put(intersections.get(0), addWaves(influence,influence2));
+						z.put(intersections.get(1), addWaves(influence,influence2));
+					}else{
+						z.put(intersections.get(0), addWaves(influence,influence2));
 					}
 				}
+			}
+			
+//Finding collision with map border
+			
+			contactMap(influenceCircle1, map,influence);
 				
-				//Construction of the map as a Rectangle
+//This influence is treated and can be removed from the list
 				
-				Point2f topLeft = new Point2f(0,0);
-				Point2f botRight = new Point2f(environment.getSize().height,environment.getSize().height);
-				Rectangle2f map = new Rectangle2f(topLeft,botRight);
-				
-	//Bord de la map
-				if(influence.circle.intersects(map)) {
-					//Finding the intersection point with the map
-					Point2f center = new Point2f(influence.circle.getCenter());
-					if(map.getWidth() >= center.getX() + influence.circle.getRadius() && !influence.getEmitter().touchR){ //touchR is true if the wave has already touched this side
-						//Right
-						Point2f contactPoint = new Point2f(center.getX() + influence.circle.getRadius(),center.getY());
-						//How to find an Agent from its UUID ?
-						//influence.getEmitter().setTouchR(true);						
-						//wallContact(contactPoint,influence.getEmitter());
-					}
-					if(map.getWidth() <= center.getX() - influence.circle.getRadius() && !influence.getEmitter().touchL){ //So on with the other sides
-						//Left
-						Point2f contactPoint = new Point2f(center.getX() + influence.circle.getRadius(),center.getY());
-						//influence.getEmitter().setTouchL(true);
-						//wallContact(contactPoint,influence.getEmitter());
-					}
-					if(map.getHeight() >= center.getY() + influence.circle.getRadius() && !influence.getEmitter().touchB){ //So on with the other sides
-						//Bottom
-						Point2f contactPoint = new Point2f(center.getX(),center.getY() + influence.circle.getRadius());
-						//influence.getEmitter().setTouchB(true);
-						//wallContact(contactPoint,influence.getEmitter());
-					}
-					if(map.getHeight() <= center.getY() - influence.circle.getRadius() && !influence.getEmitter().touchT){ //So on with the other sides
-						//Top
-						Point2f contactPoint = new Point2f(center.getX(),center.getY() - influence.circle.getRadius());
-						//influence.getEmitter().setTouchT(true);
-						//wallContact(contactPoint,influence.getEmitter());
-					}
-				}
-				//On a géré les intersections avec les murs et les autres ondes.
-				
-				//On retire l'influence de la liste à traiter
 				influences.remove(influence);
 			}
+			return this.z;
 		}
 	
-	void wallContact(Point2f contactPoint, Agent a){
-		new Agent(contactPoint,a.body.currentAmplitude,a.body.currentSpeed);
+	void wallContact(Point2f contactPoint, WaveBody a){
+		new Wave(10										/*@ TODO Random Float waiting for the getter*/
+				,a.getAmplitude(),a.getSpeed(),contactPoint);
 	}
 	
-	int addWaves(Agent a, Agent b){
-		return a.body.currentAmplitude+b.body.currentAmplitude;
+	private void contactMap(Circle2f c, Rectangle2f m, ExpandInfluence i){
+		
+		/**
+		 * 
+		 * This function creates a new agent if a collision occurred with a wall.
+		 * 
+		 */
+
+		AgentBody AgentBodyEmitter = environment.getAgentBodyFor(i.getEmitter());
+		
+		if(c.intersects(m)) {
+			Point2f center = new Point2f(c.getCenter());
+			if(m.getWidth() >= center.getX() + i.radius() && !AgentBodyEmitter.touchR){ //touchR is true if the wave has already touched this side
+				//Right
+				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
+				wallContact(contactPoint,AgentBodyEmitter);
+				//Set touchR.
+			}
+			if(m.getWidth() <= center.getX() - i.radius() && !AgentBodyEmitter.touchL){ //So on with the other sides
+				//Left
+				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
+				wallContact(contactPoint,AgentBodyEmitter);
+			}
+			if(m.getHeight() >= center.getY() + i.radius() && !AgentBodyEmitter.touchB){ //So on with the other sides
+				//Bottom
+				Point2f contactPoint = new Point2f(center.getX(),center.getY() + i.radius());
+				wallContact(contactPoint,AgentBodyEmitter);
+			}
+			if(m.getHeight() <= center.getY() - i.radius() && !AgentBodyEmitter.touchT){ //So on with the other sides
+				//Top
+				Point2f contactPoint = new Point2f(center.getX(),center.getY() - i.radius());
+				wallContact(contactPoint,AgentBodyEmitter);
+			}
+		}
+	}
+	
+	private Integer addWaves(ExpandInfluence a, ExpandInfluence b){
+		return (int) ((int) a.getAmplitude()+b.getAmplitude());
+	}
+	
+	private Rectangle2f constructMap(Environment e){
+		Point2f topLeft = new Point2f(0,0);
+		Point2f botRight = new Point2f(e.getHeight(),e.getWidth());
+		Rectangle2f map = new Rectangle2f(topLeft,botRight);
+		return map;
+	}
+	
+	private ArrayList<Point2f> constructPixelCircle(ExpandInfluence influence, float radius){
+		
+		/**
+		 * 
+		 *  This function build a circle composed of pixels.
+		 *  From the center and the radius.
+		 * 
+		 **/
+		
+		
+		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
+	 	
+		float r = radius;
+	    float x = 0;
+	    float y = r;
+	    float d = r - 1;
+	 
+	    while(y >= x)
+	    {
+	        pixels.add( new Point2f(influence.getCenter().getX() + x, influence.getCenter().getY() + y ));
+	        pixels.add( new Point2f(influence.getCenter().getX() + y, influence.getCenter().getY() + x ));
+	        pixels.add( new Point2f(influence.getCenter().getX() - x, influence.getCenter().getY() + y ));
+	        pixels.add( new Point2f(influence.getCenter().getX() - y, influence.getCenter().getY() + x ));
+	        pixels.add( new Point2f(influence.getCenter().getX() + x, influence.getCenter().getY() - y ));
+	        pixels.add( new Point2f(influence.getCenter().getX() + y, influence.getCenter().getY() - x ));
+	        pixels.add( new Point2f(influence.getCenter().getX() - x, influence.getCenter().getY() - y ));
+	        pixels.add( new Point2f(influence.getCenter().getX() - y, influence.getCenter().getY() - x ));
+	 
+	        if (d >= 2*x)
+	        {
+	            d -= 2*x + 1;
+	            x ++;
+	        }
+	        else if (d < 2 * (r-y))
+	        {
+	            d += 2*y - 1;
+	            y --;
+	        }
+	        else
+	        {
+	            d += 2*(y - x - 1);
+	            y --;
+	            x ++;
+	        }
+	    }
+	    return pixels;
 	}
 }
