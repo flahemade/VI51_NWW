@@ -2,5 +2,5 @@ package wave.agent;
 
 public interface Agent {
 
-	public boolean decide();
+	public boolean decide(float currentTime);
 }

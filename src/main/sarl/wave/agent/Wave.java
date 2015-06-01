@@ -22,7 +22,7 @@ public class Wave implements Agent{
 	 * Otherwise, it expands.
 	 * output is true if a decision was taken.
 	 */
-	public boolean decide(){
+	public boolean decide(float currenTime){
 		
 		if(body.getAmplitude() <= 0 || body.getPointList().isEmpty()){
 			//The wave has no amplitude or no points: it asks to be killed

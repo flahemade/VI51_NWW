@@ -1,22 +1,31 @@
 package wave.body;
 
+import fr.utbm.info.vi51.framework.math.Point2f;
+
 public class SourceBody extends AgentBody {
 
 	private float frequency;
 	private float amplitude;
 	
-	public SourceBody(float freq, float amp){
+	private Point2f position;
+	
+	public SourceBody(float freq, float amp, Point2f pos){
 		super();
 		
 		this.frequency = freq;
 		this.amplitude = amp;
+		this.position = pos;
 	}
 	
-	float getFrequency(){
+	public float getFrequency(){
 		return frequency;
 	}
 	
-	float getAmplitude(){
+	public float getAmplitude(){
 		return amplitude;
+	}
+	
+	public Point2f getPosition(){
+		return this.position;
 	}
 }
