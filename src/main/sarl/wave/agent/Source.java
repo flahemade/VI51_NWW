@@ -3,9 +3,10 @@ package wave.agent;
 import fr.utbm.info.vi51.framework.math.Point2f;
 import wave.behavior.GenerateInfluence;
 import wave.behavior.RestInfluence;
+import wave.body.AgentBody;
 import wave.body.SourceBody;
 
-public class Source implements Agent {
+public class Source extends Agent {
 
 	SourceBody body;
 	
@@ -28,6 +29,11 @@ public class Source implements Agent {
 			body.setInfluence(new RestInfluence(null));
 		}
 		return false;
+	}
+
+	@Override
+	public AgentBody getBody() {
+		return body;
 	}
 
 }

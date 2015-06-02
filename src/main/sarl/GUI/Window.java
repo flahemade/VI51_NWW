@@ -17,7 +17,7 @@ public class Window extends JFrame{
 		float heigth = env.getHeight();
 		this.env = env;
 		this.mainPane = new WorldPanel(this.env);
-		this.selectPane = new SelectionPanel();
+		this.selectPane = new SelectionPanel(this.env);
 		add(mainPane,BorderLayout.CENTER);
 		add(selectPane,BorderLayout.EAST);
 		this.setSize(700,700);

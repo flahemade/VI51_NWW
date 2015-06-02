@@ -1,6 +1,12 @@
 package wave.agent;
 
-public interface Agent {
+import wave.body.AgentBody;
 
-	public boolean decide(float currentTime);
+public abstract class Agent {
+
+	AgentBody body;
+	
+	public abstract boolean decide(float currentTime);
+	
+	public abstract AgentBody getBody();
 }

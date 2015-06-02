@@ -3,12 +3,18 @@ package GUI;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import wave.agent.Source;
+import wave.agent.Wave;
+import Environment.Environment;
+import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class SelectionPanel extends JPanel implements ActionListener{
 	private JSlider frequence;
@@ -18,13 +24,16 @@ public class SelectionPanel extends JPanel implements ActionListener{
 	private JButton add;
 	private JTextField pos_x;
 	private JTextField pos_y;
-	public SelectionPanel(){
+	private Environment env;
+	private boolean b_source_obstacle; //true if we select source false else
+	
+	public SelectionPanel(Environment env){
 	    addSelectionButton();
 	    frequence = addSlider(frequence,SwingConstants.VERTICAL,0, 500, 100);
 	    force = addSlider(force,SwingConstants.VERTICAL,0,1500,100);
+	    this.env = env;
 	    addPositionTextField();
 		this.setVisible(true);
-		
 	}
 	
 	public JSlider addSlider(JSlider slider,int orientation,int min, int max, int value){
@@ -35,7 +44,6 @@ public class SelectionPanel extends JPanel implements ActionListener{
 	    slider.setMinorTickSpacing(max/20);
 	    slider.setMajorTickSpacing(max/5);
 	    slider.setVisible(false);
-	    
 	    return slider;
 	}
 	
@@ -78,8 +86,17 @@ public class SelectionPanel extends JPanel implements ActionListener{
 		
 		else if(buttonName.equals("add")){
 			System.out.println("add");
-			this.frequence.setVisible(false);
-			this.force.setVisible(false);
+			if(b_source_obstacle==true){
+				Source s = new Source(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
+				env.addAgents(UUID.randomUUID(),s);
+				this.force.setVisible(false);
+				this.frequence.setVisible(false);
+			}
+			else{
+				Wave w = new Wave(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
+				env.addAgents(UUID.randomUUID(),w);
+			}
+			
 			this.pos_x.setVisible(false);
 			this.pos_y.setVisible(false);
 			this.add.setVisible(false);
