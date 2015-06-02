@@ -86,7 +86,7 @@ public class InfluenceSolver {
 				
 //This influence is treated and can be removed from the list
 				
-				influences.remove(influence);
+				//influences.remove(influence);
 			}
 			return z;
 		}
