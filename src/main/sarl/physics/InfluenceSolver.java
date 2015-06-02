@@ -6,10 +6,9 @@ import java.util.Map;
 
 import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
-import wave.body.AgentBody;
 import wave.body.WaveBody;
 import Environment.Environment;
-import fr.utbm.info.vi51.framework.environment.Influence;
+import fr.utbm.info.vi51.framework.environment.AgentBody;
 import fr.utbm.info.vi51.framework.math.Circle2f;
 import fr.utbm.info.vi51.framework.math.Point2f;
 import fr.utbm.info.vi51.framework.math.Rectangle2f;
@@ -20,33 +19,30 @@ public class InfluenceSolver {
 	
 	ArrayList<ExpandInfluence> influences;
 	Environment environment;
-	Map<Point2f, Integer> z;
 	
 	//Constructors
 	
 	public InfluenceSolver(){
 		this.influences = new ArrayList<ExpandInfluence>();
 		this.environment = null;
-		this.z = null;
 	}
 	
-	public InfluenceSolver(ArrayList<ExpandInfluence> i , Environment e, Map<Point2f, Integer> m){
+	public InfluenceSolver(ArrayList<ExpandInfluence> i , Environment e){
 		this.influences=i;
 		this.environment=e;
-		this.z=m;
 	}
 	
 	//Methods
 	
 	
-	Map<Point2f,Integer> solveConflicts(){
+	public Map<Point2f,Integer> solveConflicts(){
 		
 		/**
 		 * 
 		 * This function updates the map taking into account all the influences
 		 * 
-		 **/
-		
+		**/
+		Map<Point2f,Integer> z = environment.getZ();
 		Rectangle2f map = constructMap(environment);
 		
 //Updating each agent according to its influence
@@ -64,7 +60,7 @@ public class InfluenceSolver {
 			
 //Updating the map
 			for (Point2f circlePoint : pixelCircle) {
-				z.put(circlePoint, amplitude);
+				z.putIfAbsent(circlePoint, amplitude);
 			}
 				
 //Looping on the influence list to find intersections
@@ -76,10 +72,10 @@ public class InfluenceSolver {
 					List<Point2f> intersections = first.point_intersects(second);
 //Adding the waves then at these points
 					if(intersections.size()>1){
-						z.put(intersections.get(0), addWaves(influence,influence2));
-						z.put(intersections.get(1), addWaves(influence,influence2));
+						z.putIfAbsent(intersections.get(0), addWaves(influence,influence2));
+						z.putIfAbsent(intersections.get(1), addWaves(influence,influence2));
 					}else{
-						z.put(intersections.get(0), addWaves(influence,influence2));
+						z.putIfAbsent(intersections.get(0), addWaves(influence,influence2));
 					}
 				}
 			}
@@ -92,12 +88,11 @@ public class InfluenceSolver {
 				
 				influences.remove(influence);
 			}
-			return this.z;
+			return z;
 		}
 	
 	void wallContact(Point2f contactPoint, WaveBody a){
-		new Wave(10										/*@ TODO Random Float waiting for the getter*/
-				,a.getAmplitude(),a.getSpeed(),contactPoint);
+		new Wave(a.getAmplitude(),a.getSpeed(),contactPoint);
 	}
 	
 	private void contactMap(Circle2f c, Rectangle2f m, ExpandInfluence i){
@@ -106,32 +101,35 @@ public class InfluenceSolver {
 		 * 
 		 * This function creates a new agent if a collision occurred with a wall.
 		 * 
-		 */
+		**/
 
-		AgentBody AgentBodyEmitter = environment.getAgentBodyFor(i.getEmitter());
+		//WaveBody AgentBodyEmitter = environment.getAgentBodyFor(i.getEmitter());
 		
 		if(c.intersects(m)) {
 			Point2f center = new Point2f(c.getCenter());
-			if(m.getWidth() >= center.getX() + i.radius() && !AgentBodyEmitter.touchR){ //touchR is true if the wave has already touched this side
+			if(m.getWidth() >= center.getX() + i.radius() /*&& !AgentBodyEmitter.touchR*/){ //touchR is true if the wave has already touched this side
 				//Right
 				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
-				wallContact(contactPoint,AgentBodyEmitter);
-				//Set touchR.
+				//wallContact(contactPoint,AgentBodyEmitter);
+				//AgentBodyEmitter.setTouchR(true);
 			}
-			if(m.getWidth() <= center.getX() - i.radius() && !AgentBodyEmitter.touchL){ //So on with the other sides
+			if(m.getWidth() <= center.getX() - i.radius() /*&& !AgentBodyEmitter.touchL*/){ //So on with the other sides
 				//Left
 				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
-				wallContact(contactPoint,AgentBodyEmitter);
+				//wallContact(contactPoint,AgentBodyEmitter);
+				//AgentBodyEmitter.setTouchL(true);
 			}
-			if(m.getHeight() >= center.getY() + i.radius() && !AgentBodyEmitter.touchB){ //So on with the other sides
+			if(m.getHeight() >= center.getY() + i.radius() /*&& !AgentBodyEmitter.touchB*/){ //So on with the other sides
 				//Bottom
 				Point2f contactPoint = new Point2f(center.getX(),center.getY() + i.radius());
-				wallContact(contactPoint,AgentBodyEmitter);
+				//wallContact(contactPoint,AgentBodyEmitter);
+				//AgentBodyEmitter.setTouchB(true);
 			}
-			if(m.getHeight() <= center.getY() - i.radius() && !AgentBodyEmitter.touchT){ //So on with the other sides
+			if(m.getHeight() <= center.getY() - i.radius() /*&& !AgentBodyEmitter.touchT*/){ //So on with the other sides
 				//Top
 				Point2f contactPoint = new Point2f(center.getX(),center.getY() - i.radius());
-				wallContact(contactPoint,AgentBodyEmitter);
+				//wallContact(contactPoint,AgentBodyEmitter);
+				//AgentBodyEmitter.setTouchT(true);
 			}
 		}
 	}
