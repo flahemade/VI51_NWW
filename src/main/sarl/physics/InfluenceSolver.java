@@ -27,7 +27,7 @@ public class InfluenceSolver {
 		this.environment = null;
 	}
 	
-	public InfluenceSolver(ArrayList<ExpandInfluence> i , Environment e){
+	public InfluenceSolver( List<ExpandInfluence> i , Environment e){
 		this.influences=i;
 		this.environment=e;
 	}
