@@ -137,7 +137,7 @@ public class InfluenceSolver {
 	}
 	
 	private Integer addWaves(ExpandInfluence a, ExpandInfluence b){
-		return (int) ((int) a.getAmplitude()+b.getAmplitude());
+		return (int) ((int) a.getAmplitude()+b.getAmplitude());'z'
 	}
 	
 	private Rectangle2f constructMap(Environment e){

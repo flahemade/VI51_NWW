@@ -57,9 +57,13 @@ public class ExpandInfluence extends Influence {
 		return res;
 	}
 	
+	public UUID getEmitter(){
+		return this.emitter;
+	}
+	
 	public ArrayList<Point2f> getPointList(){
 		return pointList;
-	}
+	} 
 
 	public void setPointList(ArrayList<Point2f> l){
 		this.pointList= l;
