@@ -1,5 +1,7 @@
 package wave.agent;
 
+import java.util.ArrayList;
+
 import wave.behavior.ExpandInfluence;
 import wave.behavior.KillInfluence;
 import wave.body.AgentBody;
@@ -30,7 +32,7 @@ public class Wave extends Agent{
 		}
 		else{
 			//The wave expands
-			body.setInfluence(new ExpandInfluence(null, body.getID(), body.getAmplitude(), ((WaveBody) body).getSpeed(), ((WaveBody)body).getCenter(), ((WaveBody)body).getPointList()));
+			body.setInfluence(new ExpandInfluence(null, body.getID(), body.getAmplitude(), ((WaveBody) body).getSpeed(), ((WaveBody)body).getCenter(), (ArrayList<Point2f>) ((WaveBody)body).getPointList()));
 			return true;
 		}
 	}

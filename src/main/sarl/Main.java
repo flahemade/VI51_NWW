@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -7,15 +8,16 @@ import javax.swing.JFrame;
 
 import physics.InfluenceSolver;
 import wave.agent.Agent;
+import wave.behavior.ExpandInfluence;
 import Environment.Environment;
 import GUI.Window;
-import fr.utbm.info.vi51.framework.environment.Influence;
+import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Main {
 	  public static void main(String[] args) throws InterruptedException{
 		Environment env = new Environment();
 	    JFrame window = new Window(env);
-	    List<Influence> inf = new ArrayList<Influence>();
+	    List<ExpandInfluence> inf = new ArrayList<ExpandInfluence>();
 	    InfluenceSolver solve = new InfluenceSolver(inf, env);
 	    for(int k=0;k<10000000;++k){
 			//int i = (int) (Math.random()*500);
@@ -24,13 +26,13 @@ public class Main {
 			//int var = (int) (Math.random()*200-100);
 			//Map<Point2f,Integer> change = new HashMap<Point2f,Integer>();
 			//change.put(tmp, env.getZ().get(tmp)-var);
-	    	inf.clear();
+	    	System.out.println(env.getAgents().size());
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
-	    			inf.add(a.getValue().getBody().getInfluence());
+	    			solve.getInfluence().add((ExpandInfluence) a.getValue().getBody().getInfluence());
 	    		}
 	    	}
-	    	solve.solveConflicts(inf);
+	    	Map<Point2f, Integer> change = solve.solveConflicts();
 	    	
 			((Window) window).getmainPane().setWater(change);
 		}
