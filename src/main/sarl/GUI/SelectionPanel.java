@@ -88,13 +88,13 @@ public class SelectionPanel extends JPanel implements ActionListener{
 			System.out.println("add");
 			if(b_source_obstacle==true){
 				Source s = new Source(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
-				env.addAgents(UUID.randomUUID(),s);
+				env.addAgents(s.getBody().getID(),s);
 				this.force.setVisible(false);
 				this.frequence.setVisible(false);
 			}
 			else{
 				Wave w = new Wave(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
-				env.addAgents(UUID.randomUUID(),w);
+				env.addAgents(w.getBody().getID(),w);
 			}
 			
 			this.pos_x.setVisible(false);
@@ -104,10 +104,10 @@ public class SelectionPanel extends JPanel implements ActionListener{
 	}
 	
 	public void addPositionTextField(){
-		this.pos_x = new JTextField("500");
+		this.pos_x = new JTextField("300");
 		this.add(this.pos_x);
 		this.pos_x.setVisible(false);
-		this.pos_y = new JTextField("500");
+		this.pos_y = new JTextField("300");
 		this.add(this.pos_y);
 		this.pos_y.setVisible(false);
 		

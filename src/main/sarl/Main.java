@@ -32,8 +32,9 @@ public class Main {
 	    			solve.getInfluence().add((ExpandInfluence) a.getValue().getBody().getInfluence());
 	    		}
 	    	}
+	    	System.out.println(solve.getInfluence().size());
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
-	    	
+	    	System.out.println(change.size());
 			((Window) window).getmainPane().setWater(change);
 		}
 	    window.dispose();
