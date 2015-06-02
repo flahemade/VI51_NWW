@@ -54,7 +54,8 @@ public class InfluenceSolver {
 
 			
 //Building a new pixel circle
-			float newRadius = influence.radius()+80;
+			float newRadius = influence.radius()+10;
+			
 			Integer amplitude = 80;
 			ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
 			
@@ -82,13 +83,11 @@ public class InfluenceSolver {
 			
 //Finding collision with map border
 			
-			contactMap(influenceCircle1,map,influence);
+			contactMap(influenceCircle1, map,influence);
 				
 //This influence is treated and can be removed from the list
 				
 				//influences.remove(influence);
-			ExpandInfluence i = (ExpandInfluence) environment.getAgents().get(influence.getEmitter()).getBody().getInfluence();
-			i.setPointList(pixelCircle);
 			}
 			return z;
 		}
@@ -104,8 +103,9 @@ public class InfluenceSolver {
 		 * This function creates a new agent if a collision occurred with a wall.
 		 * 
 		**/
+		
+		WaveBody AgentBodyEmitter = (WaveBody) environment.getAgents().get(i.getEmitter()).getBody();
 
-		WaveBody AgentBodyEmitter = (WaveBody)environment.getAgents().get(i.getEmitter()).getBody();
 		
 		if(c.intersects(m)) {
 			Point2f center = new Point2f(c.getCenter());
