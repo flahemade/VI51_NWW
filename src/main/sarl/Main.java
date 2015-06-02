@@ -15,7 +15,8 @@ public class Main {
 	  public static void main(String[] args) throws InterruptedException{
 		Environment env = new Environment();
 	    JFrame window = new Window(env);
-	    InfluenceSolver solve;
+	    List<Influence> inf = new ArrayList<Influence>();
+	    InfluenceSolver solve = new InfluenceSolver(inf, env);
 	    for(int k=0;k<10000000;++k){
 			//int i = (int) (Math.random()*500);
 			//int j = (int) (Math.random()*500);
@@ -23,12 +24,13 @@ public class Main {
 			//int var = (int) (Math.random()*200-100);
 			//Map<Point2f,Integer> change = new HashMap<Point2f,Integer>();
 			//change.put(tmp, env.getZ().get(tmp)-var);
-	    	List<Influence> inf = new ArrayList<Influence>();
+	    	inf.clear();
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			inf.add(a.getValue().getBody().getInfluence());
 	    		}
 	    	}
+	    	solve.solveConflicts(inf);
 	    	
 			((Window) window).getmainPane().setWater(change);
 		}
