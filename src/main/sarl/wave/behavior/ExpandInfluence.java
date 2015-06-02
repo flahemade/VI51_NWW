@@ -61,4 +61,7 @@ public class ExpandInfluence extends Influence {
 		return pointList;
 	}
 
+	public void setPointList(ArrayList<Point2f> l){
+		this.pointList= l;
+	}
 }

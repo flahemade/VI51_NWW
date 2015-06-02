@@ -82,11 +82,13 @@ public class InfluenceSolver {
 			
 //Finding collision with map border
 			
-			contactMap(influenceCircle1, map,influence);
+			contactMap(influenceCircle1,map,influence);
 				
 //This influence is treated and can be removed from the list
 				
 				//influences.remove(influence);
+			ExpandInfluence i = (ExpandInfluence) environment.getAgents().get(influence.getEmitter()).getBody().getInfluence();
+			i.setPointList(pixelCircle);
 			}
 			return z;
 		}
@@ -103,7 +105,7 @@ public class InfluenceSolver {
 		 * 
 		**/
 
-		//WaveBody AgentBodyEmitter = environment.getAgentBodyFor(i.getEmitter());
+		//WaveBody AgentBodyEmitter = (WaveBody)environment.getAgents().get(i.getEmitter()).getBody();
 		
 		if(c.intersects(m)) {
 			Point2f center = new Point2f(c.getCenter());
