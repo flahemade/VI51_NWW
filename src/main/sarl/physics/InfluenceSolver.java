@@ -105,32 +105,32 @@ public class InfluenceSolver {
 		 * 
 		**/
 
-		//WaveBody AgentBodyEmitter = (WaveBody)environment.getAgents().get(i.getEmitter()).getBody();
+		WaveBody AgentBodyEmitter = (WaveBody)environment.getAgents().get(i.getEmitter()).getBody();
 		
 		if(c.intersects(m)) {
 			Point2f center = new Point2f(c.getCenter());
 			if(m.getWidth() >= center.getX() + i.radius() /*&& !AgentBodyEmitter.touchR*/){ //touchR is true if the wave has already touched this side
 				//Right
 				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
-				//wallContact(contactPoint,AgentBodyEmitter);
+				wallContact(contactPoint,AgentBodyEmitter);
 				//AgentBodyEmitter.setTouchR(true);
 			}
 			if(m.getWidth() <= center.getX() - i.radius() /*&& !AgentBodyEmitter.touchL*/){ //So on with the other sides
 				//Left
 				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
-				//wallContact(contactPoint,AgentBodyEmitter);
+				wallContact(contactPoint,AgentBodyEmitter);
 				//AgentBodyEmitter.setTouchL(true);
 			}
 			if(m.getHeight() >= center.getY() + i.radius() /*&& !AgentBodyEmitter.touchB*/){ //So on with the other sides
 				//Bottom
 				Point2f contactPoint = new Point2f(center.getX(),center.getY() + i.radius());
-				//wallContact(contactPoint,AgentBodyEmitter);
+				wallContact(contactPoint,AgentBodyEmitter);
 				//AgentBodyEmitter.setTouchB(true);
 			}
 			if(m.getHeight() <= center.getY() - i.radius() /*&& !AgentBodyEmitter.touchT*/){ //So on with the other sides
 				//Top
 				Point2f contactPoint = new Point2f(center.getX(),center.getY() - i.radius());
-				//wallContact(contactPoint,AgentBodyEmitter);
+				wallContact(contactPoint,AgentBodyEmitter);
 				//AgentBodyEmitter.setTouchT(true);
 			}
 		}
