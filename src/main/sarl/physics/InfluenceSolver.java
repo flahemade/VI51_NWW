@@ -17,7 +17,7 @@ public class InfluenceSolver {
 	
 	//Arguments
 	
-	ArrayList<ExpandInfluence> influences;
+	List<ExpandInfluence> influences;
 	Environment environment;
 	
 	//Constructors
@@ -191,5 +191,14 @@ public class InfluenceSolver {
 	        }
 	    }
 	    return pixels;
+	}
+	
+	public List<ExpandInfluence> getInfluence(){
+		return this.influences;
+	}
+	
+	public void setInfluence(List<ExpandInfluence> l){
+		this.influences=l;
+		return;
 	}
 }
