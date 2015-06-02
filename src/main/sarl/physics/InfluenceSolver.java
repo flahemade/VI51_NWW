@@ -1,6 +1,7 @@
 package physics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,6 @@ import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
 import wave.body.WaveBody;
 import Environment.Environment;
-import fr.utbm.info.vi51.framework.environment.AgentBody;
 import fr.utbm.info.vi51.framework.math.Circle2f;
 import fr.utbm.info.vi51.framework.math.Point2f;
 import fr.utbm.info.vi51.framework.math.Rectangle2f;
@@ -42,7 +42,7 @@ public class InfluenceSolver {
 		 * This function updates the map taking into account all the influences
 		 * 
 		**/
-		Map<Point2f,Integer> z = environment.getZ();
+		Map<Point2f,Integer> z = new HashMap<Point2f,Integer>();
 		Rectangle2f map = constructMap(environment);
 		
 //Updating each agent according to its influence
@@ -55,7 +55,7 @@ public class InfluenceSolver {
 			
 //Building a new pixel circle
 			float newRadius = influence.radius()+1;
-			Integer amplitude = 2;
+			Integer amplitude = 80;
 			ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
 			
 //Updating the map
