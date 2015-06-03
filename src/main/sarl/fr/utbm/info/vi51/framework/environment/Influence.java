@@ -34,7 +34,7 @@ public abstract class Influence implements Serializable {
 
 	private static final long serialVersionUID = -3172105252469025247L;
 
-	private UUID emitter = null;
+	protected UUID emitter = null;
 	private final UUID influencedObject;
 	
 	/**
