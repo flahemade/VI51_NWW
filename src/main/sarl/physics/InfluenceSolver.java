@@ -103,7 +103,11 @@ public class InfluenceSolver {
 		 * This function creates a new agent if a collision occurred with a wall.
 		 * 
 		**/
+<<<<<<< HEAD
 		
+=======
+		System.out.println(i.getEmitter());
+>>>>>>> 7b69f15a66aae37950e1075505b621305261de69
 		WaveBody AgentBodyEmitter = (WaveBody) environment.getAgents().get(i.getEmitter()).getBody();
 
 		
