@@ -26,6 +26,7 @@ public abstract class AgentBody {
 	}
 	
 	public AgentBody(Influence influence){
+		this.ID = UUID.randomUUID();
 		
 		this.frequency = ((GenerateInfluence) influence).getFrequency();
 		this.amplitude = ((GenerateInfluence)influence).getAmplitude();

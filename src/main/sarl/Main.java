@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -8,6 +9,7 @@ import javax.swing.JFrame;
 
 import physics.InfluenceSolver;
 import wave.agent.Agent;
+import wave.agent.Wave;
 import wave.behavior.GenerateInfluence;
 import Environment.Environment;
 import GUI.Window;
@@ -20,6 +22,8 @@ public class Main {
 	    JFrame window = new Window(env);
 	    List<Influence> inf = new ArrayList<Influence>();
 	    InfluenceSolver solve = new InfluenceSolver(inf, env);
+	    Map<UUID,Agent> next_agents = new HashMap<UUID, Agent>();
+	    Wave new_agent;
 	    for(int k=0;k<1000000000;++k){
 			//int i = (int) (Math.random()*500);
 			//int j = (int) (Math.random()*500);
@@ -32,11 +36,14 @@ public class Main {
 	    			Influence influence = a.getValue().getBody().getInfluence();
 	    			solve.getInfluence().add(influence);
 	    			if(influence instanceof GenerateInfluence){
-	    				env.addAgents(influence);
+	    				new_agent = new Wave(influence);
+	    				next_agents.put(new_agent.getBody().getID(),new_agent);
 	    			}
 	    			
 	    		}
 	    	}
+	    	env.getAgents().putAll(next_agents);
+	    	System.out.println(env.getAgents().size());
 	    	Thread.sleep(1);
 	    	
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
