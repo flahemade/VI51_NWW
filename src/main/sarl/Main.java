@@ -32,6 +32,7 @@ public class Main {
 	    		}
 	    	}
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
+	    	System.out.println(change.toString());
 			((Window) window).getmainPane().setWater(change);
 		}
 	    window.dispose();

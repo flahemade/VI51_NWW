@@ -54,7 +54,7 @@ public class InfluenceSolver {
 
 			
 //Building a new pixel circle
-			float newRadius = influence.radius()+10;
+			float newRadius = influence.radius()+5;
 			
 			Integer amplitude = 80;
 			ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
