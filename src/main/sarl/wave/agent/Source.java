@@ -24,6 +24,7 @@ public class Source extends Agent {
 		if(active = true && ((currentTime-lastWaveTime) > 1/this.body.getFrequency())){
 			this.lastWaveTime = currentTime;
 			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition()));
+			return true;
 		}
 		else{
 			body.setInfluence(new RestInfluence(null));

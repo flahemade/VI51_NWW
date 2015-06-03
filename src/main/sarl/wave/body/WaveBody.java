@@ -3,6 +3,7 @@ package wave.body;
 import java.util.ArrayList;
 import java.util.List;
 
+import wave.behavior.GenerateInfluence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class WaveBody extends AgentBody {
@@ -19,6 +20,12 @@ public class WaveBody extends AgentBody {
 		System.out.println(source);
 		this.pointList.add(source);
 
+	}
+
+	public WaveBody(GenerateInfluence influence){
+		super(influence);
+		this.speed = 1/influence.getFrequency();
+		this.pointList.add(influence.getCenter());
 	}
 	
 	public Point2f getCenter(){

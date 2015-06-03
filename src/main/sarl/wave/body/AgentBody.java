@@ -2,6 +2,7 @@ package wave.body;
 
 import java.util.UUID;
 
+import wave.behavior.GenerateInfluence;
 import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
@@ -22,6 +23,12 @@ public abstract class AgentBody {
 		this.frequency = freq;
 		this.amplitude = amp;
 		this.position = pos;
+	}
+	
+	public AgentBody(GenerateInfluence influence){
+		this.frequency = influence.getFrequency();
+		this.amplitude = influence.getAmplitude();
+		this.position = influence.getCenter();
 	}
 
 	public UUID getID(){

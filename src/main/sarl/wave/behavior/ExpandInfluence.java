@@ -63,4 +63,10 @@ public class ExpandInfluence extends Influence {
 	public void setPointList(ArrayList<Point2f> l){
 		this.pointList= l;
 	}
+
+	@Override
+	public UUID getInfluencedObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

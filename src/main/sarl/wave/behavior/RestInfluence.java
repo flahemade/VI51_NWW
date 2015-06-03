@@ -3,6 +3,8 @@ package wave.behavior;
 import java.util.UUID;
 
 import fr.utbm.info.vi51.framework.environment.Influence;
+import fr.utbm.info.vi51.framework.math.Point2f;
+import fr.utbm.info.vi51.framework.math.Tuple2f;
 
 public class RestInfluence extends Influence {
 
@@ -14,6 +16,12 @@ public class RestInfluence extends Influence {
 	public RestInfluence(UUID influencedObject) {
 		super(influencedObject);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public Tuple2f<Point2f> getCenter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

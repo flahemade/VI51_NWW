@@ -24,15 +24,15 @@ public class GenerateInfluence extends Influence {
 		this.center = pos;
 	}
 	
-	float getFrequency(){
+	public float getFrequency(){
 		return this.frequency;
 	}
 	
-	float getAmplitude(){
+	public float getAmplitude(){
 		return this.amplitude;
 	}
 	
-	Point2f getCenter() {
+	public Point2f getCenter() {
 		return this.center;
 	}
 

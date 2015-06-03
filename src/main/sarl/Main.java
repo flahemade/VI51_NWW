@@ -29,6 +29,7 @@ public class Main {
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			solve.getInfluence().add(a.getValue().getBody().getInfluence());
+	    			System.out.println("add influence");
 	    		}
 	    	}
 	    	Thread.sleep(1);

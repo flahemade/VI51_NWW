@@ -7,6 +7,7 @@ import java.util.Map;
 
 import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
+import wave.behavior.GenerateInfluence;
 import wave.body.WaveBody;
 import Environment.Environment;
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -46,14 +47,16 @@ public class InfluenceSolver {
 		Map<Point2f,Integer> z = new HashMap<Point2f,Integer>();
 		
 //Updating each agent according to its influence
-		
 		for (Influence influence : influences) {
 			
 			if(influence instanceof ExpandInfluence){
 				z = expand((ExpandInfluence) influence, z);
 			}
+			else if(influence instanceof GenerateInfluence){
+				System.out.println("generate");
+				z = generate((GenerateInfluence) influence, z);
+			}
 		}
-		
 		return z;
 	}
 	
@@ -111,7 +114,7 @@ public class InfluenceSolver {
 		return map;
 	}
 	
-	private ArrayList<Point2f> constructPixelCircle(ExpandInfluence influence, float radius){
+	private ArrayList<Point2f> constructPixelCircle(Influence influence, float radius){
 		
 		/**
 		 * 
@@ -176,7 +179,7 @@ public class InfluenceSolver {
 		
 //Updating the map
 		for (Point2f circlePoint : pixelCircle) {
-			z.putIfAbsent(circlePoint, amplitude);
+			z.put(circlePoint, amplitude);
 		}	
 //Looping on the influence list to find intersections
 		for (Influence influence2 : influences ) {
@@ -187,10 +190,10 @@ public class InfluenceSolver {
 				List<Point2f> intersections = first.point_intersects(second);
 //Adding the waves then at these points
 				if(intersections.size()>1){
-					z.putIfAbsent(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
-					z.putIfAbsent(intersections.get(1), addWaves(influence1,(ExpandInfluence)influence2));
+					z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
+					z.put(intersections.get(1), addWaves(influence1,(ExpandInfluence)influence2));
 				}else{
-					z.putIfAbsent(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
+					z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
 				}
 			}
 		}
@@ -204,6 +207,21 @@ public class InfluenceSolver {
 		bodyToSet.setPointList(pixelCircle);
 			//System.out.println(influence.radius());
 		return z;
+	}
+	
+	public Map<Point2f, Integer> generate(GenerateInfluence influence, Map<Point2f, Integer> z){
+		Wave w = new Wave(influence);
+		//Building a new pixel circle
+		float newRadius = 1;
+		Integer amplitude = 1;
+		ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
+		System.out.println(pixelCircle);
+//Updating the map
+		for (Point2f circlePoint : pixelCircle) {
+			z.put(circlePoint, amplitude);
+		}
+		return z;
+		
 	}
 	
 	public List<Influence> getInfluence(){

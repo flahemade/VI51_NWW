@@ -23,6 +23,9 @@ package fr.utbm.info.vi51.framework.environment;
 import java.io.Serializable;
 import java.util.UUID;
 
+import fr.utbm.info.vi51.framework.math.Point2f;
+import fr.utbm.info.vi51.framework.math.Tuple2f;
+
 /**
  * Abstract implementation of an influence.
  * 
@@ -68,5 +71,7 @@ public abstract class Influence implements Serializable {
 	public UUID getInfluencedObject() {
 		return this.influencedObject;
 	}
+
+	abstract public Tuple2f<Point2f> getCenter();
 	
 }

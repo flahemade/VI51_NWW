@@ -3,8 +3,10 @@ package wave.agent;
 import java.util.ArrayList;
 
 import wave.behavior.ExpandInfluence;
+import wave.behavior.GenerateInfluence;
 import wave.behavior.KillInfluence;
 import wave.body.AgentBody;
+import wave.body.SourceBody;
 import wave.body.WaveBody;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
@@ -38,6 +40,9 @@ public class Wave extends Agent{
 		}
 	}
 	
+	public Wave(GenerateInfluence influence){
+		this.body = new WaveBody(influence);
+	}
 	
 	public AgentBody getBody(){
 		return this.body;
