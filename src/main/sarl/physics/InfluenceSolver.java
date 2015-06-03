@@ -85,8 +85,9 @@ public class InfluenceSolver {
 			contactMap(influenceCircle1, map,influence);
 				
 //This influence is treated and can be removed from the list
-				WaveBody agentToMod = (WaveBody) environment.getAgents().get(influence.getEmitter()).getBody();
-				agentToMod.setPointList(pixelCircle);
+			WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence.getEmitter()).getBody();
+			bodyToSet.setPointList(pixelCircle);
+				System.out.println(influence.radius());
 			}
 			return z;
 		}
