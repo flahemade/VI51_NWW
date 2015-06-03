@@ -72,6 +72,6 @@ public abstract class Influence implements Serializable {
 		return this.influencedObject;
 	}
 
-	abstract public Tuple2f<Point2f> getCenter();
+	abstract public Point2f getCenter();
 	
 }

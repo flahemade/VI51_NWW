@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wave.behavior.GenerateInfluence;
+import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class WaveBody extends AgentBody {
@@ -22,9 +23,9 @@ public class WaveBody extends AgentBody {
 
 	}
 
-	public WaveBody(GenerateInfluence influence){
+	public WaveBody(Influence influence){
 		super(influence);
-		this.speed = 1/influence.getFrequency();
+		this.speed = 1/((GenerateInfluence) influence).getFrequency();
 		this.pointList.add(influence.getCenter());
 	}
 	

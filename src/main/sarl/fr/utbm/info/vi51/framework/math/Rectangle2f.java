@@ -123,12 +123,11 @@ public class Rectangle2f extends Shape2f<Rectangle2f> {
 		if (s instanceof Circle2f) {
 			Circle2f c = (Circle2f) s;
 			Point2f center = c.getCenter();
-			float x = MathUtil.clamp(center.getX(), this.lower.getX(), this.upper.getX());
-			float y = MathUtil.clamp(center.getY(), this.lower.getY(), this.upper.getY());
-			x -= center.getX();
-			y -= center.getY();
-			float radius = c.getRadius();
-			return (x*x+y*y) < (radius * radius);
+
+			return center.getX()+c.getRadius() >= this.getUpper().getX() ||
+					center.getX()-c.getRadius() <= this.getLower().getX() ||
+					center.getY()+c.getRadius() >= this.getUpper().getY() ||
+					center.getY()-c.getRadius() <= this.getLower().getY();
 		}
 		if (s instanceof MotionHull2f) {
 			return ((MotionHull2f) s).intersects(this);

@@ -8,12 +8,14 @@ import wave.behavior.KillInfluence;
 import wave.body.AgentBody;
 import wave.body.SourceBody;
 import wave.body.WaveBody;
+import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Wave extends Agent{
 	
 	
 	public Wave(float freq, float ampl,Point2f source){
+		
 		this.body = new WaveBody(freq, ampl, source);
 	}
 	
@@ -40,7 +42,7 @@ public class Wave extends Agent{
 		}
 	}
 	
-	public Wave(GenerateInfluence influence){
+	public Wave(Influence influence){
 		this.body = new WaveBody(influence);
 	}
 	
