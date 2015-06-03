@@ -31,6 +31,8 @@ public class Main {
 	    			solve.getInfluence().add((ExpandInfluence) a.getValue().getBody().getInfluence());
 	    		}
 	    	}
+	    	Thread.sleep(1);
+	    	
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
 			((Window) window).getmainPane().setWater(change);
 		}
