@@ -47,7 +47,7 @@ public class ExpandInfluence extends Influence {
 	public float radius(){
 		float res = 0;
 		if (!pointList.isEmpty()){
-			center.distance(pointList.get(0));
+			res = center.distance(pointList.get(0));
 		}
 		return res;
 	}

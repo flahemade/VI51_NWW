@@ -76,12 +76,14 @@ public class SelectionPanel extends JPanel implements ActionListener{
 			this.pos_x.setVisible(true);
 			this.pos_y.setVisible(true);
 			this.add.setVisible(true);
+			b_source_obstacle = true;
 		}
 		else if(buttonName.equals("obstacle")){
 			System.out.println("obstacle");
 			this.pos_x.setVisible(true);
 			this.pos_y.setVisible(true);
 			this.add.setVisible(true);
+			b_source_obstacle = false;
 		}
 		
 		else if(buttonName.equals("add")){
@@ -93,8 +95,8 @@ public class SelectionPanel extends JPanel implements ActionListener{
 				this.frequence.setVisible(false);
 			}
 			else{
-				Wave w = new Wave(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
-				env.addAgents(w.getBody().getID(),w);
+				//Wave w = new Wave(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
+				//env.addAgents(w.getBody().getID(),w);
 			}
 			
 			this.pos_x.setVisible(false);

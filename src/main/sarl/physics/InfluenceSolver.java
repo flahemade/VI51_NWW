@@ -55,14 +55,13 @@ public class InfluenceSolver {
 			
 //Building a new pixel circle
 			float newRadius = influence.radius()+5;
-			Integer amplitude = 80;
+			Integer amplitude = 1;
 			ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
 			
 //Updating the map
 			for (Point2f circlePoint : pixelCircle) {
 				z.putIfAbsent(circlePoint, amplitude);
-			}
-				
+			}	
 //Looping on the influence list to find intersections
 			for (ExpandInfluence influence2 : influences ) {
 				Circle2f influenceCircle2=new Circle2f(influence.getCenter(),influence.radius());
@@ -87,7 +86,7 @@ public class InfluenceSolver {
 //This influence is treated and can be removed from the list
 			WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence.getEmitter()).getBody();
 			bodyToSet.setPointList(pixelCircle);
-				System.out.println(influence.radius());
+				//System.out.println(influence.radius());
 			}
 			return z;
 		}
