@@ -17,7 +17,6 @@ public class ExpandInfluence extends Influence {
 	/*
 	 * We can retrieve the body of the emmiter by calling getAgentBodyFor(emmiter) on the environment
 	 */
-	private UUID emitter;
 
 
 	private static final long serialVersionUID = 5438430175395138512L;
@@ -25,7 +24,7 @@ public class ExpandInfluence extends Influence {
 	public ExpandInfluence(UUID influencedObject,UUID influenceEmitter, float amp, float speed, Point2f center , ArrayList<Point2f> points) {
 		super(influencedObject);
 		assert(influenceEmitter!=null);
-		this.emitter = influenceEmitter;
+		this.setEmitter(influenceEmitter);
 		
 		this.amplitude = amp;
 		this.speed = speed;
