@@ -50,7 +50,6 @@ public class InfluenceSolver {
 		for (Influence influence : influences) {
 			
 			if(influence instanceof ExpandInfluence){
-				System.out.println("Extand");
 				z = expand((ExpandInfluence) influence, z);
 			}
 			else if(influence instanceof GenerateInfluence){
@@ -75,8 +74,6 @@ public class InfluenceSolver {
 
 		if(c.intersects(m)) {
 			Point2f center = new Point2f(c.getCenter());
-			System.out.println(m);
-			System.out.println(c);
 			if(m.getWidth() >= center.getX() + i.radius() /*&& !AgentBodyEmitter.touchR*/){ //touchR is true if the wave has already touched this side
 				//Right
 				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
@@ -128,7 +125,8 @@ public class InfluenceSolver {
 		
 		
 		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
-	 	
+    	float sumX;
+    	float sumY;
 		float r = radius;
 	    float x = 0;
 	    float y = r;
@@ -136,15 +134,54 @@ public class InfluenceSolver {
 	 
 	    while(y >= x)
 	    {
-	        pixels.add( new Point2f(influence.getCenter().getX() + x, influence.getCenter().getY() + y ));
-	        pixels.add( new Point2f(influence.getCenter().getX() + y, influence.getCenter().getY() + x ));
-	        pixels.add( new Point2f(influence.getCenter().getX() - x, influence.getCenter().getY() + y ));
-	        pixels.add( new Point2f(influence.getCenter().getX() - y, influence.getCenter().getY() + x ));
-	        pixels.add( new Point2f(influence.getCenter().getX() + x, influence.getCenter().getY() - y ));
-	        pixels.add( new Point2f(influence.getCenter().getX() + y, influence.getCenter().getY() - x ));
-	        pixels.add( new Point2f(influence.getCenter().getX() - x, influence.getCenter().getY() - y ));
-	        pixels.add( new Point2f(influence.getCenter().getX() - y, influence.getCenter().getY() - x ));
-	 
+	    	sumX= influence.getCenter().getX() + x;
+	    	sumY= influence.getCenter().getY() + y;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= influence.getCenter().getX() + y;
+	    	sumY= influence.getCenter().getY() + x;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= influence.getCenter().getX() - x;
+	    	sumY= influence.getCenter().getY() + y;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	      //-------------------------------------------------
+	        sumX= influence.getCenter().getX() - y;
+	    	sumY= influence.getCenter().getY() + x ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= influence.getCenter().getX() + x;
+	    	sumY= influence.getCenter().getY() - y ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= influence.getCenter().getX() + y;
+	    	sumY= influence.getCenter().getY() - x ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= influence.getCenter().getX() - x;
+	    	sumY= influence.getCenter().getY() - y ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= influence.getCenter().getX() - y;
+	    	sumY= influence.getCenter().getY() - x ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
 	        if (d >= 2*x)
 	        {
 	            d -= 2*x + 1;
@@ -166,9 +203,7 @@ public class InfluenceSolver {
 	}
 	
 	Map<Point2f,Integer> expand(ExpandInfluence influence1,Map<Point2f,Integer> zToCo){
-		
-		System.out.println("Expand :"+zToCo);
-		
+	
 		Map<Point2f,Integer>z=zToCo;
 		Rectangle2f map = constructMap(environment);
 		//Treating the influence as a Circle

@@ -37,7 +37,6 @@ public class Main {
 	    			
 	    		}
 	    	}
-	    	System.out.println(env.getAgents().size());
 	    	Thread.sleep(1);
 	    	
 	    	Map<Point2f, Integer> change = solve.solveConflicts();

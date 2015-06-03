@@ -54,7 +54,9 @@ public class WorldPanel extends JPanel{
 	
 	public void setWater(Map<Point2f,Integer> change) {
 		for(Point2f p : change.keySet()){
-			water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, 128-change.get(p))).getRGB());
+			int color = 128 - change.get(p);
+			if(color<0)color=0;
+			water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
 		}
 		repaint();
 	}

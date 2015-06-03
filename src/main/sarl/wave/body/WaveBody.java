@@ -18,7 +18,6 @@ public class WaveBody extends AgentBody {
 	public WaveBody(float freq, float ampl,Point2f source){
 		super(freq,ampl,source);
 		this.speed = 1/freq;
-		System.out.println(source);
 		this.pointList.add(source);
 
 	}
