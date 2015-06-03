@@ -47,14 +47,15 @@ public class InfluenceSolver {
 		Map<Point2f,Integer> z = new HashMap<Point2f,Integer>();
 		
 //Updating each agent according to its influence
-		for (Influence influence : influences) {
-			
+		for (int i=0;i<influences.size();i++) {
+			Influence influence=influences.get(i);
 			if(influence instanceof ExpandInfluence){
 				z = expand((ExpandInfluence) influence, z);
 			}
 			else if(influence instanceof GenerateInfluence){
 				z = generate((GenerateInfluence) influence, z);
 			}
+			influences.remove(i);
 		}
 		return z;
 	}
@@ -222,7 +223,8 @@ public class InfluenceSolver {
 			z.put(circlePoint, amplitude);
 		}	
 //Looping on the influence list to find intersections
-		/*for (Influence influence2 : influences ) {
+		/*for (int i=0; i<influences.size();i++) {
+			Influence influence2 = influences.get(i);
 			if(influence2 instanceof ExpandInfluence){
 				Circle2f influenceCircle2=new Circle2f(influence1.getCenter(),influence1.radius());
 				if(influenceCircle1.intersects(influenceCircle2)){
