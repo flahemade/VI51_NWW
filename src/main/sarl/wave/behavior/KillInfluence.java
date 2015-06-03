@@ -16,7 +16,7 @@ public class KillInfluence extends Influence {
 	}
 
 	@Override
-	public Tuple2f<Point2f> getCenter() {
+	public Point2f getCenter() {
 		// TODO Auto-generated method stub
 		return null;
 	}

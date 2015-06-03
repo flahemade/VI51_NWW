@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import physics.InfluenceSolver;
 import wave.agent.Agent;
+import wave.behavior.GenerateInfluence;
 import Environment.Environment;
 import GUI.Window;
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -28,10 +29,15 @@ public class Main {
 			//change.put(tmp, env.getZ().get(tmp)-var);
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
-	    			solve.getInfluence().add(a.getValue().getBody().getInfluence());
-	    			System.out.println("add influence");
+	    			Influence influence = a.getValue().getBody().getInfluence();
+	    			solve.getInfluence().add(influence);
+	    			if(influence instanceof GenerateInfluence){
+	    				env.addAgents(influence);
+	    			}
+	    			
 	    		}
 	    	}
+	    	System.out.println(env.getAgents().size());
 	    	Thread.sleep(1);
 	    	
 	    	Map<Point2f, Integer> change = solve.solveConflicts();

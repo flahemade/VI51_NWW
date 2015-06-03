@@ -20,6 +20,8 @@
  */
 package fr.utbm.info.vi51.framework.environment;
 
+import fr.utbm.info.vi51.framework.math.Point2f;
+
 
 /**
  * Abstract implementation of an influence.
@@ -36,6 +38,12 @@ public class KillInfluence extends Influence {
 	 */
 	public KillInfluence() {
 		super(null);
+	}
+
+	@Override
+	public Point2f getCenter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

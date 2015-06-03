@@ -53,7 +53,6 @@ public class InfluenceSolver {
 				z = expand((ExpandInfluence) influence, z);
 			}
 			else if(influence instanceof GenerateInfluence){
-				System.out.println("generate");
 				z = generate((GenerateInfluence) influence, z);
 			}
 		}
@@ -73,9 +72,10 @@ public class InfluenceSolver {
 		**/
 		WaveBody AgentBodyEmitter = (WaveBody) environment.getAgents().get(i.getEmitter()).getBody();
 
-		
 		if(c.intersects(m)) {
 			Point2f center = new Point2f(c.getCenter());
+			System.out.println(m);
+			System.out.println(c);
 			if(m.getWidth() >= center.getX() + i.radius() /*&& !AgentBodyEmitter.touchR*/){ //touchR is true if the wave has already touched this side
 				//Right
 				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
@@ -100,6 +100,8 @@ public class InfluenceSolver {
 				wallContact(contactPoint,AgentBodyEmitter);
 				//AgentBodyEmitter.setTouchT(true);
 			}
+			
+			
 		}
 	}
 	
@@ -173,7 +175,7 @@ public class InfluenceSolver {
 
 		
 //Building a new pixel circle
-		float newRadius = influence1.radius()+5;
+		float newRadius = influence1.radius()+1;
 		Integer amplitude = 1;
 		ArrayList<Point2f> pixelCircle = constructPixelCircle(influence1,newRadius);
 		
@@ -183,21 +185,22 @@ public class InfluenceSolver {
 		}	
 //Looping on the influence list to find intersections
 		for (Influence influence2 : influences ) {
-			Circle2f influenceCircle2=new Circle2f(influence1.getCenter(),influence1.radius());
-			if(influenceCircle1.intersects(influenceCircle2)){
-				Circle2f first=new Circle2f();
-				Circle2f second = new Circle2f();
-				List<Point2f> intersections = first.point_intersects(second);
-//Adding the waves then at these points
-				if(intersections.size()>1){
-					z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
-					z.put(intersections.get(1), addWaves(influence1,(ExpandInfluence)influence2));
-				}else{
-					z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
+			if(influence2 instanceof ExpandInfluence){
+				Circle2f influenceCircle2=new Circle2f(influence1.getCenter(),influence1.radius());
+				if(influenceCircle1.intersects(influenceCircle2)){
+					Circle2f first=new Circle2f();
+					Circle2f second = new Circle2f();
+					List<Point2f> intersections = first.point_intersects(second);
+	//Adding the waves then at these points
+					if(intersections.size()>1){
+						z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
+						z.put(intersections.get(1), addWaves(influence1,(ExpandInfluence)influence2));
+					}else{
+						z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
+					}
 				}
 			}
 		}
-		
 //Finding collision with map border
 		
 		contactMap(influenceCircle1, map ,influence1);
@@ -215,7 +218,6 @@ public class InfluenceSolver {
 		float newRadius = 1;
 		Integer amplitude = 1;
 		ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
-		System.out.println(pixelCircle);
 //Updating the map
 		for (Point2f circlePoint : pixelCircle) {
 			z.put(circlePoint, amplitude);

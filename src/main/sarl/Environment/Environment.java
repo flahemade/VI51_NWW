@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import wave.agent.Agent;
+import wave.agent.Wave;
+import wave.behavior.GenerateInfluence;
 import fr.utbm.info.vi51.framework.environment.AbstractEnvironment;
 import fr.utbm.info.vi51.framework.environment.AgentBody;
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -105,5 +107,10 @@ public class Environment extends AbstractEnvironment{
 	}
 	public void addAgents(UUID id,Agent agent){
 		agents.put(id, agent);
+	}
+	
+	public void addAgents(Influence influence){
+		Wave w = new Wave(((GenerateInfluence)influence));
+		agents.put(w.getBody().getID(), w);
 	}
 }

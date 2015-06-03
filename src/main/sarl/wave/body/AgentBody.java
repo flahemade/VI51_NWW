@@ -25,10 +25,11 @@ public abstract class AgentBody {
 		this.position = pos;
 	}
 	
-	public AgentBody(GenerateInfluence influence){
-		this.frequency = influence.getFrequency();
-		this.amplitude = influence.getAmplitude();
-		this.position = influence.getCenter();
+	public AgentBody(Influence influence){
+		
+		this.frequency = ((GenerateInfluence) influence).getFrequency();
+		this.amplitude = ((GenerateInfluence)influence).getAmplitude();
+		this.position = ((GenerateInfluence)influence).getCenter();
 	}
 
 	public UUID getID(){
