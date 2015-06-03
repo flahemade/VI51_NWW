@@ -25,7 +25,7 @@ public class Environment extends AbstractEnvironment{
 	private Map<UUID,Agent> agents;
 	
 	public Environment(){
-		super(500, 500, new StepTimeManager(1/10));
+		super(500, 500, new StepTimeManager(100));
 		this.z = new HashMap<Point2f,Integer>(500*500);
 		agents = new HashMap<UUID,Agent>();
 		Point2f pos = new Point2f(0,0);

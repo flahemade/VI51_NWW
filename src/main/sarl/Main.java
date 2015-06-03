@@ -25,7 +25,9 @@ public class Main {
 	    InfluenceSolver solve = new InfluenceSolver(inf, env);
 	    Map<UUID,Agent> next_agents = new HashMap<UUID, Agent>();
 	    Wave new_agent;
+	    long start,end;
 	    for(int k=0;k<1000000000;++k){
+	    	start = System.currentTimeMillis();
 	    	next_agents.clear();
 			//int i = (int) (Math.random()*500);
 			//int j = (int) (Math.random()*500);
@@ -33,31 +35,34 @@ public class Main {
 			//int var = (int) (Math.random()*200-100);
 			//Map<Point2f,Integer> change = new HashMap<Point2f,Integer>();
 			//change.put(tmp, env.getZ().get(tmp)-var);
-	    	long start = System.currentTimeMillis();
+	    	solve.getInfluence().clear();
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			Influence influence = a.getValue().getBody().getInfluence();
 	    			influence.setEmitter(a.getKey());
 	    			solve.getInfluence().add(influence);
 	    			if(influence instanceof GenerateInfluence){
-	    				SourceBody s=(SourceBody) env.getAgents().get(influence.getEmitter()).getBody();	
-		    			new_agent = new Wave(influence);
-		    			next_agents.put(new_agent.getBody().getID(),new_agent);
+	    				SourceBody s=(SourceBody) env.getAgents().get(influence.getEmitter()).getBody();
+	    				float nbpersec_wave = 1 / s.getFrequency();
+	    				float nb_iter = 1000 * nbpersec_wave / env.getTimeManager().getLastStepDuration();
+	    				if(k % nb_iter <= 1){
+			    			new_agent = new Wave(influence);
+			    			next_agents.put(new_agent.getBody().getID(),new_agent);
+	    				}
+	    				
 	    			}
 	    		}
 	    			
 	    	}
 	    	env.getAgents().putAll(next_agents);
-	    	long create_agent = System.currentTimeMillis()-start;
-	    	System.out.println("create:" + create_agent);
-	    	Thread.sleep(1);
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
-	    	long end = System.currentTimeMillis() - start;
-	    	System.out.println("solve conflict:" + end);
 			((Window) window).getmainPane().setWater(change);
-			long draw = System.currentTimeMillis() - end - start;
-	    	System.out.println("draw:" + draw);
 	    	System.out.println("Current number of agents :"+env.getAgents().size());
+	    	end = System.currentTimeMillis() - start;
+	    	if(env.getTimeManager().getLastStepDuration() - end>0){
+	    		Thread.sleep((long) (env.getTimeManager().getLastStepDuration() - end));
+	    	}
+	    	
 		}
 	    window.dispose();
 	  }      

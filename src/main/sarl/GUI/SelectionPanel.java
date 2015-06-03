@@ -29,7 +29,7 @@ public class SelectionPanel extends JPanel implements ActionListener{
 	
 	public SelectionPanel(Environment env){
 	    addSelectionButton();
-	    frequence = addSlider(frequence,SwingConstants.VERTICAL,0, 500, 100);
+	    frequence = addSlider(frequence,SwingConstants.VERTICAL,0, 100, 10);
 	    force = addSlider(force,SwingConstants.VERTICAL,0,1500,100);
 	    this.env = env;
 	    addPositionTextField();
@@ -89,7 +89,7 @@ public class SelectionPanel extends JPanel implements ActionListener{
 		else if(buttonName.equals("add")){
 			System.out.println("add");
 			if(b_source_obstacle==true){
-				Source s = new Source(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
+				Source s = new Source(this.frequence.getValue()/10,this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
 				env.addAgents(s.getBody().getID(),s);
 				this.force.setVisible(false);
 				this.frequence.setVisible(false);

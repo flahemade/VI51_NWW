@@ -36,7 +36,7 @@ public class StepTimeManager extends AbstractTimeManager {
 	 * @param stepDuration the duration of one simulation step (in ms)
 	 */
 	public StepTimeManager(float stepDuration) {
-		this.step = stepDuration / 1000f;
+		this.step = stepDuration;
 	}
 
 	@Override
