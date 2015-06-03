@@ -26,15 +26,12 @@ public class Main {
 			//int var = (int) (Math.random()*200-100);
 			//Map<Point2f,Integer> change = new HashMap<Point2f,Integer>();
 			//change.put(tmp, env.getZ().get(tmp)-var);
-	    	System.out.println(env.getAgents().size());
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			solve.getInfluence().add((ExpandInfluence) a.getValue().getBody().getInfluence());
 	    		}
 	    	}
-	    	System.out.println(solve.getInfluence().size());
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
-	    	System.out.println(change.size());
 			((Window) window).getmainPane().setWater(change);
 		}
 	    window.dispose();

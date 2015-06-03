@@ -87,7 +87,8 @@ public class InfluenceSolver {
 				
 //This influence is treated and can be removed from the list
 				
-				//influences.remove(influence);
+				ExpandInfluence infToModif = (ExpandInfluence) environment.getAgents().get(influence.getEmitter()).getBody().getInfluence();
+				infToModif.setPointList(pixelCircle);
 			}
 			return z;
 		}
@@ -104,6 +105,7 @@ public class InfluenceSolver {
 		 * 
 		**/
 		WaveBody AgentBodyEmitter = (WaveBody) environment.getAgents().get(i.getEmitter()).getBody();
+
 		
 		if(c.intersects(m)) {
 			Point2f center = new Point2f(c.getCenter());
