@@ -11,6 +11,7 @@ import physics.InfluenceSolver;
 import wave.agent.Agent;
 import wave.agent.Wave;
 import wave.behavior.GenerateInfluence;
+import wave.body.SourceBody;
 import Environment.Environment;
 import GUI.Window;
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -36,13 +37,15 @@ public class Main {
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			Influence influence = a.getValue().getBody().getInfluence();
+	    			influence.setEmitter(a.getKey());
 	    			solve.getInfluence().add(influence);
 	    			if(influence instanceof GenerateInfluence){
-	    				new_agent = new Wave(influence);
-	    				next_agents.put(new_agent.getBody().getID(),new_agent);
+	    				SourceBody s=(SourceBody) env.getAgents().get(influence.getEmitter()).getBody();	
+		    			new_agent = new Wave(influence);
+		    			next_agents.put(new_agent.getBody().getID(),new_agent);
 	    			}
-	    			
 	    		}
+	    			
 	    	}
 	    	env.getAgents().putAll(next_agents);
 	    	long create_agent = System.currentTimeMillis()-start;
@@ -54,6 +57,7 @@ public class Main {
 			((Window) window).getmainPane().setWater(change);
 			long draw = System.currentTimeMillis() - start;
 	    	System.out.println("draw:" + draw);
+	    	System.out.println("Current number of agents :"+env.getAgents().size());
 		}
 	    window.dispose();
 	  }      

@@ -1,6 +1,5 @@
 package wave.body;
 
-import wave.behavior.GenerateInfluence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class SourceBody extends AgentBody {

@@ -122,7 +122,8 @@ public class InfluenceSolver {
 		 *  From the center and the radius.
 		 * 
 		 **/
-		
+
+    	
 		
 		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
     	float sumX;
@@ -203,6 +204,7 @@ public class InfluenceSolver {
 	}
 	
 	Map<Point2f,Integer> expand(ExpandInfluence influence1,Map<Point2f,Integer> zToCo){
+
 	
 		Map<Point2f,Integer>z=zToCo;
 		Rectangle2f map = constructMap(environment);
@@ -220,7 +222,7 @@ public class InfluenceSolver {
 			z.put(circlePoint, amplitude);
 		}	
 //Looping on the influence list to find intersections
-		for (Influence influence2 : influences ) {
+		/*for (Influence influence2 : influences ) {
 			if(influence2 instanceof ExpandInfluence){
 				Circle2f influenceCircle2=new Circle2f(influence1.getCenter(),influence1.radius());
 				if(influenceCircle1.intersects(influenceCircle2)){
@@ -231,12 +233,14 @@ public class InfluenceSolver {
 					if(intersections.size()>1){
 						z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
 						z.put(intersections.get(1), addWaves(influence1,(ExpandInfluence)influence2));
+						System.out.println("Intersections ?");
 					}else{
 						z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
 					}
 				}
 			}
-		}
+		}*/
+
 //Finding collision with map border
 		
 		contactMap(influenceCircle1, map ,influence1);
@@ -245,11 +249,13 @@ public class InfluenceSolver {
 		WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence1.getEmitter()).getBody();
 		bodyToSet.setPointList(pixelCircle);
 			//System.out.println(influence.radius());
+
+
 		return z;
 	}
 	
 	public Map<Point2f, Integer> generate(GenerateInfluence influence, Map<Point2f, Integer> z){
-		Wave w = new Wave(influence);
+		new Wave(influence);
 		//Building a new pixel circle
 		float newRadius = 1;
 		Integer amplitude = 1;
