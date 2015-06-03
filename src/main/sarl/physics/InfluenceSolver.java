@@ -50,6 +50,7 @@ public class InfluenceSolver {
 		for (Influence influence : influences) {
 			
 			if(influence instanceof ExpandInfluence){
+				System.out.println("Extand");
 				z = expand((ExpandInfluence) influence, z);
 			}
 			else if(influence instanceof GenerateInfluence){
