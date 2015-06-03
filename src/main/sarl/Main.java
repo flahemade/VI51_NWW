@@ -19,7 +19,7 @@ public class Main {
 	    JFrame window = new Window(env);
 	    List<ExpandInfluence> inf = new ArrayList<ExpandInfluence>();
 	    InfluenceSolver solve = new InfluenceSolver(inf, env);
-	    for(int k=0;k<10000000;++k){
+	    for(int k=0;k<1000000000;++k){
 			//int i = (int) (Math.random()*500);
 			//int j = (int) (Math.random()*500);
 			//Point2f tmp = new Point2f(i,j);
@@ -32,7 +32,6 @@ public class Main {
 	    		}
 	    	}
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
-	    	System.out.println(change.toString());
 			((Window) window).getmainPane().setWater(change);
 		}
 	    window.dispose();

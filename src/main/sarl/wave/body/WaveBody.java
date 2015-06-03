@@ -28,6 +28,10 @@ public class WaveBody extends AgentBody {
 	public List<Point2f> getPointList(){
 		return this.pointList;
 	}
+	
+	public void setPointList(List<Point2f> l){
+		this.pointList = l;
+	}
 
 	public float getSpeed(){
 		return this.speed;

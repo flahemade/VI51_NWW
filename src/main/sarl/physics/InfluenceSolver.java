@@ -55,7 +55,6 @@ public class InfluenceSolver {
 			
 //Building a new pixel circle
 			float newRadius = influence.radius()+5;
-			
 			Integer amplitude = 80;
 			ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
 			
@@ -86,9 +85,8 @@ public class InfluenceSolver {
 			contactMap(influenceCircle1, map,influence);
 				
 //This influence is treated and can be removed from the list
-				
-				ExpandInfluence infToModif = (ExpandInfluence) environment.getAgents().get(influence.getEmitter()).getBody().getInfluence();
-				infToModif.setPointList(pixelCircle);
+				WaveBody agentToMod = (WaveBody) environment.getAgents().get(influence.getEmitter()).getBody();
+				agentToMod.setPointList(pixelCircle);
 			}
 			return z;
 		}
