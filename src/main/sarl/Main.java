@@ -8,16 +8,16 @@ import javax.swing.JFrame;
 
 import physics.InfluenceSolver;
 import wave.agent.Agent;
-import wave.behavior.ExpandInfluence;
 import Environment.Environment;
 import GUI.Window;
+import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Main {
 	  public static void main(String[] args) throws InterruptedException{
 		Environment env = new Environment();
 	    JFrame window = new Window(env);
-	    List<ExpandInfluence> inf = new ArrayList<ExpandInfluence>();
+	    List<Influence> inf = new ArrayList<Influence>();
 	    InfluenceSolver solve = new InfluenceSolver(inf, env);
 	    for(int k=0;k<1000000000;++k){
 			//int i = (int) (Math.random()*500);
@@ -28,7 +28,7 @@ public class Main {
 			//change.put(tmp, env.getZ().get(tmp)-var);
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
-	    			solve.getInfluence().add((ExpandInfluence) a.getValue().getBody().getInfluence());
+	    			solve.getInfluence().add(a.getValue().getBody().getInfluence());
 	    		}
 	    	}
 	    	Thread.sleep(1);
