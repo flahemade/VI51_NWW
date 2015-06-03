@@ -1,10 +1,10 @@
 package GUI;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -53,11 +53,24 @@ public class WorldPanel extends JPanel{
 	}
 	
 	public void setWater(Map<Point2f,Integer> change) {
+		long start = System.currentTimeMillis();
+		long tmp = start;
+		int[] pixels = ((DataBufferInt)water.getRaster().getDataBuffer()).getData();
+		int colors[] = new int[3];
 		for(Point2f p : change.keySet()){
-			int color = 128 - change.get(p);
-			if(color<0)color=0;
-			water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
+			int i = (int) p.getX() + (int) p.getY() * width;
+			//water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
+			colors[0] = ((pixels[i] >> 16) & 0xff); // red;
+			colors[1] = ((pixels[i] >>  8) & 0xff); // green;
+			colors[2] = ( pixels[i] - change.get(p)       & 0xff); // blue;);
+			if(colors[2]<0)colors[2]=0;
+			pixels[i] = (colors[0]<<16 | colors[1]<<8 | colors[2]);
+			tmp = System.currentTimeMillis() - start;
+			System.out.println("Time loop " + tmp);
 		}
+		water.setRGB(0, 0, width, height, pixels, 0, width);
+		long end = System.currentTimeMillis() - start;
+		System.out.println("End loop" + end);
 		repaint();
 	}
 }

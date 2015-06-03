@@ -25,6 +25,7 @@ public class Main {
 	    Map<UUID,Agent> next_agents = new HashMap<UUID, Agent>();
 	    Wave new_agent;
 	    for(int k=0;k<1000000000;++k){
+	    	next_agents.clear();
 			//int i = (int) (Math.random()*500);
 			//int j = (int) (Math.random()*500);
 			//Point2f tmp = new Point2f(i,j);
