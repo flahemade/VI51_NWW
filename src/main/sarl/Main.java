@@ -31,6 +31,7 @@ public class Main {
 			//int var = (int) (Math.random()*200-100);
 			//Map<Point2f,Integer> change = new HashMap<Point2f,Integer>();
 			//change.put(tmp, env.getZ().get(tmp)-var);
+	    	long start = System.currentTimeMillis();
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			Influence influence = a.getValue().getBody().getInfluence();
@@ -43,11 +44,15 @@ public class Main {
 	    		}
 	    	}
 	    	env.getAgents().putAll(next_agents);
-	    	System.out.println(env.getAgents().size());
+	    	long create_agent = System.currentTimeMillis()-start;
+	    	System.out.println("create:" + create_agent);
 	    	Thread.sleep(1);
-	    	
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
+	    	long end = System.currentTimeMillis() - start;
+	    	System.out.println("solve conflict:" + end);
 			((Window) window).getmainPane().setWater(change);
+			long draw = System.currentTimeMillis() - start;
+	    	System.out.println("draw:" + draw);
 		}
 	    window.dispose();
 	  }      
