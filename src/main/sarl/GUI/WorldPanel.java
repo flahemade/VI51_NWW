@@ -66,8 +66,11 @@ public class WorldPanel extends JPanel{
 		int colors[] = new int[3];
 		for(Point2f p : change.keySet()){
 			int i = (int) p.getX() + (int) p.getY() * width;
-			//water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
-			colors[0] = ((pixels[i] >> 16) & 0xff); // red;
+			int color=128-change.get(p);
+			if(color<0)color=0;
+			water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
+			
+			/*colors[0] = ((pixels[i] >> 16) & 0xff); // red;
 			colors[1] = ((pixels[i] >>  8) & 0xff); // green;
 			colors[2] = ( pixels[i] - change.get(p)       & 0xff); // blue;);
 			if(colors[2]<0){
@@ -92,7 +95,8 @@ public class WorldPanel extends JPanel{
 				WritableRaster raster =
 				Raster.createPackedRaster(buffer, width, height, width, cm.getMasks(), null);
 				water = new BufferedImage(cm, raster,
-				cm.isAlphaPremultiplied(), null);
+				cm.isAlphaPremultiplied(), null);*/
+		}
 		repaint();
 	}
 }
