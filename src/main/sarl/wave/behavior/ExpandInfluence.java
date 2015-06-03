@@ -13,10 +13,6 @@ public class ExpandInfluence extends Influence {
 	
 	Point2f center;
 	ArrayList<Point2f> pointList;
-	
-	/*
-	 * We can retrieve the body of the emmiter by calling getAgentBodyFor(emmiter) on the environment
-	 */
 
 
 	private static final long serialVersionUID = 5438430175395138512L;
