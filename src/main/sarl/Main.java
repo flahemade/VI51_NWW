@@ -55,7 +55,7 @@ public class Main {
 	    	long end = System.currentTimeMillis() - start;
 	    	System.out.println("solve conflict:" + end);
 			((Window) window).getmainPane().setWater(change);
-			long draw = System.currentTimeMillis() - start;
+			long draw = System.currentTimeMillis() - end - start;
 	    	System.out.println("draw:" + draw);
 	    	System.out.println("Current number of agents :"+env.getAgents().size());
 		}
