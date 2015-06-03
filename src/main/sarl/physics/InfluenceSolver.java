@@ -9,6 +9,7 @@ import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
 import wave.body.WaveBody;
 import Environment.Environment;
+import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Circle2f;
 import fr.utbm.info.vi51.framework.math.Point2f;
 import fr.utbm.info.vi51.framework.math.Rectangle2f;
@@ -17,17 +18,17 @@ public class InfluenceSolver {
 	
 	//Arguments
 	
-	List<ExpandInfluence> influences;
+	List<Influence> influences;
 	Environment environment;
 	
 	//Constructors
 	
 	public InfluenceSolver(){
-		this.influences = new ArrayList<ExpandInfluence>();
+		this.influences = new ArrayList<Influence>();
 		this.environment = null;
 	}
 	
-	public InfluenceSolver( List<ExpandInfluence> i , Environment e){
+	public InfluenceSolver( List<Influence> i , Environment e){
 		this.influences=i;
 		this.environment=e;
 	}
@@ -43,53 +44,18 @@ public class InfluenceSolver {
 		 * 
 		**/
 		Map<Point2f,Integer> z = new HashMap<Point2f,Integer>();
-		Rectangle2f map = constructMap(environment);
 		
 //Updating each agent according to its influence
 		
-		for (ExpandInfluence influence : influences) {
+		for (Influence influence : influences) {
 			
-//Treating the influence as a Circle
-			Circle2f influenceCircle1=new Circle2f(influence.getCenter(),influence.radius());
-
-			
-//Building a new pixel circle
-			float newRadius = influence.radius()+5;
-			Integer amplitude = 1;
-			ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
-			
-//Updating the map
-			for (Point2f circlePoint : pixelCircle) {
-				z.putIfAbsent(circlePoint, amplitude);
-			}	
-//Looping on the influence list to find intersections
-			for (ExpandInfluence influence2 : influences ) {
-				Circle2f influenceCircle2=new Circle2f(influence.getCenter(),influence.radius());
-				if(influenceCircle1.intersects(influenceCircle2)){
-					Circle2f first=new Circle2f();
-					Circle2f second = new Circle2f();
-					List<Point2f> intersections = first.point_intersects(second);
-//Adding the waves then at these points
-					if(intersections.size()>1){
-						z.putIfAbsent(intersections.get(0), addWaves(influence,influence2));
-						z.putIfAbsent(intersections.get(1), addWaves(influence,influence2));
-					}else{
-						z.putIfAbsent(intersections.get(0), addWaves(influence,influence2));
-					}
-				}
+			if(influence instanceof ExpandInfluence){
+				z = expand((ExpandInfluence) influence, z);
 			}
-			
-//Finding collision with map border
-			
-			contactMap(influenceCircle1, map,influence);
-				
-//This influence is treated and can be removed from the list
-			WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence.getEmitter()).getBody();
-			bodyToSet.setPointList(pixelCircle);
-				//System.out.println(influence.radius());
-			}
-			return z;
 		}
+		
+		return z;
+	}
 	
 	void wallContact(Point2f contactPoint, WaveBody a){
 		new Wave(a.getAmplitude(),a.getSpeed(),contactPoint);
@@ -193,11 +159,58 @@ public class InfluenceSolver {
 	    return pixels;
 	}
 	
-	public List<ExpandInfluence> getInfluence(){
+	Map<Point2f,Integer> expand(ExpandInfluence influence1,Map<Point2f,Integer> zToCo){
+		
+		System.out.println("Expand :"+zToCo);
+		
+		Map<Point2f,Integer>z=zToCo;
+		Rectangle2f map = constructMap(environment);
+		//Treating the influence as a Circle
+		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),influence1.radius());
+
+		
+//Building a new pixel circle
+		float newRadius = influence1.radius()+5;
+		Integer amplitude = 1;
+		ArrayList<Point2f> pixelCircle = constructPixelCircle(influence1,newRadius);
+		
+//Updating the map
+		for (Point2f circlePoint : pixelCircle) {
+			z.putIfAbsent(circlePoint, amplitude);
+		}	
+//Looping on the influence list to find intersections
+		for (Influence influence2 : influences ) {
+			Circle2f influenceCircle2=new Circle2f(influence1.getCenter(),influence1.radius());
+			if(influenceCircle1.intersects(influenceCircle2)){
+				Circle2f first=new Circle2f();
+				Circle2f second = new Circle2f();
+				List<Point2f> intersections = first.point_intersects(second);
+//Adding the waves then at these points
+				if(intersections.size()>1){
+					z.putIfAbsent(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
+					z.putIfAbsent(intersections.get(1), addWaves(influence1,(ExpandInfluence)influence2));
+				}else{
+					z.putIfAbsent(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
+				}
+			}
+		}
+		
+//Finding collision with map border
+		
+		contactMap(influenceCircle1, map ,influence1);
+			
+//This influence is treated and can be removed from the list
+		WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence1.getEmitter()).getBody();
+		bodyToSet.setPointList(pixelCircle);
+			//System.out.println(influence.radius());
+		return z;
+	}
+	
+	public List<Influence> getInfluence(){
 		return this.influences;
 	}
 	
-	public void setInfluence(List<ExpandInfluence> l){
+	public void setInfluence(List<Influence> l){
 		this.influences=l;
 		return;
 	}
