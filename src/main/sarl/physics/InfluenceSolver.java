@@ -216,12 +216,18 @@ public class InfluenceSolver {
 //Building a new pixel circle
 		float newRadius = influence1.radius()+1;
 		Integer amplitude = 1;
+		
 		ArrayList<Point2f> pixelCircle = constructPixelCircle(influence1,newRadius);
 		
 //Updating the map
+		for(Point2f point : influence1.getPointList()){
+			z.putIfAbsent(point,-50);
+		}
+		
 		for (Point2f circlePoint : pixelCircle) {
-			z.put(circlePoint, amplitude);
+			z.put(circlePoint, 0);
 		}	
+		
 //Looping on the influence list to find intersections
 		/*for (int i=0; i<influences.size();i++) {
 			Influence influence2 = influences.get(i);
