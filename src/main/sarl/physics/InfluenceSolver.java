@@ -20,8 +20,8 @@ public class InfluenceSolver {
 	
 	//Arguments
 	
-	List<Influence> influences;
-	Environment environment;
+	private List<Influence> influences;
+	private Environment environment;
 	
 	//Constructors
 	
@@ -63,7 +63,7 @@ public class InfluenceSolver {
 		return z;
 	}
 	
-	void wallContact(Point2f contactPoint, WaveBody a, boolean[] wall_Contact){
+	private void wallContact(Point2f contactPoint, WaveBody a, boolean[] wall_Contact){
 		Wave w = new Wave(a.getFrequency(),(float) Math.floor(a.getAmplitude()-a.getRadius()/3),contactPoint,wall_Contact);
 		environment.addAgents(w.getBody().getID(), w);
 	}
@@ -125,7 +125,6 @@ public class InfluenceSolver {
 		//Treating the influence as a Circle
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence1.getEmitter()).getBody();
 
-		
 //Building a new pixel circle
 		float newRadius = ((WaveBody) emitter).getRadius()+1;
 		//if the newRadius is superior to amplitude we don't create new circle
@@ -142,7 +141,8 @@ public class InfluenceSolver {
 //Updating the map
 		for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
 			int amplitude = (int) (emitter.getAmplitude() - circle.getKey().getRadius()/3);
-			int dephasing = (int) (emitter.getCenter().getX() - circle.getKey().getRadius());
+			/*int dephasing = (int) (2*Math.PI*(emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency());*/
+			int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
 			if(emitter.getRadius() + emitter.getKillLittleCircle() - circle.getKey().getRadius() >= emitter.getAmplitude()){
 				remove_circle.add(circle.getKey());
 				influence1.getPixels_influenced().removeAll(circle.getKey().constructPixelCircle());
@@ -154,7 +154,14 @@ public class InfluenceSolver {
 			else{
 				List<Point2f> point_list = circle.getValue();
 				for(Point2f point : point_list){
-					z.put(point, (int) (amplitude*(Math.sin(dephasing)+1)/2));
+					if(z.containsKey(point)){
+						z.put(point, z.get(point) + (int) (amplitude*(Math.sin(dephasing)+1)/2));
+					}
+					else{
+						System.out.println((int) (amplitude*(Math.sin(dephasing)+1)/2));
+						z.put(point, (int) (amplitude*(Math.sin(dephasing)+1)/2));
+					}
+					
 				}
 			}	
 		}

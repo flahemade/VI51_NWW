@@ -29,12 +29,12 @@ public class Environment extends AbstractEnvironment{
 		this.z = new HashMap<Point2f,Integer>(500*500);
 		agents = new HashMap<UUID,Agent>();
 		Point2f pos = new Point2f(0,0);
-		for (int i = 0; i < 500; ++i){
+		/*for (int i = 0; i < 500; ++i){
 			for(int j = 0; j < 500; ++j){
 				pos = new Point2f(i, j);
 				this.z.putIfAbsent(pos, 0);
 			}
-		}
+		}*/
 	}
 	
 	public Environment(int x, int y, float time_step){
