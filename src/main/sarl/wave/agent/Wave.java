@@ -1,12 +1,7 @@
 package wave.agent;
 
-import java.util.ArrayList;
-
-import wave.behavior.ExpandInfluence;
-import wave.behavior.GenerateInfluence;
 import wave.behavior.KillInfluence;
 import wave.body.AgentBody;
-import wave.body.SourceBody;
 import wave.body.WaveBody;
 import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
@@ -14,9 +9,9 @@ import fr.utbm.info.vi51.framework.math.Point2f;
 public class Wave extends Agent{
 	
 	
-	public Wave(float freq, float ampl,Point2f source){
+	public Wave(float freq, float ampl,Point2f source, boolean[] touch_wall){
 		
-		this.body = new WaveBody(freq, ampl, source);
+		this.body = new WaveBody(freq, ampl, source,touch_wall);
 	}
 	
 	
@@ -28,16 +23,14 @@ public class Wave extends Agent{
 	 * output is true if a decision was taken.
 	 */
 	public boolean decide(float currenTime){
-		
-		if(((WaveBody) body).getAmplitude() <= 0 || ((WaveBody)body).getPointList().isEmpty()){
+		if(((WaveBody)body).getCircleList().isEmpty()){
 			//The wave has no amplitude or no points: it asks to be killed
 			body.setInfluence(new KillInfluence(null, body.getID()));
 			return true;
 		}
 		else{
 			//The wave expands
-			body.setInfluence(new ExpandInfluence(null, body.getID(), body.getAmplitude(), ((WaveBody) body).getSpeed(), ((WaveBody)body).getCenter(), 
-					(ArrayList<Point2f>) ((WaveBody)body).getPointList()));
+			//body.setInfluence(new ExpandInfluence(null, body.getID(), body.getAmplitude(), ((WaveBody) body).getSpeed(), ((WaveBody)body).getCenter()));
 			return true;
 		}
 	}

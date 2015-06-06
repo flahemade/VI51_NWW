@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
@@ -55,13 +56,16 @@ public class InfluenceSolver {
 			else if(influence instanceof GenerateInfluence){
 				z = generate((GenerateInfluence) influence, z);
 			}
-			influences.remove(i);
+			else if(influence instanceof wave.behavior.KillInfluence){
+				environment.getAgents().remove(influence.getEmitter());
+			}
 		}
 		return z;
 	}
 	
-	void wallContact(Point2f contactPoint, WaveBody a){
-		new Wave(a.getAmplitude(),a.getSpeed(),contactPoint);
+	void wallContact(Point2f contactPoint, WaveBody a, boolean[] wall_Contact){
+		Wave w = new Wave(a.getFrequency(),(float) Math.floor(a.getAmplitude()-a.getRadius()/3),contactPoint,wall_Contact);
+		environment.addAgents(w.getBody().getID(), w);
 	}
 	
 	private void contactMap(Circle2f c, Rectangle2f m, ExpandInfluence i){
@@ -74,33 +78,32 @@ public class InfluenceSolver {
 		WaveBody AgentBodyEmitter = (WaveBody) environment.getAgents().get(i.getEmitter()).getBody();
 
 		if(c.intersects(m)) {
-			Point2f center = new Point2f(c.getCenter());
-			if(m.getWidth() >= center.getX() + i.radius() /*&& !AgentBodyEmitter.touchR*/){ //touchR is true if the wave has already touched this side
+			
+			Point2f center = c.getCenter();
+			if(m.getUpper().getX() <= center.getX() + AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[0]){ //touchR is true if the wave has already touched this side
 				//Right
-				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
-				wallContact(contactPoint,AgentBodyEmitter);
-				//AgentBodyEmitter.setTouchR(true);
+				Point2f contactPoint = new Point2f(m.getUpper().getX(),center.getY());
+				AgentBodyEmitter.getTouchWall()[0] = true;
+				wallContact(contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
 			}
-			if(m.getWidth() <= center.getX() - i.radius() /*&& !AgentBodyEmitter.touchL*/){ //So on with the other sides
+			if(m.getLower().getX() >= center.getX() - AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[1]){ //So on with the other sides
 				//Left
-				Point2f contactPoint = new Point2f(center.getX() + i.radius(),center.getY());
-				wallContact(contactPoint,AgentBodyEmitter);
-				//AgentBodyEmitter.setTouchL(true);
+				Point2f contactPoint = new Point2f(m.getLower().getX(),center.getY());
+				AgentBodyEmitter.getTouchWall()[1] = true;
+				wallContact(contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
 			}
-			if(m.getHeight() >= center.getY() + i.radius() /*&& !AgentBodyEmitter.touchB*/){ //So on with the other sides
+			if(m.getUpper().getY() <= center.getY() + AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[2]){ //So on with the other sides
 				//Bottom
-				Point2f contactPoint = new Point2f(center.getX(),center.getY() + i.radius());
-				wallContact(contactPoint,AgentBodyEmitter);
-				//AgentBodyEmitter.setTouchB(true);
+				Point2f contactPoint = new Point2f(center.getX(),m.getUpper().getY());
+				AgentBodyEmitter.getTouchWall()[2] = true;
+				wallContact(contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
 			}
-			if(m.getHeight() <= center.getY() - i.radius() /*&& !AgentBodyEmitter.touchT*/){ //So on with the other sides
+			if(m.getLower().getY() >= center.getY() - AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[3]){ //So on with the other sides
 				//Top
-				Point2f contactPoint = new Point2f(center.getX(),center.getY() - i.radius());
-				wallContact(contactPoint,AgentBodyEmitter);
-				//AgentBodyEmitter.setTouchT(true);
+				Point2f contactPoint = new Point2f(center.getX(),m.getLower().getY());
+				AgentBodyEmitter.getTouchWall()[3] = true;
+				wallContact(contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
 			}
-			
-			
 		}
 	}
 	
@@ -115,119 +118,49 @@ public class InfluenceSolver {
 		return map;
 	}
 	
-	private ArrayList<Point2f> constructPixelCircle(Influence influence, float radius){
-		
-		/**
-		 * 
-		 *  This function build a circle composed of pixels.
-		 *  From the center and the radius.
-		 * 
-		 **/
-
-    	
-		
-		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
-    	float sumX;
-    	float sumY;
-		float r = radius;
-	    float x = 0;
-	    float y = r;
-	    float d = r - 1;
-	 
-	    while(y >= x)
-	    {
-	    	sumX= influence.getCenter().getX() + x;
-	    	sumY= influence.getCenter().getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	    	//-------------------------------------------------
-	        sumX= influence.getCenter().getX() + y;
-	    	sumY= influence.getCenter().getY() + x;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	    	//-------------------------------------------------
-	        sumX= influence.getCenter().getX() - x;
-	    	sumY= influence.getCenter().getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	      //-------------------------------------------------
-	        sumX= influence.getCenter().getX() - y;
-	    	sumY= influence.getCenter().getY() + x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	    	//-------------------------------------------------
-	        sumX= influence.getCenter().getX() + x;
-	    	sumY= influence.getCenter().getY() - y ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	    	//-------------------------------------------------
-	        sumX= influence.getCenter().getX() + y;
-	    	sumY= influence.getCenter().getY() - x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	    	//-------------------------------------------------
-	        sumX= influence.getCenter().getX() - x;
-	    	sumY= influence.getCenter().getY() - y ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	    	//-------------------------------------------------
-	        sumX= influence.getCenter().getX() - y;
-	    	sumY= influence.getCenter().getY() - x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-		        pixels.add( new Point2f(sumX,sumY));
-	    	}
-	    	//-------------------------------------------------
-	        if (d >= 2*x)
-	        {
-	            d -= 2*x + 1;
-	            x ++;
-	        }
-	        else if (d < 2 * (r-y))
-	        {
-	            d += 2*y - 1;
-	            y --;
-	        }
-	        else
-	        {
-	            d += 2*(y - x - 1);
-	            y --;
-	            x ++;
-	        }
-	    }
-	    return pixels;
-	}
-	
-	Map<Point2f,Integer> expand(ExpandInfluence influence1,Map<Point2f,Integer> zToCo){
-
+	public Map<Point2f,Integer> expand(ExpandInfluence influence1,Map<Point2f,Integer> zToCo){
 	
 		Map<Point2f,Integer>z=zToCo;
 		Rectangle2f map = constructMap(environment);
 		//Treating the influence as a Circle
-		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),influence1.radius());
+		WaveBody emitter = (WaveBody) environment.getAgents().get(influence1.getEmitter()).getBody();
 
 		
 //Building a new pixel circle
-		float newRadius = influence1.radius()+1;
-		Integer amplitude = 1;
-		
-		ArrayList<Point2f> pixelCircle = constructPixelCircle(influence1,newRadius);
-		
-//Updating the map
-		for(Point2f point : influence1.getPointList()){
-			z.putIfAbsent(point,-50);
+		float newRadius = ((WaveBody) emitter).getRadius()+1;
+		//if the newRadius is superior to amplitude we don't create new circle
+		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),emitter.getRadius());
+		if(newRadius<=emitter.getAmplitude()){
+			emitter.setRadius(newRadius);
+			influenceCircle1.setRadius(emitter.getRadius());
+			ArrayList<Point2f> pixelCircle = influenceCircle1.constructPixelCircle();
+			emitter.getCircleList().put(influenceCircle1, pixelCircle);
+			emitter.incrementKillLittleCircle();
+			influence1.getPixels_influenced().addAll(pixelCircle);
 		}
-		
-		for (Point2f circlePoint : pixelCircle) {
-			z.put(circlePoint, 0);
-		}	
-		
+		List<Circle2f> remove_circle = new ArrayList<Circle2f>();
+//Updating the map
+		for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
+			int amplitude = (int) (emitter.getAmplitude() - circle.getKey().getRadius()/3);
+			int dephasing = (int) (emitter.getCenter().getX() - circle.getKey().getRadius());
+			if(emitter.getRadius() + emitter.getKillLittleCircle() - circle.getKey().getRadius() >= emitter.getAmplitude()){
+				remove_circle.add(circle.getKey());
+				influence1.getPixels_influenced().removeAll(circle.getKey().constructPixelCircle());
+				List<Point2f> point_list = circle.getValue();
+				for(Point2f point : point_list){
+					z.put(point, 0);
+				}
+			}
+			else{
+				List<Point2f> point_list = circle.getValue();
+				for(Point2f point : point_list){
+					z.put(point, (int) (amplitude*(Math.sin(dephasing)+1)/2));
+				}
+			}	
+		}
+		for(Circle2f circle : remove_circle){
+			emitter.getCircleList().remove(circle);
+		}
 //Looping on the influence list to find intersections
 		/*for (int i=0; i<influences.size();i++) {
 			Influence influence2 = influences.get(i);
@@ -254,8 +187,8 @@ public class InfluenceSolver {
 		contactMap(influenceCircle1, map ,influence1);
 			
 //This influence is treated and can be removed from the list
-		WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence1.getEmitter()).getBody();
-		bodyToSet.setPointList(pixelCircle);
+		//WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence1.getEmitter()).getBody();
+		//bodyToSet.setCircleList(pixelCircle);
 			//System.out.println(influence.radius());
 
 
@@ -266,14 +199,14 @@ public class InfluenceSolver {
 		new Wave(influence);
 		//Building a new pixel circle
 		float newRadius = 1;
-		Integer amplitude = 1;
-		ArrayList<Point2f> pixelCircle = constructPixelCircle(influence,newRadius);
+		Integer amplitude = (int) influence.getAmplitude();
+		Circle2f newCircle = new Circle2f(influence.getCenter(),newRadius);
+		ArrayList<Point2f> pixelCircle = newCircle.constructPixelCircle();
 //Updating the map
 		for (Point2f circlePoint : pixelCircle) {
 			z.put(circlePoint, amplitude);
 		}
 		return z;
-		
 	}
 	
 	public List<Influence> getInfluence(){

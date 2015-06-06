@@ -22,7 +22,7 @@ public class Source extends Agent {
 	@Override
 	public boolean decide(float currentTime) {
 		if(active = true && ((currentTime-lastWaveTime) > 1/this.body.getFrequency())){
-			this.lastWaveTime = currentTime;
+			this.lastWaveTime = 1000000000;
 			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition()));
 			return true;
 		}

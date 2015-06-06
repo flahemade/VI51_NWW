@@ -23,5 +23,4 @@ public class RestInfluence extends Influence {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

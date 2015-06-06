@@ -98,6 +98,10 @@ public class Circle2f extends Shape2f<Circle2f> {
 		return this.radius;
 	}
 	
+	public void setRadius(float new_radius) {
+		this.radius = new_radius;
+	}
+	
 	@Override
 	public String toString() {
 		return "[" + this.center.toString() + "-" + this.radius + "]";
@@ -186,6 +190,95 @@ public class Circle2f extends Shape2f<Circle2f> {
 	@Override
 	public float getMaxDemiSize() {
 		return this.radius;
+	}
+	
+public ArrayList<Point2f> constructPixelCircle(){
+		
+		/**
+		 * 
+		 *  This function build a circle composed of pixels.
+		 *  From the center and the radius.
+		 * 
+		 **/
+
+    	
+		
+		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
+    	float sumX;
+    	float sumY;
+		float r = radius;
+	    float x = 0;
+	    float y = r;
+	    float d = r - 1;
+	 
+	    while(y >= x)
+	    {
+	    	sumX= center.getX() + x;
+	    	sumY= center.getY() + y;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() + y;
+	    	sumY= center.getY() + x;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() - x;
+	    	sumY= center.getY() + y;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	      //-------------------------------------------------
+	        sumX= center.getX() - y;
+	    	sumY= center.getY() + x ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() + x;
+	    	sumY= center.getY() - y ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() + y;
+	    	sumY= center.getY() - x ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() - x;
+	    	sumY= center.getY() - y ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() - y;
+	    	sumY= center.getY() - x ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        pixels.add( new Point2f(sumX,sumY));
+	    	}
+	    	//-------------------------------------------------
+	        if (d >= 2*x)
+	        {
+	            d -= 2*x + 1;
+	            x ++;
+	        }
+	        else if (d < 2 * (r-y))
+	        {
+	            d += 2*y - 1;
+	            y --;
+	        }
+	        else
+	        {
+	            d += 2*(y - x - 1);
+	            y --;
+	            x ++;
+	        }
+	    }
+	    return pixels;
 	}
 	
 }

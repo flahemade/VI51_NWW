@@ -1,6 +1,7 @@
 package wave.behavior;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -8,16 +9,15 @@ import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class ExpandInfluence extends Influence {
 
-	float amplitude;
-	float speed; //expressed in pixels/seconds
+	private float amplitude;
+	private float speed; //expressed in pixels/seconds
 	
-	Point2f center;
-	ArrayList<Point2f> pointList;
-
+	private Point2f center;
+	private Set<Point2f> pixels_influenced;
 
 	private static final long serialVersionUID = 5438430175395138512L;
 
-	public ExpandInfluence(UUID influencedObject,UUID influenceEmitter, float amp, float speed, Point2f center , ArrayList<Point2f> points) {
+	public ExpandInfluence(UUID influencedObject,UUID influenceEmitter, float amp, float speed, Point2f center,Set<Point2f> pixelCircle) {
 		super(influencedObject);
 		assert(influenceEmitter!=null);
 		this.setEmitter(influenceEmitter);
@@ -25,10 +25,10 @@ public class ExpandInfluence extends Influence {
 		this.amplitude = amp;
 		this.speed = speed;
 		this.center = center;
-		this.pointList = points;
+		this.setPixels_influenced(pixelCircle);
 		
 	}
-	
+
 	public float getAmplitude(){
 		return amplitude;
 	}
@@ -44,29 +44,22 @@ public class ExpandInfluence extends Influence {
 	/*
 	 * return the radius of the circle 
 	 */
-	public float radius(){
-		float res = 0;
-		if (!pointList.isEmpty()){
-			res = center.distance(pointList.get(0));
-		}
-		return res;
-	}
 	
 	public UUID getEmitter(){
 		return this.emitter;
-	}
-	
-	public ArrayList<Point2f> getPointList(){
-		return pointList;
-	} 
-
-	public void setPointList(ArrayList<Point2f> l){
-		this.pointList= l;
 	}
 
 	@Override
 	public UUID getInfluencedObject() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Set<Point2f> getPixels_influenced() {
+		return pixels_influenced;
+	}
+
+	public void setPixels_influenced(Set<Point2f> pixels_influenced) {
+		this.pixels_influenced = pixels_influenced;
 	}
 }

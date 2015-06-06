@@ -29,8 +29,8 @@ public class SelectionPanel extends JPanel implements ActionListener{
 	
 	public SelectionPanel(Environment env){
 	    addSelectionButton();
-	    frequence = addSlider(frequence,SwingConstants.VERTICAL,0, 100, 10);
-	    force = addSlider(force,SwingConstants.VERTICAL,0,1500,100);
+	    frequence = addSlider(frequence,SwingConstants.VERTICAL,1, 100, 10);
+	    force = addSlider(force,SwingConstants.VERTICAL,1,1500,50);
 	    this.env = env;
 	    addPositionTextField();
 		this.setVisible(true);
