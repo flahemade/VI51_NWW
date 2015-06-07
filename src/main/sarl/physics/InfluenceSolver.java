@@ -107,10 +107,6 @@ public class InfluenceSolver {
 		}
 	}
 	
-	private Integer addWaves(ExpandInfluence a, ExpandInfluence b){
-		return (int) ((int) a.getAmplitude()+b.getAmplitude());
-	}
-	
 	private Rectangle2f constructMap(Environment e){
 		Point2f topLeft = new Point2f(0,0);
 		Point2f botRight = new Point2f(e.getHeight(),e.getWidth());
@@ -129,10 +125,7 @@ public class InfluenceSolver {
 		float newRadius = ((WaveBody) emitter).getRadius()+1;
 		//if the newRadius is superior to amplitude we don't create new circle
 		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),emitter.getRadius());
-		System.out.println("Newrad" + newRadius);
-		System.out.println(3*emitter.getAmplitude());
 		if(newRadius<=3*emitter.getAmplitude()){
-			System.out.println("ok");
 			emitter.setRadius(newRadius);
 			influenceCircle1.setRadius(emitter.getRadius());
 			ArrayList<Point2f> pixelCircle = influenceCircle1.constructPixelCircle();
@@ -144,8 +137,6 @@ public class InfluenceSolver {
 //Updating the map
 		for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
 			int amplitude = (int) (emitter.getAmplitude() - circle.getKey().getRadius()/3);
-			System.out.println("Amplitude " + amplitude);
-			/*int dephasing = (int) (2*Math.PI*(emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency());*/
 			int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
 			if(emitter.getRadius() + emitter.getKillLittleCircle() - circle.getKey().getRadius() >= 3*emitter.getAmplitude()){
 				remove_circle.add(circle.getKey());
@@ -162,7 +153,7 @@ public class InfluenceSolver {
 						z.put(point, z.get(point) + (int) (amplitude*(Math.sin(dephasing)+1)/2));
 					}
 					else{
-						z.put(point, (int) (amplitude*(Math.sin(dephasing)+1)/2));
+						z.put(point, (int) (amplitude*(Math.sin(dephasing))));
 					}
 					
 				}
@@ -171,35 +162,10 @@ public class InfluenceSolver {
 		for(Circle2f circle : remove_circle){
 			emitter.getCircleList().remove(circle);
 		}
-//Looping on the influence list to find intersections
-		/*for (int i=0; i<influences.size();i++) {
-			Influence influence2 = influences.get(i);
-			if(influence2 instanceof ExpandInfluence){
-				Circle2f influenceCircle2=new Circle2f(influence1.getCenter(),influence1.radius());
-				if(influenceCircle1.intersects(influenceCircle2)){
-					Circle2f first=new Circle2f();
-					Circle2f second = new Circle2f();
-					List<Point2f> intersections = first.point_intersects(second);
-	//Adding the waves then at these points
-					if(intersections.size()>1){
-						z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
-						z.put(intersections.get(1), addWaves(influence1,(ExpandInfluence)influence2));
-						System.out.println("Intersections ?");
-					}else{
-						z.put(intersections.get(0), addWaves(influence1,(ExpandInfluence)influence2));
-					}
-				}
-			}
-		}*/
 
 //Finding collision with map border
 		
 		contactMap(influenceCircle1, map ,influence1);
-			
-//This influence is treated and can be removed from the list
-		//WaveBody bodyToSet= (WaveBody)environment.getAgents().get(influence1.getEmitter()).getBody();
-		//bodyToSet.setCircleList(pixelCircle);
-			//System.out.println(influence.radius());
 
 
 		return z;
