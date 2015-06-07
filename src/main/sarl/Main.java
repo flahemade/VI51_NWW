@@ -33,7 +33,6 @@ public class Main {
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			Influence influence = a.getValue().getBody().getInfluence();
-	    			System.out.println(influence);
 	    			influence.setEmitter(a.getKey());
 	    			solve.getInfluence().add(influence);
 	    			if(influence instanceof GenerateInfluence){

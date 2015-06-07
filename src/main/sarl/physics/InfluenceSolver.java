@@ -129,7 +129,10 @@ public class InfluenceSolver {
 		float newRadius = ((WaveBody) emitter).getRadius()+1;
 		//if the newRadius is superior to amplitude we don't create new circle
 		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),emitter.getRadius());
-		if(newRadius<=emitter.getAmplitude()){
+		System.out.println("Newrad" + newRadius);
+		System.out.println(3*emitter.getAmplitude());
+		if(newRadius<=3*emitter.getAmplitude()){
+			System.out.println("ok");
 			emitter.setRadius(newRadius);
 			influenceCircle1.setRadius(emitter.getRadius());
 			ArrayList<Point2f> pixelCircle = influenceCircle1.constructPixelCircle();
@@ -141,9 +144,10 @@ public class InfluenceSolver {
 //Updating the map
 		for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
 			int amplitude = (int) (emitter.getAmplitude() - circle.getKey().getRadius()/3);
+			System.out.println("Amplitude " + amplitude);
 			/*int dephasing = (int) (2*Math.PI*(emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency());*/
 			int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
-			if(emitter.getRadius() + emitter.getKillLittleCircle() - circle.getKey().getRadius() >= emitter.getAmplitude()){
+			if(emitter.getRadius() + emitter.getKillLittleCircle() - circle.getKey().getRadius() >= 3*emitter.getAmplitude()){
 				remove_circle.add(circle.getKey());
 				influence1.getPixels_influenced().removeAll(circle.getKey().constructPixelCircle());
 				List<Point2f> point_list = circle.getValue();
@@ -158,7 +162,6 @@ public class InfluenceSolver {
 						z.put(point, z.get(point) + (int) (amplitude*(Math.sin(dephasing)+1)/2));
 					}
 					else{
-						System.out.println((int) (amplitude*(Math.sin(dephasing)+1)/2));
 						z.put(point, (int) (amplitude*(Math.sin(dephasing)+1)/2));
 					}
 					

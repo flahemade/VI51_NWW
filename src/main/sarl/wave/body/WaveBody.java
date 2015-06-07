@@ -39,7 +39,7 @@ public class WaveBody extends AgentBody {
 
 	public WaveBody(Influence influence){
 		super(influence);
-		this.speed = 1/((GenerateInfluence) influence).getFrequency();
+		this.speed = (float) Math.sqrt(1/((GenerateInfluence) influence).getFrequency());
 		Circle2f new_circle = new Circle2f(influence.getCenter(),radius);
 		List<Point2f> pixelCircle = new_circle.constructPixelCircle();
 		this.circleList.put(new_circle,pixelCircle);
@@ -53,7 +53,7 @@ public class WaveBody extends AgentBody {
 	
 	public WaveBody(float freq, float ampl,Point2f source, boolean[] touch_Wall){
 		super(freq,ampl,source);
-		this.speed = 1/freq;
+		this.speed = (float) Math.sqrt(1/freq);
 		Circle2f new_circle = new Circle2f(source, 1);
 		List<Point2f> pixelCircle = new_circle.constructPixelCircle();
 		this.circleList.put(new_circle,pixelCircle);
