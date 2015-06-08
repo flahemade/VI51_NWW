@@ -10,6 +10,7 @@ import java.util.UUID;
 import wave.agent.Agent;
 import wave.agent.Wave;
 import wave.behavior.GenerateInfluence;
+import wave.body.Wall;
 import fr.utbm.info.vi51.framework.environment.AbstractEnvironment;
 import fr.utbm.info.vi51.framework.environment.AgentBody;
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -23,11 +24,13 @@ import fr.utbm.info.vi51.framework.time.TimeManager;
 public class Environment extends AbstractEnvironment{
 	private Map<Point2f, Integer> z;
 	private Map<UUID,Agent> agents;
+	private List<Wall> obstacle;
 	
 	public Environment(){
 		super(500, 500, new StepTimeManager(100));
 		this.z = new HashMap<Point2f,Integer>(500*500);
-		agents = new HashMap<UUID,Agent>();
+		this.agents = new HashMap<UUID,Agent>();
+		this.setObstacle(new ArrayList<Wall>());
 		Point2f pos = new Point2f(0,0);
 		for (int i = 0; i < 500; ++i){
 			for(int j = 0; j < 500; ++j){
@@ -42,7 +45,8 @@ public class Environment extends AbstractEnvironment{
 		
 		Point2f pos = new Point2f(0,0);
 		this.z = new HashMap<Point2f,Integer>((int) (x*y));
-		agents = new HashMap<UUID,Agent>();
+		this.agents = new HashMap<UUID,Agent>();
+		this.setObstacle(new ArrayList<Wall>());
 		
 		for (int i = 0; i < x; ++i){
 			for(int j = 0; j < y; ++j){
@@ -55,6 +59,8 @@ public class Environment extends AbstractEnvironment{
 	public Environment(int x, int y, float time_step, HashMap<Point2f, Integer> height){
 		super(x,y,new StepTimeManager(time_step));
 		this.setZ(height);
+		this.agents = new HashMap<UUID,Agent>();
+		this.setObstacle(new ArrayList<Wall>());
 	}
 	
 	public Map<Point2f, Integer> getZ() {
@@ -112,5 +118,13 @@ public class Environment extends AbstractEnvironment{
 	public void addAgents(Influence influence){
 		Wave w = new Wave(((GenerateInfluence)influence));
 		agents.put(w.getBody().getID(), w);
+	}
+
+	public List<Wall> getObstacle() {
+		return obstacle;
+	}
+
+	public void setObstacle(List<Wall> obstacle) {
+		this.obstacle = obstacle;
 	}
 }

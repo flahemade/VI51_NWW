@@ -17,7 +17,7 @@ public class Source extends Agent {
 	int nbWave;
 	
 	public Source(float freq, float amp, Point2f pos){
-		this.body = new SourceBody(freq/10,amp,pos);
+		this.body = new SourceBody(freq/30,amp,pos);
 		this.active = true;
 		this.nbWave = 0;
 	}
@@ -25,7 +25,7 @@ public class Source extends Agent {
 	@Override
 	public boolean decide(float currentTime) {
 		if(active = true && ((currentTime-lastWaveTime) > 1/this.body.getFrequency()) && nbWave<10){
-			this.lastWaveTime = currentTime;
+			this.lastWaveTime = 10000000;
 			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition()));
 			nbWave++;
 			return true;

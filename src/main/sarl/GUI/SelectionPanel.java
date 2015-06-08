@@ -3,7 +3,6 @@ package GUI;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -12,7 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import wave.agent.Source;
-import wave.agent.Wave;
+import wave.body.Wall;
 import Environment.Environment;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
@@ -95,6 +94,11 @@ public class SelectionPanel extends JPanel implements ActionListener{
 				this.frequence.setVisible(false);
 			}
 			else{
+				Wall w = new Wall(new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())),5,5);
+				env.getObstacle().add(w);
+				this.pos_x.setVisible(false);
+				this.pos_y.setVisible(false);
+				this.add.setVisible(false);
 				//Wave w = new Wave(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
 				//env.addAgents(w.getBody().getID(),w);
 			}

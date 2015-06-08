@@ -12,6 +12,7 @@ import wave.agent.Agent;
 import wave.agent.Wave;
 import wave.behavior.GenerateInfluence;
 import wave.body.SourceBody;
+import wave.body.Wall;
 import Environment.Environment;
 import GUI.Window;
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -30,6 +31,20 @@ public class Main {
 	    	start = System.currentTimeMillis();
 	    	next_agents.clear();
 	    	solve.getInfluence().clear();
+	    	if(!env.getObstacle().isEmpty()){
+	    		Wall w = env.getObstacle().get(env.getObstacle().size()-1);
+		    	if(!w.is_Draw()){
+		    		int i = 0;
+		    		while(!w.is_Draw() && env.getObstacle().size()>i){
+		    			w = env.getObstacle().get(env.getObstacle().size()-1-i);
+		    			++i;
+		    			
+		    			((Window) window).getmainPane().draw_Obstacle(w);
+		    			
+		    		}
+		    	}
+	    	}
+	    	
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k)){
 	    			Influence influence = a.getValue().getBody().getInfluence();
@@ -45,7 +60,7 @@ public class Main {
 	    	env.getAgents().putAll(next_agents);
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
 			((Window) window).getmainPane().setWater(change);
-	    	System.out.println("Current number of agents :"+env.getAgents().size());
+	    	//System.out.println("Current number of agents :"+env.getAgents().size());
 	    	end = System.currentTimeMillis() - start;
 	    	env.getTimeManager().increment();
 	    	if(env.getTimeManager().getLastStepDuration() - end>0){

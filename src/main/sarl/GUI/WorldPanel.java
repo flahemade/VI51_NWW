@@ -3,21 +3,12 @@ package GUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBufferInt;
-import java.awt.image.DirectColorModel;
-import java.awt.image.MemoryImageSource;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
 import java.util.Map;
 
 import javax.swing.JPanel;
 
-import org.w3c.dom.css.RGBColor;
-
+import wave.body.Wall;
 import Environment.Environment;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
@@ -69,7 +60,9 @@ public class WorldPanel extends JPanel{
 			int i = (int) p.getX() + (int) p.getY() * width;
 			int color=128-change.get(p);
 			if(color<0)color=0;
-			water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
+			if(water.getRGB((int)(p.getX()), (int)(p.getY())) != new Color(255,0,0).getRGB()){
+				water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
+			}
 			/*colors[0] = ((pixels[i] >> 16) & 0xff); // red;
 			colors[1] = ((pixels[i] >>  8) & 0xff); // green;
 			colors[2] = ( pixels[i] - change.get(p)       & 0xff); // blue;);
@@ -97,6 +90,18 @@ public class WorldPanel extends JPanel{
 				water = new BufferedImage(cm, raster,
 				cm.isAlphaPremultiplied(), null);*/
 		}
+		repaint();
+	}
+	
+	public void draw_Obstacle(Wall w){
+		int x = (int) w.getPosition().getX();
+		int y = (int) w.getPosition().getY();
+		for(int i=0;i<w.getBody().getWidth();++i){
+			for(int j=0;j<w.getBody().getHeight();++j){
+				water.setRGB(x+i, y+j, (new Color(255, 0, 0)).getRGB());
+			}
+		}
+		w.setIs_Draw(true);
 		repaint();
 	}
 }
