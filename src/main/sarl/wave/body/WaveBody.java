@@ -20,7 +20,7 @@ public class WaveBody extends AgentBody {
 	
 	private int killLittleCircle;
 	
-	private List<List<Point2f>> forbidden_points;
+	private List<Point2f> forbidden_points;
 	private Map<Circle2f,List<Point2f>> circleList = new HashMap<Circle2f,List<Point2f>>();
 	private boolean[] touch_Wall = new boolean[4];
 	
@@ -37,7 +37,7 @@ public class WaveBody extends AgentBody {
 		touch_Wall[1] = false;
 		touch_Wall[2] = false;
 		touch_Wall[3] = false;
-		this.forbidden_points = new ArrayList<List<Point2f>>();
+		this.forbidden_points = new ArrayList<Point2f>();
 	}
 
 	public WaveBody(Influence influence){
@@ -52,7 +52,7 @@ public class WaveBody extends AgentBody {
 		touch_Wall[1] = false;
 		touch_Wall[2] = false;
 		touch_Wall[3] = false;
-		this.forbidden_points = new ArrayList<List<Point2f>>();
+		this.forbidden_points = new ArrayList<Point2f>();
 	}
 	
 	public WaveBody(float freq, float ampl,Point2f source, boolean[] touch_Wall){
@@ -64,7 +64,7 @@ public class WaveBody extends AgentBody {
 		this.killLittleCircle = 0;
 		this.setInfluence(new ExpandInfluence(null, this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
 		this.touch_Wall = touch_Wall;
-		this.forbidden_points = new ArrayList<List<Point2f>>();
+		this.forbidden_points = new ArrayList<Point2f>();
 	}
 	
 	public Point2f getCenter(){
@@ -103,11 +103,11 @@ public class WaveBody extends AgentBody {
 		return this.touch_Wall;
 	}
 
-	public List<List<Point2f>> getForbidden_points() {
+	public List<Point2f> getForbidden_points() {
 		return forbidden_points;
 	}
 
-	public void setForbidden_points(List<List<Point2f>> forbidden_points) {
+	public void setForbidden_points(List<Point2f> forbidden_points) {
 		this.forbidden_points = forbidden_points;
 	}
 	

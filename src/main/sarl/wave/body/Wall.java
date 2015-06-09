@@ -16,6 +16,14 @@ public class Wall {
 	private Map<Point2f,List<UUID>> border;
 	private List<Circle2f> shadow_zone;
 	
+	public List<Circle2f> getShadow_zone() {
+		return shadow_zone;
+	}
+
+	public void setShadow_zone(List<Circle2f> shadow_zone) {
+		this.shadow_zone = shadow_zone;
+	}
+
 	public Wall(int x, int y, int width, int height){
 		setPosition(new Point2f(x,y));
 		this.setBody(new Rectangle2f(this.position,new Point2f(x+width,y+height)));

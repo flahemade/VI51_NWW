@@ -14,6 +14,9 @@ import wave.behavior.GenerateInfluence;
 import wave.body.Wall;
 import wave.body.WaveBody;
 import Environment.Environment;
+
+import com.google.common.collect.Sets;
+
 import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Circle2f;
 import fr.utbm.info.vi51.framework.math.Point2f;
@@ -125,12 +128,13 @@ public class InfluenceSolver {
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence1.getEmitter()).getBody();
 //Building a new pixel circle
 		float newRadius = ((WaveBody) emitter).getRadius()+1;
+		List<Point2f> pixelCircle = new ArrayList<Point2f>();
 		//if the newRadius is superior to amplitude we don't create new circle
 		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),emitter.getRadius());
 		if(newRadius<=3*emitter.getAmplitude()){
 			emitter.setRadius(newRadius);
 			influenceCircle1.setRadius(emitter.getRadius());
-			ArrayList<Point2f> pixelCircle = influenceCircle1.constructPixelCircle();
+			pixelCircle = influenceCircle1.constructPixelCircle();
 			emitter.getCircleList().put(influenceCircle1, pixelCircle);
 			emitter.incrementKillLittleCircle();
 			influence1.getPixels_influenced().addAll(pixelCircle);
@@ -167,7 +171,7 @@ public class InfluenceSolver {
 //Finding collision with map border and obstacle
 		
 		contactMap(influenceCircle1, map ,influence1);
-		contactObstacle(influenceCircle1,influence1);
+		contactObstacle(pixelCircle,influence1);
 
 		return z;
 	}
@@ -198,11 +202,41 @@ public class InfluenceSolver {
 	private void contactObstacle(List<Point2f> pixelCircle, ExpandInfluence influence){
 		for(Wall w : environment.getObstacle()){
 			Wave emitter = (Wave) environment.getAgents().get(influence.getEmitter());
-			Circle2f circle = new Circle2f(emitter.getBody().getPosition(),((WaveBody) emitter.getBody()).getRadius());
-			if(circle.intersects(w.getBody())){
-				Set<Point2f> circlePixel = new HashSet<Point2f>(circle.constructPixelCircle());
+			Rectangle2f wall_body = w.getBody();
+				Set<Point2f> setPixelCircle = new HashSet<Point2f>(pixelCircle);
 				Set<Point2f> rectangle = w.getBorder().keySet();
-			}
+				Set<Point2f> intersects = Sets.intersection(setPixelCircle, rectangle);
+				int side = 0;
+				for(Point2f p : intersects){
+					w.getBorder().get(p).add(emitter.getBody().getID());
+					if(p.getY() == w.getPosition().getY()){
+						side=0;
+					
+					}
+					else if(p.getY() == w.getPosition().getY()+wall_body.getHeight()){
+						side = 1;
+					}
+					Circle2f c = w.getShadow_zone().get(side);
+					int j = (int) c.getRadius();
+					for(int i=1;i<j;++i){
+						c.setRadius(i);
+						((WaveBody)emitter.getBody()).getForbidden_points().addAll(c.constructHalfCircle(side));
+					}
+					if(p.getX() == w.getPosition().getX()){
+						side=2;
+					
+					}
+					else if(p.getX() == w.getPosition().getX()+wall_body.getWidth()){
+						side = 3;
+					}
+					c = w.getShadow_zone().get(side);
+					j = (int) c.getRadius();
+					for(int i=1;i<j;++i){
+						c.setRadius(i);
+						((WaveBody)emitter.getBody()).getForbidden_points().addAll(c.constructHalfCircle(side));
+					}
+					
+				}
 		}
 	}
 }

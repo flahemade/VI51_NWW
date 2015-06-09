@@ -195,21 +195,108 @@ public class Circle2f extends Shape2f<Circle2f> {
 	public float getMaxDemiSize() {
 		return this.radius;
 	}
-	
-public ArrayList<Point2f> constructPixelCircle(){
-		
-		/**
-		 * 
-		 *  This function build a circle composed of pixels.
-		 *  From the center and the radius.
-		 * 
-		 **/
 
-    	
+	public ArrayList<Point2f> constructHalfCircle(int i){
+			
+			/**
+			 * 
+			 *  This function build a half circle composed of pixels.
+			 *  if i = 0 it's UP
+			 *  i = 1 it's DOWN
+			 *  i = 2 it's LEFT
+			 *  i = 3 it's RIGHT
+			 *  From the center and the radius.
+			 * 
+			 **/
+		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
+	    if(i==0){
+	    	pixels=(ArrayList<Point2f>) constructUpHalfCircle();
+	    }
+	    else if(i==1){
+	    	pixels=(ArrayList<Point2f>) constructDownHalfCircle();
+	    }
+	    else if(i==2){
+	    	pixels=(ArrayList<Point2f>) constructLeftHalfCircle();
+	    }
+	    else if(i==3){
+	    	pixels=(ArrayList<Point2f>) constructRightHalfCircle();
+	    }
+	    return pixels;
+		}
+
+	public List<Point2f> constructUpHalfCircle(){
+		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
+			Point2f actual_point;
+			
+	    	float sumX;
+	    	float sumY;
+			float r = radius;
+		    float x = 0;
+		    float y = r;
+		    float d = r - 1;
+		    while(y >= x)
+		    {
+		        sumX= center.getX() + x;
+		    	sumY= center.getY() - y ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() + y;
+		    	sumY= center.getY() - x ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() - x;
+		    	sumY= center.getY() - y ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() - y;
+		    	sumY= center.getY() - x ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        if (d >= 2*x)
+		        {
+		            d -= 2*x + 1;
+		            x ++;
+		        }
+		        else if (d < 2 * (r-y))
+		        {
+		            d += 2*y - 1;
+		            y --;
+		        }
+		        else
+		        {
+		            d += 2*(y - x - 1);
+		            y --;
+		            x ++;
+		        }
+		    }
+		    return pixels;
+	   }
+
+	public List<Point2f> constructDownHalfCircle(){
 		Point2f actual_point;
 		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
-    	float sumX;
-    	float sumY;
+		float sumX;
+		float sumY;
 		float r = radius;
 	    float x = 0;
 	    float y = r;
@@ -252,9 +339,49 @@ public ArrayList<Point2f> constructPixelCircle(){
 	        		pixels.add(actual_point);	
 	        	}
 	    	}
-	    	//-------------------------------------------------
-	        sumX= center.getX() + x;
-	    	sumY= center.getY() - y ;
+	        if (d >= 2*x)
+	        {
+	            d -= 2*x + 1;
+	            x ++;
+	        }
+	        else if (d < 2 * (r-y))
+	        {
+	            d += 2*y - 1;
+	            y --;
+	        }
+	        else
+	        {
+	            d += 2*(y - x - 1);
+	            y --;
+	            x ++;
+	        }
+	    }
+	    return pixels;
+	}
+	
+	public List<Point2f> constructLeftHalfCircle(){
+		Point2f actual_point;
+		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
+		float sumX;
+		float sumY;
+		float r = radius;
+	    float x = 0;
+	    float y = r;
+	    float d = r - 1;
+	 
+	    while(y >= x)
+	    {
+	        sumX= center.getX() - x;
+	    	sumY= center.getY() + y;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        	actual_point = new Point2f(sumX,sumY);
+	        	if(!pixels.contains(actual_point)){
+	        		pixels.add(actual_point);	
+	        	}
+	    	}
+	      //-------------------------------------------------
+	        sumX= center.getX() - y;
+	    	sumY= center.getY() + x ;
 	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
@@ -262,15 +389,7 @@ public ArrayList<Point2f> constructPixelCircle(){
 	        	}
 	    	}
 	    	//-------------------------------------------------
-	        sumX= center.getX() + y;
-	    	sumY= center.getY() - x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
-	        	actual_point = new Point2f(sumX,sumY);
-	        	if(!pixels.contains(actual_point)){
-	        		pixels.add(actual_point);	
-	        	}
-	    	}
-	    	//-------------------------------------------------
+	        
 	        sumX= center.getX() - x;
 	    	sumY= center.getY() - y ;
 	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
@@ -307,6 +426,187 @@ public ArrayList<Point2f> constructPixelCircle(){
 	        }
 	    }
 	    return pixels;
+	}
+		
+	public List<Point2f> constructRightHalfCircle(){
+		Point2f actual_point;
+		ArrayList<Point2f> pixels = new ArrayList<Point2f>();
+		float sumX;
+		float sumY;
+		float r = radius;
+	    float x = 0;
+	    float y = r;
+	    float d = r - 1;
+	 
+	    while(y >= x)
+	    {
+	    	sumX= center.getX() + x;
+	    	sumY= center.getY() + y;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        	actual_point = new Point2f(sumX,sumY);
+	        	if(!pixels.contains(actual_point)){
+	        		pixels.add(actual_point);	
+	        	}
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() + y;
+	    	sumY= center.getY() + x;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        	actual_point = new Point2f(sumX,sumY);
+	        	if(!pixels.contains(actual_point)){
+	        		pixels.add(actual_point);	
+	        	}
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() + x;
+	    	sumY= center.getY() - y ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        	actual_point = new Point2f(sumX,sumY);
+	        	if(!pixels.contains(actual_point)){
+	        		pixels.add(actual_point);	
+	        	}
+	    	}
+	    	//-------------------------------------------------
+	        sumX= center.getX() + y;
+	    	sumY= center.getY() - x ;
+	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        	actual_point = new Point2f(sumX,sumY);
+	        	if(!pixels.contains(actual_point)){
+	        		pixels.add(actual_point);	
+	        	}
+	    	}
+	    	//-------------------------------------------------
+	       
+	        if (d >= 2*x)
+	        {
+	            d -= 2*x + 1;
+	            x ++;
+	        }
+	        else if (d < 2 * (r-y))
+	        {
+	            d += 2*y - 1;
+	            y --;
+	        }
+	        else
+	        {
+	            d += 2*(y - x - 1);
+	            y --;
+	            x ++;
+	        }
+	    }
+	    return pixels;
+	}
+	public ArrayList<Point2f> constructPixelCircle(){
+			
+			/**
+			 * 
+			 *  This function build a circle composed of pixels.
+			 *  From the center and the radius.
+			 * 
+			 **/
+	
+	    	
+			Point2f actual_point;
+			ArrayList<Point2f> pixels = new ArrayList<Point2f>();
+	    	float sumX;
+	    	float sumY;
+			float r = radius;
+		    float x = 0;
+		    float y = r;
+		    float d = r - 1;
+		 
+		    while(y >= x)
+		    {
+		    	sumX= center.getX() + x;
+		    	sumY= center.getY() + y;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() + y;
+		    	sumY= center.getY() + x;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() - x;
+		    	sumY= center.getY() + y;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		      //-------------------------------------------------
+		        sumX= center.getX() - y;
+		    	sumY= center.getY() + x ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() + x;
+		    	sumY= center.getY() - y ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() + y;
+		    	sumY= center.getY() - x ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() - x;
+		    	sumY= center.getY() - y ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        sumX= center.getX() - y;
+		    	sumY= center.getY() - x ;
+		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        	actual_point = new Point2f(sumX,sumY);
+		        	if(!pixels.contains(actual_point)){
+		        		pixels.add(actual_point);	
+		        	}
+		    	}
+		    	//-------------------------------------------------
+		        if (d >= 2*x)
+		        {
+		            d -= 2*x + 1;
+		            x ++;
+		        }
+		        else if (d < 2 * (r-y))
+		        {
+		            d += 2*y - 1;
+		            y --;
+		        }
+		        else
+		        {
+		            d += 2*(y - x - 1);
+		            y --;
+		            x ++;
+		        }
+		    }
+		    return pixels;
 	}
 
 	public ArrayList<Point2f> constructTruncatePixelCircle(List<Point2f> forbidden_point){
