@@ -8,32 +8,40 @@ import wave.body.SourceBody;
 
 public class Source extends Agent {
 
-	SourceBody body;
+	private SourceBody body;
 	
-	boolean active;
+	private boolean active;
 	
-	float lastWaveTime;
+	private float lastHitTime;
 	
-	int nbWave;
+	private int nbHit;
 	
 	public Source(float freq, float amp, Point2f pos){
 		this.body = new SourceBody(freq/30,amp,pos);
 		this.active = true;
-		this.nbWave = 0;
+		this.nbHit = 0;
 	}
 	
 	@Override
 	public boolean decide(float currentTime) {
-		if(active = true && ((currentTime-lastWaveTime) > 1/this.body.getFrequency()) && nbWave<10){
-			this.lastWaveTime = 10000000;
+		if(nbHit == 0){
 			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition()));
-			nbWave++;
+			nbHit++;
 			return true;
 		}
 		else{
-			body.setInfluence(new RestInfluence(null));
+			if(this.active == true && ((currentTime-lastHitTime) > 1/this.body.getFrequency()) && nbHit<100){
+				this.lastHitTime = currentTime;
+				nbHit++;
+				return true;
+			}
+			else{
+				this.active = true;
+				body.setInfluence(new RestInfluence(null));
+				return true;
+			}
 		}
-		return false;
+		
 	}
 
 	@Override

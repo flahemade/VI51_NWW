@@ -2,13 +2,16 @@ package physics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
 import wave.behavior.GenerateInfluence;
+import wave.body.Wall;
 import wave.body.WaveBody;
 import Environment.Environment;
 import fr.utbm.info.vi51.framework.environment.Influence;
@@ -120,7 +123,6 @@ public class InfluenceSolver {
 		Rectangle2f map = constructMap(environment);
 		//Treating the influence as a Circle
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence1.getEmitter()).getBody();
-
 //Building a new pixel circle
 		float newRadius = ((WaveBody) emitter).getRadius()+1;
 		//if the newRadius is superior to amplitude we don't create new circle
@@ -136,7 +138,6 @@ public class InfluenceSolver {
 		List<Circle2f> remove_circle = new ArrayList<Circle2f>();
 //Updating the map
 		for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
-			int amplitude = (int) (emitter.getAmplitude() - circle.getKey().getRadius()/3);
 			int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
 			if(emitter.getRadius() + emitter.getKillLittleCircle() - circle.getKey().getRadius() >= 3*emitter.getAmplitude()){
 				remove_circle.add(circle.getKey());
@@ -150,10 +151,10 @@ public class InfluenceSolver {
 				List<Point2f> point_list = circle.getValue();
 				for(Point2f point : point_list){
 					if(z.containsKey(point)){
-						z.put(point, z.get(point) + (int) (amplitude*(Math.sin(dephasing)+1)/2));
+						z.put(point, z.get(point) + (int) (emitter.getAmplitude()*(Math.sin(dephasing)+1)/2));
 					}
 					else{
-						z.put(point, (int) (amplitude*(Math.sin(dephasing))));
+						z.put(point, (int) (emitter.getAmplitude()*(Math.sin(dephasing))));
 					}
 					
 				}
@@ -163,10 +164,10 @@ public class InfluenceSolver {
 			emitter.getCircleList().remove(circle);
 		}
 
-//Finding collision with map border
+//Finding collision with map border and obstacle
 		
 		contactMap(influenceCircle1, map ,influence1);
-
+		contactObstacle(influenceCircle1,influence1);
 
 		return z;
 	}
@@ -192,5 +193,16 @@ public class InfluenceSolver {
 	public void setInfluence(List<Influence> l){
 		this.influences=l;
 		return;
+	}
+	
+	private void contactObstacle(List<Point2f> pixelCircle, ExpandInfluence influence){
+		for(Wall w : environment.getObstacle()){
+			Wave emitter = (Wave) environment.getAgents().get(influence.getEmitter());
+			Circle2f circle = new Circle2f(emitter.getBody().getPosition(),((WaveBody) emitter.getBody()).getRadius());
+			if(circle.intersects(w.getBody())){
+				Set<Point2f> circlePixel = new HashSet<Point2f>(circle.constructPixelCircle());
+				Set<Point2f> rectangle = w.getBorder().keySet();
+			}
+		}
 	}
 }
