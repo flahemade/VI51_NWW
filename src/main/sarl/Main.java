@@ -25,7 +25,6 @@ public class Main {
 	    List<Influence> inf = new ArrayList<Influence>();
 	    InfluenceSolver solve = new InfluenceSolver(inf, env);
 	    Map<UUID,Agent> next_agents = new HashMap<UUID, Agent>();
-	    Wave new_agent;
 	    long start,end;
 	    for(int k=0;k<1000000000;++k){
 	    	start = System.currentTimeMillis();
@@ -50,17 +49,11 @@ public class Main {
 	    			Influence influence = a.getValue().getBody().getInfluence();
 	    			influence.setEmitter(a.getKey());
 	    			solve.getInfluence().add(influence);
-	    			if(influence instanceof GenerateInfluence){
-	    				SourceBody s=(SourceBody) env.getAgents().get(influence.getEmitter()).getBody();
-			    			new_agent = new Wave(influence);
-			    			next_agents.put(new_agent.getBody().getID(),new_agent);
-	    			}
 	    		}
 	    	}
-	    	env.getAgents().putAll(next_agents);
 	    	Map<Point2f, Integer> change = solve.solveConflicts();
 			((Window) window).getmainPane().setWater(change);
-	    	//System.out.println("Current number of agents :"+env.getAgents().size());
+	    	System.out.println("Current number of agents :"+env.getAgents().size());
 	    	end = System.currentTimeMillis() - start;
 	    	env.getTimeManager().increment();
 	    	if(env.getTimeManager().getLastStepDuration() - end>0){

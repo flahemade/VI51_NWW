@@ -16,9 +16,10 @@ public class GenerateInfluence extends Influence {
 	private float amplitude;
 	private Point2f center;
 	
-	public GenerateInfluence(UUID influencedObject, float freq, float amp, Point2f pos) {
+	public GenerateInfluence(UUID influencedObject,UUID influenceEmitter, float freq, float amp, Point2f pos) {
 		super(influencedObject);
 
+		this.setEmitter(influenceEmitter);
 		this.frequency = freq;
 		this.amplitude = amp;
 		this.center = pos;

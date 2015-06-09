@@ -1,6 +1,7 @@
 package wave.body;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,8 +14,8 @@ public class Wall {
 	private Point2f position;
 	private Rectangle2f body;
 	private boolean is_Draw;
-	private Map<Point2f,List<UUID>> border;
-	private List<Circle2f> shadow_zone;
+	private Map<Point2f,List<UUID>> border = new HashMap<Point2f,List<UUID>>();
+	private List<Circle2f> shadow_zone = new ArrayList<Circle2f>();
 	
 	public List<Circle2f> getShadow_zone() {
 		return shadow_zone;
@@ -48,6 +49,7 @@ public class Wall {
 		shadow_zone.add(new Circle2f(x,y-height/2,height/2));
 		//RIGHT
 		shadow_zone.add(new Circle2f(x+width,y-height/2,height/2));
+		System.out.println(shadow_zone);
 	}
 	
 	public Wall(Point2f position, int width, int height){
@@ -71,11 +73,12 @@ public class Wall {
 		//UP
 		shadow_zone.add(new Circle2f(x+width/2,y,width/2));
 		//DOWN
-		shadow_zone.add(new Circle2f(x+width/2,y-height,width/2));
+		shadow_zone.add(new Circle2f(x+width/2,y-height+1,width/2));
 		//LEFT
 		shadow_zone.add(new Circle2f(x,y-height/2,height/2));
 		//RIGHT
-		shadow_zone.add(new Circle2f(x+width,y-height/2,height/2));
+		shadow_zone.add(new Circle2f(x+width-1,y-height/2,height/2));
+		System.out.println(shadow_zone);
 	}
 	
 	public Point2f getPosition() {

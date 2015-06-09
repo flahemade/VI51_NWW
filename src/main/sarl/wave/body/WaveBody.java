@@ -48,10 +48,32 @@ public class WaveBody extends AgentBody {
 		this.circleList.put(new_circle,pixelCircle);
 		this.killLittleCircle = 0;
 		this.setInfluence(new ExpandInfluence(null, this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
-		touch_Wall[0] = false;
-		touch_Wall[1] = false;
-		touch_Wall[2] = false;
-		touch_Wall[3] = false;
+		int x = (int) influence.getCenter().getX();
+		int y = (int) influence.getCenter().getY();
+		if(x == 499){
+			touch_Wall[0] = true;
+		}
+		else{
+			touch_Wall[0] = false;
+		}
+		if(x == 0){
+			touch_Wall[1] = true;
+		}
+		else{
+			touch_Wall[1] = false;
+		}
+		if(y == 499){
+			touch_Wall[2] = true;
+		}
+		else{
+			touch_Wall[2] = false;
+		}
+		if(y == 0){
+			touch_Wall[3] = true;
+		}
+		else{
+			touch_Wall[3] = false;
+		}
 		this.forbidden_points = new ArrayList<Point2f>();
 	}
 	

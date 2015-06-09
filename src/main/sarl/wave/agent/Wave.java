@@ -1,5 +1,7 @@
 package wave.agent;
 
+import java.util.UUID;
+
 import wave.behavior.KillInfluence;
 import wave.body.AgentBody;
 import wave.body.WaveBody;
@@ -8,10 +10,12 @@ import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Wave extends Agent{
 	
+	private UUID source;
 	
-	public Wave(float freq, float ampl,Point2f source, boolean[] touch_wall){
-		
-		this.body = new WaveBody(freq, ampl, source,touch_wall);
+	public Wave(float freq, float ampl,UUID source, boolean[] touch_wall, Point2f position){
+		System.out.println("test"+touch_wall[1]);
+		this.body = new WaveBody(freq, ampl, position ,touch_wall);
+		this.source=source;
 	}
 	
 	
@@ -37,9 +41,21 @@ public class Wave extends Agent{
 	
 	public Wave(Influence influence){
 		this.body = new WaveBody(influence);
+		this.source = influence.getEmitter();
 	}
 	
 	public AgentBody getBody(){
 		return this.body;
 	}
+
+
+	public UUID getSource() {
+		return source;
+	}
+	
+	public void setSource(UUID source) {
+		this.source = source;
+	}
+	
+	
 }

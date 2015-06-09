@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import wave.agent.Source;
 import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
 import wave.behavior.GenerateInfluence;
@@ -70,8 +71,8 @@ public class InfluenceSolver {
 	}
 	
 	private void wallContact(Point2f contactPoint, WaveBody a, boolean[] wall_Contact){
-		Wave w = new Wave(a.getFrequency(),(float) Math.floor(a.getAmplitude()-a.getRadius()/3),contactPoint,wall_Contact);
-		environment.addAgents(w.getBody().getID(), w);
+		Source s = new Source(a.getFrequency(),a.getAmplitude(),contactPoint);
+		environment.addAgents(s.getBody().getID(),s);
 	}
 	
 	private void contactMap(Circle2f c, Rectangle2f m, ExpandInfluence i){
@@ -94,6 +95,7 @@ public class InfluenceSolver {
 			}
 			if(m.getLower().getX() >= center.getX() - AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[1]){ //So on with the other sides
 				//Left
+				System.out.println("test");
 				Point2f contactPoint = new Point2f(m.getLower().getX(),center.getY());
 				AgentBodyEmitter.getTouchWall()[1] = true;
 				wallContact(contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
@@ -131,10 +133,17 @@ public class InfluenceSolver {
 		List<Point2f> pixelCircle = new ArrayList<Point2f>();
 		//if the newRadius is superior to amplitude we don't create new circle
 		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),emitter.getRadius());
-		if(newRadius<=3*emitter.getAmplitude()){
+		Wave w = ((Wave)(environment.getAgents().get(influence1.getEmitter())));
+		if(((Source) environment.getAgents().get(w.getSource())).isActive()){
 			emitter.setRadius(newRadius);
 			influenceCircle1.setRadius(emitter.getRadius());
-			pixelCircle = influenceCircle1.constructPixelCircle();
+			if(((WaveBody) w.getBody()).getForbidden_points().size()==0){
+				pixelCircle = influenceCircle1.constructPixelCircle();
+			}
+			else{
+				pixelCircle = influenceCircle1.constructTruncatePixelCircle(((WaveBody) w.getBody()).getForbidden_points());
+			}
+			
 			emitter.getCircleList().put(influenceCircle1, pixelCircle);
 			emitter.incrementKillLittleCircle();
 			influence1.getPixels_influenced().addAll(pixelCircle);
@@ -177,7 +186,8 @@ public class InfluenceSolver {
 	}
 	
 	public Map<Point2f, Integer> generate(GenerateInfluence influence, Map<Point2f, Integer> z){
-		new Wave(influence);
+		Wave w = new Wave(influence);
+		environment.getAgents().put(w.getBody().getID(), w);
 		//Building a new pixel circle
 		float newRadius = 1;
 		Integer amplitude = (int) influence.getAmplitude();
@@ -200,8 +210,9 @@ public class InfluenceSolver {
 	}
 	
 	private void contactObstacle(List<Point2f> pixelCircle, ExpandInfluence influence){
+		Wave emitter = (Wave) environment.getAgents().get(influence.getEmitter());
 		for(Wall w : environment.getObstacle()){
-			Wave emitter = (Wave) environment.getAgents().get(influence.getEmitter());
+			
 			Rectangle2f wall_body = w.getBody();
 				Set<Point2f> setPixelCircle = new HashSet<Point2f>(pixelCircle);
 				Set<Point2f> rectangle = w.getBorder().keySet();
@@ -235,7 +246,7 @@ public class InfluenceSolver {
 						c.setRadius(i);
 						((WaveBody)emitter.getBody()).getForbidden_points().addAll(c.constructHalfCircle(side));
 					}
-					
+					System.out.println(((WaveBody) emitter.getBody()).getForbidden_points());
 				}
 		}
 	}
