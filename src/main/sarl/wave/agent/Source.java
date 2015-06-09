@@ -25,7 +25,7 @@ public class Source extends Agent {
 	@Override
 	public boolean decide(float currentTime) {
 		if(nbHit == 0){
-			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition()));
+			body.setInfluence(new GenerateInfluence(null,body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition()));
 			nbHit++;
 			return true;
 		}
@@ -48,5 +48,15 @@ public class Source extends Agent {
 	public AgentBody getBody() {
 		return body;
 	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	
 
 }

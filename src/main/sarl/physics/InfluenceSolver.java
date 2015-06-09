@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import wave.agent.Source;
 import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
 import wave.behavior.GenerateInfluence;
@@ -67,7 +68,9 @@ public class InfluenceSolver {
 	}
 	
 	private void wallContact(Point2f contactPoint, WaveBody a, boolean[] wall_Contact){
-		Wave w = new Wave(a.getFrequency(),(float) Math.floor(a.getAmplitude()-a.getRadius()/3),contactPoint,wall_Contact);
+		Source s = new Source(a.getFrequency(),a.getAmplitude(),contactPoint);
+		environment.addAgents(s.getBody().getID(),s);
+		Wave w = new Wave(a.getFrequency(),(float) Math.floor(a.getAmplitude()-a.getRadius()/3),s.getBody().getID(),wall_Contact,contactPoint);
 		environment.addAgents(w.getBody().getID(), w);
 	}
 	
@@ -127,7 +130,9 @@ public class InfluenceSolver {
 		float newRadius = ((WaveBody) emitter).getRadius()+1;
 		//if the newRadius is superior to amplitude we don't create new circle
 		Circle2f influenceCircle1=new Circle2f(influence1.getCenter(),emitter.getRadius());
-		if(newRadius<=3*emitter.getAmplitude()){
+		Wave w = ((Wave)(environment.getAgents().get(influence1.getEmitter())));
+		System.out.println("test"+environment.getAgents().get(w.getSource()));
+		if(((Source) environment.getAgents().get(w.getSource())).isActive()){
 			emitter.setRadius(newRadius);
 			influenceCircle1.setRadius(emitter.getRadius());
 			ArrayList<Point2f> pixelCircle = influenceCircle1.constructPixelCircle();
@@ -167,7 +172,7 @@ public class InfluenceSolver {
 //Finding collision with map border and obstacle
 		
 		contactMap(influenceCircle1, map ,influence1);
-		contactObstacle(influenceCircle1,influence1);
+		//contactObstacle(influenceCircle1,influence1);
 
 		return z;
 	}
