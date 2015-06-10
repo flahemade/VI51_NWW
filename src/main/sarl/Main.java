@@ -23,7 +23,7 @@ public class Main {
 		Environment env = new Environment();
 	    JFrame window = new Window(env);
 	    List<Influence> inf = new ArrayList<Influence>();
-	    InfluenceSolver solve = new InfluenceSolver(inf, env);
+	    InfluenceSolver solve = new InfluenceSolver(inf);
 	    Map<UUID,Agent> next_agents = new HashMap<UUID, Agent>();
 	    long start,end;
 	    for(int k=0;k<1000000000;++k){
@@ -51,7 +51,7 @@ public class Main {
 	    			solve.getInfluence().add(influence);
 	    		}
 	    	}
-	    	Map<Point2f, Integer> change = solve.solveConflicts();
+	    	Map<Point2f, Integer> change = solve.solveConflicts(env);
 			((Window) window).getmainPane().setWater(change);
 	    	System.out.println("Current number of agents :"+env.getAgents().size());
 	    	end = System.currentTimeMillis() - start;
