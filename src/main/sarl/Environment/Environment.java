@@ -1,7 +1,6 @@
 package Environment;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,23 +10,26 @@ import wave.agent.Agent;
 import wave.agent.Wave;
 import wave.behavior.GenerateInfluence;
 import wave.body.Wall;
-import fr.utbm.info.vi51.framework.environment.AbstractEnvironment;
-import fr.utbm.info.vi51.framework.environment.AgentBody;
 import fr.utbm.info.vi51.framework.environment.Influence;
-import fr.utbm.info.vi51.framework.environment.MotionInfluence;
-import fr.utbm.info.vi51.framework.environment.Percept;
-import fr.utbm.info.vi51.framework.environment.SituatedObject;
 import fr.utbm.info.vi51.framework.math.Point2f;
+import fr.utbm.info.vi51.framework.math.Rectangle2f;
 import fr.utbm.info.vi51.framework.time.StepTimeManager;
 import fr.utbm.info.vi51.framework.time.TimeManager;
 
-public class Environment extends AbstractEnvironment{
+public class Environment{
+	
 	private Map<Point2f, Integer> z;
 	private Map<UUID,Agent> agents;
 	private List<Wall> obstacle;
+	private final TimeManager timeManager;
+	private final int width;
+	private final int height;
+	private final Rectangle2f map;
 	
 	public Environment(){
-		super(500, 500, new StepTimeManager(100));
+		this.width = 500;
+		this.height = 500;
+		this.timeManager = new StepTimeManager(100);
 		this.z = new HashMap<Point2f,Integer>(500*500);
 		this.agents = new HashMap<UUID,Agent>();
 		this.setObstacle(new ArrayList<Wall>());
@@ -38,10 +40,13 @@ public class Environment extends AbstractEnvironment{
 				this.z.putIfAbsent(pos, 0);
 			}
 		}
+		this.map = new Rectangle2f(0, 0, this.width, this.height);
 	}
 	
 	public Environment(int x, int y, float time_step){
-		super(x,y,new StepTimeManager(time_step));
+		this.width = x;
+		this.height = y;
+		this.timeManager = new StepTimeManager(time_step);
 		
 		Point2f pos = new Point2f(0,0);
 		this.z = new HashMap<Point2f,Integer>((int) (x*y));
@@ -54,13 +59,17 @@ public class Environment extends AbstractEnvironment{
 				this.z.putIfAbsent(pos, 0);
 			}
 		}
+		this.map = new Rectangle2f(0, 0, this.width, this.height);
 	}
 	
 	public Environment(int x, int y, float time_step, HashMap<Point2f, Integer> height){
-		super(x,y,new StepTimeManager(time_step));
+		this.width = x;
+		this.height = y;
+		this.timeManager = new StepTimeManager(time_step);
 		this.setZ(height);
 		this.agents = new HashMap<UUID,Agent>();
 		this.setObstacle(new ArrayList<Wall>());
+		this.map = new Rectangle2f(0, 0, this.width, this.height);
 	}
 	
 	public Map<Point2f, Integer> getZ() {
@@ -70,44 +79,6 @@ public class Environment extends AbstractEnvironment{
 	public void setZ(Map<Point2f, Integer> z) {
 		this.z = z;
 	}
-
-	@Override
-	public Iterable<? extends SituatedObject> getAllObjects() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void onAgentBodyCreated(AgentBody body) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	protected void onAgentBodyDestroyed(AgentBody body) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected List<Influence> computeEndogenousBehaviorInfluences() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected List<Percept> computePerceptionsFor(AgentBody agent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void applyInfluences(
-			Collection<MotionInfluence> motionInfluences,
-			Collection<Influence> otherInfluences, TimeManager timeManager) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public Map<UUID,Agent> getAgents(){
 		return agents;
 	}
@@ -126,5 +97,21 @@ public class Environment extends AbstractEnvironment{
 
 	public void setObstacle(List<Wall> obstacle) {
 		this.obstacle = obstacle;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public TimeManager getTimeManager() {
+		return timeManager;
+	}
+
+	public Rectangle2f getMap() {
+		return map;
 	}
 }

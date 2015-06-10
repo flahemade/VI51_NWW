@@ -129,9 +129,6 @@ public class Rectangle2f extends Shape2f<Rectangle2f> {
 					center.getY()+c.getRadius() >= this.getUpper().getY() ||
 					center.getY()-c.getRadius() <= this.getLower().getY();
 		}
-		if (s instanceof MotionHull2f) {
-			return ((MotionHull2f) s).intersects(this);
-		}
 		throw new IllegalArgumentException();
 	}
 	

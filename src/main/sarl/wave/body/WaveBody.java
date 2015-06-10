@@ -32,7 +32,7 @@ public class WaveBody extends AgentBody {
 		List<Point2f> pixelCircle = new_circle.constructPixelCircle();
 		this.circleList.put(new_circle,pixelCircle);
 		this.killLittleCircle = 0;
-		this.setInfluence(new ExpandInfluence(null, this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
+		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
 		touch_Wall[0] = false;
 		touch_Wall[1] = false;
 		touch_Wall[2] = false;
@@ -47,7 +47,7 @@ public class WaveBody extends AgentBody {
 		List<Point2f> pixelCircle = new_circle.constructPixelCircle();
 		this.circleList.put(new_circle,pixelCircle);
 		this.killLittleCircle = 0;
-		this.setInfluence(new ExpandInfluence(null, this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
+		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
 		int x = (int) influence.getCenter().getX();
 		int y = (int) influence.getCenter().getY();
 		if(x == 499){
@@ -84,7 +84,7 @@ public class WaveBody extends AgentBody {
 		List<Point2f> pixelCircle = new_circle.constructPixelCircle();
 		this.circleList.put(new_circle,pixelCircle);
 		this.killLittleCircle = 0;
-		this.setInfluence(new ExpandInfluence(null, this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
+		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
 		this.touch_Wall = touch_Wall;
 		this.forbidden_points = new ArrayList<Point2f>();
 	}

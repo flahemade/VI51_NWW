@@ -38,14 +38,7 @@ public abstract class Influence implements Serializable {
 	private static final long serialVersionUID = -3172105252469025247L;
 
 	protected UUID emitter = null;
-	private final UUID influencedObject;
 	
-	/**
-	 * @param influencedObject is the influenced object.
-	 */
-	protected Influence(UUID influencedObject) {
-		this.influencedObject = influencedObject;
-	}
 	
 	/** Replies the emitter of the influence.
 	 * 
@@ -62,14 +55,6 @@ public abstract class Influence implements Serializable {
 	public void setEmitter(UUID emitter) {
 		assert(emitter!=null);
 		this.emitter = emitter;
-	}
-
-	/** Replies the influenced object.
-	 * 
-	 * @return the influenced object.
-	 */
-	public UUID getInfluencedObject() {
-		return this.influencedObject;
 	}
 
 	abstract public Point2f getCenter();

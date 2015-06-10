@@ -71,13 +71,13 @@ public class Wall {
 			}
 		}
 		//UP
-		shadow_zone.add(new Circle2f(x+width/2,y,width/2));
+		shadow_zone.add(new Circle2f(x+width/2,y-1,width/2));
 		//DOWN
-		shadow_zone.add(new Circle2f(x+width/2,y-height+1,width/2));
+		shadow_zone.add(new Circle2f(x+width/2,y+height,width/2));
 		//LEFT
-		shadow_zone.add(new Circle2f(x,y-height/2,height/2));
+		shadow_zone.add(new Circle2f(x-1,y+height/2,height/2));
 		//RIGHT
-		shadow_zone.add(new Circle2f(x+width-1,y-height/2,height/2));
+		shadow_zone.add(new Circle2f(x+width,y+height/2,height/2));
 		System.out.println(shadow_zone);
 	}
 	

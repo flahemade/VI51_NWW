@@ -29,7 +29,7 @@ public class Wave extends Agent{
 	public boolean decide(float currenTime){
 		if(((WaveBody)body).getCircleList().isEmpty()){
 			//The wave has no amplitude or no points: it asks to be killed
-			body.setInfluence(new KillInfluence(null, body.getID()));
+			body.setInfluence(new KillInfluence(body.getID()));
 			return true;
 		}
 		else{

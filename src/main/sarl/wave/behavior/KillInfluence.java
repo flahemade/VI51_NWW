@@ -4,13 +4,16 @@ import java.util.UUID;
 
 import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
-import fr.utbm.info.vi51.framework.math.Tuple2f;
 
 public class KillInfluence extends Influence {
 	
 
-	public KillInfluence(UUID influencedObject, UUID influenceEmitter) {
-		super(influencedObject);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4303503364579807702L;
+
+	public KillInfluence(UUID influenceEmitter) {
 		assert(influenceEmitter!=null);
 		this.setEmitter(influenceEmitter);
 	}

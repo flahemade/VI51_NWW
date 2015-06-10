@@ -124,9 +124,6 @@ public class Circle2f extends Shape2f<Circle2f> {
 			Rectangle2f r = (Rectangle2f) s;
 			return r.intersects(this);
 		}
-		if (s instanceof MotionHull2f) {
-			return ((MotionHull2f) s).intersects(this);
-		}
 		throw new IllegalArgumentException();
 	}
 	
