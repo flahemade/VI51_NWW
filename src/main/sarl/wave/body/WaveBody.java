@@ -27,7 +27,7 @@ public class WaveBody extends AgentBody {
 	
 	public WaveBody(float freq, float ampl,Point2f source){
 		super(freq,ampl,source);
-		this.speed = 1/freq;
+		this.speed = (float) Math.sqrt(1/freq);
 		Circle2f new_circle = new Circle2f(source, 1);
 		List<Point2f> pixelCircle = new_circle.constructPixelCircle();
 		this.circleList.put(new_circle,pixelCircle);
@@ -50,25 +50,25 @@ public class WaveBody extends AgentBody {
 		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
 		int x = (int) influence.getCenter().getX();
 		int y = (int) influence.getCenter().getY();
-		if(x == 499){
+		if(x > 499){
 			touch_Wall[0] = true;
 		}
 		else{
 			touch_Wall[0] = false;
 		}
-		if(x == 0){
+		if(x < 0){
 			touch_Wall[1] = true;
 		}
 		else{
 			touch_Wall[1] = false;
 		}
-		if(y == 499){
+		if(y > 499){
 			touch_Wall[2] = true;
 		}
 		else{
 			touch_Wall[2] = false;
 		}
-		if(y == 0){
+		if(y < 0){
 			touch_Wall[3] = true;
 		}
 		else{

@@ -1,24 +1,10 @@
 package wave.behavior;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.Map.Entry;
 
-import com.google.common.collect.Sets;
-
-import Environment.Environment;
-import wave.agent.Source;
-import wave.agent.Wave;
-import wave.body.Wall;
-import wave.body.WaveBody;
 import fr.utbm.info.vi51.framework.environment.Influence;
-import fr.utbm.info.vi51.framework.math.Circle2f;
 import fr.utbm.info.vi51.framework.math.Point2f;
-import fr.utbm.info.vi51.framework.math.Rectangle2f;
 
 public class ExpandInfluence extends Influence {
 

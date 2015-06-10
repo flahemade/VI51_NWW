@@ -80,7 +80,7 @@ public class InfluenceSolver {
 		Wave w = new Wave(influence);
 		environment.getAgents().put(w.getBody().getID(), w);
 		//Building a new pixel circle
-		float newRadius = 1;
+		float newRadius = ((GenerateInfluence) influence).getBegin_Radius();
 		Integer amplitude = (int) ((GenerateInfluence) influence).getAmplitude();
 		Circle2f newCircle = new Circle2f(influence.getCenter(),newRadius);
 		ArrayList<Point2f> pixelCircle = newCircle.constructPixelCircle();
@@ -92,18 +92,16 @@ public class InfluenceSolver {
 	}
 	
 public Map<Point2f,Integer> expand(Environment environment,Influence influence, Map<Point2f,Integer> zToCo){
-		
 		Map<Point2f,Integer>z=zToCo;
 		Rectangle2f map = environment.getMap();
 		//Treating the influence as a Circle
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence.getEmitter()).getBody();
 //Building a new pixel circle
-		float newRadius = ((WaveBody) emitter).getRadius()+1;
 		List<Point2f> pixelCircle = new ArrayList<Point2f>();
-		//if the newRadius is superior to amplitude we don't create new circle
 		Circle2f influenceCircle1=new Circle2f(influence.getCenter(),emitter.getRadius());
 		Wave w = ((Wave)(environment.getAgents().get(influence.getEmitter())));
-		if(((Source) environment.getAgents().get(w.getSource())).isActive()){
+		if(((Source) environment.getAgents().get(w.getSource())) != null){
+			float newRadius = ((WaveBody) emitter).getRadius()+1;
 			emitter.setRadius(newRadius);
 			influenceCircle1.setRadius(emitter.getRadius());
 			if(((WaveBody) w.getBody()).getForbidden_points().size()==0){
@@ -114,14 +112,16 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 			}
 			
 			emitter.getCircleList().put(influenceCircle1, pixelCircle);
-			emitter.incrementKillLittleCircle();
 			((ExpandInfluence) influence).getPixels_influenced().addAll(pixelCircle);
+		}
+		else{
+			emitter.incrementKillLittleCircle();
 		}
 		List<Circle2f> remove_circle = new ArrayList<Circle2f>();
 //Updating the map
 		for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
 			int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
-			if(emitter.getRadius() + emitter.getKillLittleCircle() - circle.getKey().getRadius() >= 3*emitter.getAmplitude()){
+			if(emitter.getKillLittleCircle() == circle.getKey().getRadius()){
 				remove_circle.add(circle.getKey());
 				((ExpandInfluence) influence).getPixels_influenced().removeAll(circle.getKey().constructPixelCircle());
 				List<Point2f> point_list = circle.getValue();
@@ -170,32 +170,52 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 				//Right
 				Point2f contactPoint = new Point2f(m.getUpper().getX(),center.getY());
 				AgentBodyEmitter.getTouchWall()[0] = true;
-				wallContact(environment,contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
+				wallContact(environment,contactPoint,AgentBodyEmitter);
 			}
 			if(m.getLower().getX() >= center.getX() - AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[1]){ //So on with the other sides
 				//Left
-				System.out.println("test");
 				Point2f contactPoint = new Point2f(m.getLower().getX(),center.getY());
 				AgentBodyEmitter.getTouchWall()[1] = true;
-				wallContact(environment,contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
+				wallContact(environment,contactPoint,AgentBodyEmitter);
 			}
 			if(m.getUpper().getY() <= center.getY() + AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[2]){ //So on with the other sides
 				//Bottom
 				Point2f contactPoint = new Point2f(center.getX(),m.getUpper().getY());
 				AgentBodyEmitter.getTouchWall()[2] = true;
-				wallContact(environment,contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
+				wallContact(environment,contactPoint,AgentBodyEmitter);
 			}
 			if(m.getLower().getY() >= center.getY() - AgentBodyEmitter.getRadius() && !AgentBodyEmitter.getTouchWall()[3]){ //So on with the other sides
 				//Top
 				Point2f contactPoint = new Point2f(center.getX(),m.getLower().getY());
 				AgentBodyEmitter.getTouchWall()[3] = true;
-				wallContact(environment,contactPoint,AgentBodyEmitter,AgentBodyEmitter.getTouchWall());
+				wallContact(environment,contactPoint,AgentBodyEmitter);
 			}
 		}
 	}
 	
-	private void wallContact(Environment environment,Point2f contactPoint, WaveBody a, boolean[] wall_Contact){
-		Source s = new Source(a.getFrequency(),a.getAmplitude(),contactPoint);
+	private void wallContact(Environment environment,Point2f contactPoint, WaveBody a){
+		Point2f sourcePoint;
+		int x,y;
+		if(contactPoint.getX()<a.getPosition().getX()){
+			x = (int) (contactPoint.getX()-a.getPosition().getX());
+		}
+		else if (contactPoint.getX()>a.getPosition().getX()){
+			x = (int) (contactPoint.getX()+a.getPosition().getX());
+		}
+		else{
+			x = (int) a.getPosition().getX();
+		}
+		if(contactPoint.getY()<a.getPosition().getY()){
+			y = (int) (contactPoint.getY()-a.getPosition().getY());
+		}
+		else if (contactPoint.getY()>a.getPosition().getY()){
+			y = (int) (contactPoint.getY()+a.getPosition().getY());
+		}
+		else{
+			y = (int) a.getPosition().getY();
+		}
+		sourcePoint = new Point2f(x,y);
+		Source s = new Source(a,sourcePoint,((int)a.getRadius()));
 		environment.addAgents(s.getBody().getID(),s);
 	}
 	

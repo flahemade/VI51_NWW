@@ -2,6 +2,7 @@ package wave.agent;
 
 import java.util.UUID;
 
+import Environment.Environment;
 import wave.behavior.KillInfluence;
 import wave.body.AgentBody;
 import wave.body.WaveBody;
@@ -26,7 +27,7 @@ public class Wave extends Agent{
 	 * Otherwise, it expands.
 	 * output is true if a decision was taken.
 	 */
-	public boolean decide(float currenTime){
+	public boolean decide(float currenTime, Environment environment){
 		if(((WaveBody)body).getCircleList().isEmpty()){
 			//The wave has no amplitude or no points: it asks to be killed
 			body.setInfluence(new KillInfluence(body.getID()));

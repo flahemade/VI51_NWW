@@ -1,13 +1,8 @@
 package wave.behavior;
 
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.UUID;
 
-import wave.agent.Wave;
-import Environment.Environment;
 import fr.utbm.info.vi51.framework.environment.Influence;
-import fr.utbm.info.vi51.framework.math.Circle2f;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class GenerateInfluence extends Influence {
@@ -20,6 +15,7 @@ public class GenerateInfluence extends Influence {
 	private float frequency;
 	private float amplitude;
 	private Point2f center;
+	private int begin_Radius = 0;
 	
 	public GenerateInfluence(UUID influenceEmitter, float freq, float amp, Point2f pos) {
 
@@ -27,6 +23,15 @@ public class GenerateInfluence extends Influence {
 		this.frequency = freq;
 		this.amplitude = amp;
 		this.center = pos;
+	}
+	
+	public GenerateInfluence(UUID influenceEmitter, float freq, float amp, Point2f pos, int begin_Radius) {
+
+		this.setEmitter(influenceEmitter);
+		this.frequency = freq;
+		this.amplitude = amp;
+		this.center = pos;
+		this.setBegin_Radius(begin_Radius);
 	}
 	
 	public float getFrequency(){
@@ -39,5 +44,13 @@ public class GenerateInfluence extends Influence {
 	
 	public Point2f getCenter() {
 		return this.center;
+	}
+
+	public int getBegin_Radius() {
+		return begin_Radius;
+	}
+
+	public void setBegin_Radius(int begin_Radius) {
+		this.begin_Radius = begin_Radius;
 	}
 }

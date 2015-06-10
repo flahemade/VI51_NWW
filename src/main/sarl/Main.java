@@ -3,15 +3,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.swing.JFrame;
 
 import physics.InfluenceSolver;
 import wave.agent.Agent;
-import wave.agent.Wave;
-import wave.behavior.GenerateInfluence;
-import wave.body.SourceBody;
+import wave.agent.Source;
 import wave.body.Wall;
 import Environment.Environment;
 import GUI.Window;
@@ -24,10 +23,15 @@ public class Main {
 	    JFrame window = new Window(env);
 	    List<Influence> inf = new ArrayList<Influence>();
 	    InfluenceSolver solve = new InfluenceSolver(inf);
+	    Random rand = new Random();
 	    Map<UUID,Agent> next_agents = new HashMap<UUID, Agent>();
 	    long start,end;
 	    for(int k=0;k<1000000000;++k){
 	    	start = System.currentTimeMillis();
+	    	if(k%5==0){
+	    		Source s = new Source((float) (Math.random()*10+0.30),rand.nextInt(80)+30,new Point2f(rand.nextInt(500) ,rand.nextInt(500)));
+				env.addAgents(s.getBody().getID(),s);
+	    	}
 	    	next_agents.clear();
 	    	solve.getInfluence().clear();
 	    	if(!env.getObstacle().isEmpty()){
@@ -45,7 +49,7 @@ public class Main {
 	    	}
 	    	
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
-	    		if(a.getValue().decide(k)){
+	    		if(a.getValue().decide(k,env)){
 	    			Influence influence = a.getValue().getBody().getInfluence();
 	    			influence.setEmitter(a.getKey());
 	    			solve.getInfluence().add(influence);

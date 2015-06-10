@@ -1,14 +1,21 @@
 package wave.agent;
 
-import fr.utbm.info.vi51.framework.math.Point2f;
+import java.util.UUID;
+
 import wave.behavior.GenerateInfluence;
+import wave.behavior.KillInfluence;
 import wave.behavior.RestInfluence;
 import wave.body.AgentBody;
 import wave.body.SourceBody;
+import wave.body.WaveBody;
+import Environment.Environment;
+import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Source extends Agent {
 
 	private SourceBody body;
+	
+	private UUID mother = null;
 	
 	private boolean active;
 	
@@ -16,31 +23,58 @@ public class Source extends Agent {
 	
 	private int nbHit;
 	
+	private int begin_Radius = 1;
+	
 	public Source(float freq, float amp, Point2f pos){
-		this.body = new SourceBody(freq/30,amp,pos);
+		this.body = new SourceBody(freq,amp,pos);
 		this.active = true;
 		this.nbHit = 0;
 	}
+	
+	public Source(WaveBody mother, Point2f contactPoint){
+		this.setMother(mother.getID());
+		this.body = new SourceBody(mother.getFrequency(),mother.getAmplitude(),contactPoint);
+		this.active = true;
+		this.nbHit = 0;
+	}
+	
+	public Source(WaveBody mother, Point2f contactPoint,int begin_Radius){
+		this.setMother(mother.getID());
+		this.body = new SourceBody(mother.getFrequency(),mother.getAmplitude(),contactPoint);
+		this.active = true;
+		this.nbHit = 0;
+		this.begin_Radius = begin_Radius;
+	}
 	@Override
-	public boolean decide(float currentTime) {
+	public boolean decide(float currentTime, Environment environment) {
+		if(mother!=null){
+			WaveBody bodymother = ((WaveBody) environment.getAgents().get(mother).getBody());
+			if(bodymother.getKillLittleCircle()>this.getBody().getPosition().distance(bodymother.getCenter())){
+				this.active = false;
+			}
+		}
+		
 		if(nbHit == 0){
-			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition()));
+			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition(),begin_Radius));
 			nbHit++;
 			return true;
 		}
 		else{
-			if(this.active == true && ((currentTime-lastHitTime) > 1/this.body.getFrequency()) && nbHit<100){
-				this.lastHitTime = currentTime;
-				nbHit++;
+			if(this.active == true && nbHit<50){
+				body.setInfluence(new RestInfluence(body.getID()));
+				if((currentTime-lastHitTime) > 1/this.body.getFrequency()){
+					this.lastHitTime = currentTime;
+					nbHit++;
+				}
+				
 				return true;
 			}
 			else{
-				this.active = true;
-				body.setInfluence(new RestInfluence(null));
+				this.active = false;
+				body.setInfluence(new KillInfluence(body.getID()));
 				return true;
 			}
 		}
-		
 	}
 
 	@Override
@@ -54,6 +88,22 @@ public class Source extends Agent {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public int getBegin_Radius() {
+		return begin_Radius;
+	}
+
+	public void setBegin_Radius(int begin_Radius) {
+		this.begin_Radius = begin_Radius;
+	}
+
+	public UUID getMother() {
+		return mother;
+	}
+
+	public void setMother(UUID mother) {
+		this.mother = mother;
 	}
 	
 	

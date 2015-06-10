@@ -235,7 +235,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    {
 		        sumX= center.getX() + x;
 		    	sumY= center.getY() - y ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -244,7 +244,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() + y;
 		    	sumY= center.getY() - x ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -253,7 +253,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() - x;
 		    	sumY= center.getY() - y ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -262,7 +262,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() - y;
 		    	sumY= center.getY() - x ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -303,7 +303,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    {
 	    	sumX= center.getX() + x;
 	    	sumY= center.getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -312,7 +312,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() + y;
 	    	sumY= center.getY() + x;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -321,7 +321,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() - x;
 	    	sumY= center.getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -330,7 +330,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	      //-------------------------------------------------
 	        sumX= center.getX() - y;
 	    	sumY= center.getY() + x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -370,7 +370,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    {
 	        sumX= center.getX() - x;
 	    	sumY= center.getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -379,7 +379,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	      //-------------------------------------------------
 	        sumX= center.getX() - y;
 	    	sumY= center.getY() + x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -389,7 +389,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	        
 	        sumX= center.getX() - x;
 	    	sumY= center.getY() - y ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -398,7 +398,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() - y;
 	    	sumY= center.getY() - x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -439,7 +439,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    {
 	    	sumX= center.getX() + x;
 	    	sumY= center.getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -448,7 +448,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() + y;
 	    	sumY= center.getY() + x;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -457,7 +457,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() + x;
 	    	sumY= center.getY() - y ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -466,7 +466,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() + y;
 	    	sumY= center.getY() - x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!pixels.contains(actual_point)){
 	        		pixels.add(actual_point);	
@@ -516,7 +516,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    {
 		    	sumX= center.getX() + x;
 		    	sumY= center.getY() + y;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -525,7 +525,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() + y;
 		    	sumY= center.getY() + x;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -534,7 +534,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() - x;
 		    	sumY= center.getY() + y;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -543,7 +543,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		      //-------------------------------------------------
 		        sumX= center.getX() - y;
 		    	sumY= center.getY() + x ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -552,7 +552,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() + x;
 		    	sumY= center.getY() - y ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -561,7 +561,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() + y;
 		    	sumY= center.getY() - x ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -570,7 +570,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() - x;
 		    	sumY= center.getY() - y ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -579,7 +579,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		    	//-------------------------------------------------
 		        sumX= center.getX() - y;
 		    	sumY= center.getY() - x ;
-		        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+		        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 		        	actual_point = new Point2f(sumX,sumY);
 		        	if(!pixels.contains(actual_point)){
 		        		pixels.add(actual_point);	
@@ -629,7 +629,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    {
 	    	sumX= center.getX() + x;
 	    	sumY= center.getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
@@ -640,7 +640,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() + y;
 	    	sumY= center.getY() + x;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
@@ -651,7 +651,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() - x;
 	    	sumY= center.getY() + y;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
@@ -662,7 +662,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	      //-------------------------------------------------
 	        sumX= center.getX() - y;
 	    	sumY= center.getY() + x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
@@ -673,7 +673,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() + x;
 	    	sumY= center.getY() - y ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
@@ -684,7 +684,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() + y;
 	    	sumY= center.getY() - x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
@@ -695,7 +695,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() - x;
 	    	sumY= center.getY() - y ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
@@ -706,7 +706,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 	    	//-------------------------------------------------
 	        sumX= center.getX() - y;
 	    	sumY= center.getY() - x ;
-	        if((sumX<499 && sumX > 0)&&(sumY<499 && sumY>0)){
+	        if((sumX<=499 && sumX >= 0)&&(sumY<=499 && sumY>=0)){
 	        	actual_point = new Point2f(sumX,sumY);
 	        	if(!forbidden_point.contains(actual_point)){
 	        		if(!pixels.contains(actual_point)){
