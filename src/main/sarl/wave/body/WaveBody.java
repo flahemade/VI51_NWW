@@ -50,25 +50,25 @@ public class WaveBody extends AgentBody {
 		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
 		int x = (int) influence.getCenter().getX();
 		int y = (int) influence.getCenter().getY();
-		if(x > 499){
+		if(x >= 499){
 			touch_Wall[0] = true;
 		}
 		else{
 			touch_Wall[0] = false;
 		}
-		if(x < 0){
+		if(x <= 0){
 			touch_Wall[1] = true;
 		}
 		else{
 			touch_Wall[1] = false;
 		}
-		if(y > 499){
+		if(y >= 499){
 			touch_Wall[2] = true;
 		}
 		else{
 			touch_Wall[2] = false;
 		}
-		if(y < 0){
+		if(y <= 0){
 			touch_Wall[3] = true;
 		}
 		else{
