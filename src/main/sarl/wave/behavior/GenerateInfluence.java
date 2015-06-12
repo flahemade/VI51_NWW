@@ -15,7 +15,7 @@ public class GenerateInfluence extends Influence {
 	private float frequency;
 	private float amplitude;
 	private Point2f center;
-	private int begin_Radius = 0;
+	private int beginRadius = 0;
 	
 	public GenerateInfluence(UUID influenceEmitter, float freq, float amp, Point2f pos) {
 
@@ -47,10 +47,10 @@ public class GenerateInfluence extends Influence {
 	}
 
 	public int getBegin_Radius() {
-		return begin_Radius;
+		return beginRadius;
 	}
 
 	public void setBegin_Radius(int begin_Radius) {
-		this.begin_Radius = begin_Radius;
+		this.beginRadius = begin_Radius;
 	}
 }

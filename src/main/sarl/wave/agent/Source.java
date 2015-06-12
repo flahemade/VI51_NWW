@@ -23,7 +23,7 @@ public class Source extends Agent {
 	
 	private int nbHit;
 	
-	private int begin_Radius = 1;
+	private int beginRadius = 1;
 	
 	public Source(float freq, float amp, Point2f pos){
 		this.body = new SourceBody(freq,amp,pos);
@@ -43,7 +43,7 @@ public class Source extends Agent {
 		this.body = new SourceBody(mother.getFrequency(),mother.getAmplitude(),contactPoint);
 		this.active = true;
 		this.nbHit = 0;
-		this.begin_Radius = begin_Radius;
+		this.beginRadius = begin_Radius;
 	}
 	@Override
 	public boolean decide(float currentTime, Environment environment) {
@@ -55,7 +55,7 @@ public class Source extends Agent {
 		}
 		
 		if(nbHit == 0){
-			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition(),begin_Radius));
+			body.setInfluence(new GenerateInfluence(body.getID(),body.getFrequency(),body.getAmplitude(),body.getPosition(),beginRadius));
 			nbHit++;
 			return true;
 		}
@@ -91,11 +91,11 @@ public class Source extends Agent {
 	}
 
 	public int getBegin_Radius() {
-		return begin_Radius;
+		return beginRadius;
 	}
 
 	public void setBegin_Radius(int begin_Radius) {
-		this.begin_Radius = begin_Radius;
+		this.beginRadius = begin_Radius;
 	}
 
 	public UUID getMother() {

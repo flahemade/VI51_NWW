@@ -20,9 +20,9 @@ public class WaveBody extends AgentBody {
 	
 	private int killLittleCircle;
 	
-	private List<Point2f> forbidden_points;
+	private List<Point2f> forbiddenPoints;
 	private Map<Circle2f,List<Point2f>> circleList = new HashMap<Circle2f,List<Point2f>>();
-	private boolean[] touch_Wall = new boolean[4];
+	private boolean[] touchWall = new boolean[4];
 	
 	
 	public WaveBody(float freq, float ampl,Point2f source){
@@ -33,11 +33,11 @@ public class WaveBody extends AgentBody {
 		this.circleList.put(new_circle,pixelCircle);
 		this.killLittleCircle = 0;
 		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
-		touch_Wall[0] = false;
-		touch_Wall[1] = false;
-		touch_Wall[2] = false;
-		touch_Wall[3] = false;
-		this.forbidden_points = new ArrayList<Point2f>();
+		touchWall[0] = false;
+		touchWall[1] = false;
+		touchWall[2] = false;
+		touchWall[3] = false;
+		this.forbiddenPoints = new ArrayList<Point2f>();
 	}
 
 	public WaveBody(Influence influence){
@@ -51,30 +51,30 @@ public class WaveBody extends AgentBody {
 		int x = (int) influence.getCenter().getX();
 		int y = (int) influence.getCenter().getY();
 		if(x >= 499){
-			touch_Wall[0] = true;
+			touchWall[0] = true;
 		}
 		else{
-			touch_Wall[0] = false;
+			touchWall[0] = false;
 		}
 		if(x <= 0){
-			touch_Wall[1] = true;
+			touchWall[1] = true;
 		}
 		else{
-			touch_Wall[1] = false;
+			touchWall[1] = false;
 		}
 		if(y >= 499){
-			touch_Wall[2] = true;
+			touchWall[2] = true;
 		}
 		else{
-			touch_Wall[2] = false;
+			touchWall[2] = false;
 		}
 		if(y <= 0){
-			touch_Wall[3] = true;
+			touchWall[3] = true;
 		}
 		else{
-			touch_Wall[3] = false;
+			touchWall[3] = false;
 		}
-		this.forbidden_points = new ArrayList<Point2f>();
+		this.forbiddenPoints = new ArrayList<Point2f>();
 	}
 	
 	public WaveBody(float freq, float ampl,Point2f source, boolean[] touch_Wall){
@@ -85,8 +85,8 @@ public class WaveBody extends AgentBody {
 		this.circleList.put(new_circle,pixelCircle);
 		this.killLittleCircle = 0;
 		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
-		this.touch_Wall = touch_Wall;
-		this.forbidden_points = new ArrayList<Point2f>();
+		this.touchWall = touch_Wall;
+		this.forbiddenPoints = new ArrayList<Point2f>();
 	}
 	
 	public Point2f getCenter(){
@@ -122,15 +122,15 @@ public class WaveBody extends AgentBody {
 	}
 
 	public boolean[] getTouchWall(){
-		return this.touch_Wall;
+		return this.touchWall;
 	}
 
 	public List<Point2f> getForbidden_points() {
-		return forbidden_points;
+		return forbiddenPoints;
 	}
 
 	public void setForbidden_points(List<Point2f> forbidden_points) {
-		this.forbidden_points = forbidden_points;
+		this.forbiddenPoints = forbidden_points;
 	}
 	
 }

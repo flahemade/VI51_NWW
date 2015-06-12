@@ -12,7 +12,7 @@ public class ExpandInfluence extends Influence {
 	private float speed; //expressed in pixels/seconds
 	
 	private Point2f center;
-	private Set<Point2f> pixels_influenced;
+	private Set<Point2f> pixelsInfluenced;
 
 	private static final long serialVersionUID = 5438430175395138512L;
 
@@ -44,11 +44,11 @@ public class ExpandInfluence extends Influence {
 	}
 
 	public Set<Point2f> getPixels_influenced() {
-		return pixels_influenced;
+		return pixelsInfluenced;
 	}
 
 	public void setPixels_influenced(Set<Point2f> pixels_influenced) {
-		this.pixels_influenced = pixels_influenced;
+		this.pixelsInfluenced = pixels_influenced;
 	}
 	
 	
