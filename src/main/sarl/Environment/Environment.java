@@ -48,7 +48,7 @@ public class Environment{
 	}
 	
 	public void addAgents(Influence influence){
-		Wave w = new Wave(((GenerateInfluence)influence));
+		Wave w = new Wave(((GenerateInfluence)influence),this.getTimeManager().getCurrentTime());
 		agents.put(w.getBody().getID(), w);
 	}
 

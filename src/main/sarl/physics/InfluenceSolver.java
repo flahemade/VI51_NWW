@@ -77,7 +77,7 @@ public class InfluenceSolver {
 	}
 	
 	public Map<Point2f, Integer> generate(Environment environment, Influence influence, Map<Point2f, Integer> z){
-		Wave w = new Wave(influence);
+		Wave w = new Wave(influence,environment.getTimeManager().getCurrentTime());
 		environment.getAgents().put(w.getBody().getID(), w);
 		//Building a new pixel circle
 		float newRadius = ((GenerateInfluence) influence).getBegin_Radius();
@@ -96,60 +96,63 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 		Rectangle2f map = environment.getMap();
 		//Treating the influence as a Circle
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence.getEmitter()).getBody();
-//Building a new pixel circle
-		List<Point2f> pixelCircle = new ArrayList<Point2f>();
-		Circle2f influenceCircle1=new Circle2f(influence.getCenter(),emitter.getRadius());
-		Wave w = ((Wave)(environment.getAgents().get(influence.getEmitter())));
-		if(((Source) environment.getAgents().get(w.getSource())) != null){
-			float newRadius = ((WaveBody) emitter).getRadius()+1;
-			emitter.setRadius(newRadius);
-			influenceCircle1.setRadius(emitter.getRadius());
-			if(((WaveBody) w.getBody()).getForbidden_points().size()==0){
-				pixelCircle = influenceCircle1.constructPixelCircle();
+		if(environment.getTimeManager().getCurrentTime()>emitter.getLastExpand()+(1/emitter.getSpeed())*environment.getTimeManager().getLastStepDuration()){
+			//Building a new pixel circle
+			List<Point2f> pixelCircle = new ArrayList<Point2f>();
+			Circle2f influenceCircle1=new Circle2f(influence.getCenter(),emitter.getRadius());
+			Wave w = ((Wave)(environment.getAgents().get(influence.getEmitter())));
+			if(((Source) environment.getAgents().get(w.getSource())) != null){
+				float newRadius = ((WaveBody) emitter).getRadius()+1;
+				emitter.setRadius(newRadius);
+				influenceCircle1.setRadius(emitter.getRadius());
+				if(((WaveBody) w.getBody()).getForbidden_points().size()==0){
+					pixelCircle = influenceCircle1.constructPixelCircle();
+				}
+				else{
+					pixelCircle = influenceCircle1.constructTruncatePixelCircle(((WaveBody) w.getBody()).getForbidden_points());
+				}
+				
+				emitter.getCircleList().put(influenceCircle1, pixelCircle);
+				((ExpandInfluence) influence).getPixels_influenced().addAll(pixelCircle);
 			}
 			else{
-				pixelCircle = influenceCircle1.constructTruncatePixelCircle(((WaveBody) w.getBody()).getForbidden_points());
+				emitter.incrementKillLittleCircle();
 			}
-			
-			emitter.getCircleList().put(influenceCircle1, pixelCircle);
-			((ExpandInfluence) influence).getPixels_influenced().addAll(pixelCircle);
-		}
-		else{
-			emitter.incrementKillLittleCircle();
-		}
-		List<Circle2f> remove_circle = new ArrayList<Circle2f>();
-//Updating the map
-		for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
-			int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
-			if(emitter.getKillLittleCircle() == circle.getKey().getRadius()){
-				remove_circle.add(circle.getKey());
-				((ExpandInfluence) influence).getPixels_influenced().removeAll(circle.getKey().constructPixelCircle());
-				List<Point2f> point_list = circle.getValue();
-				for(Point2f point : point_list){
-					z.put(point, 0);
+			List<Circle2f> remove_circle = new ArrayList<Circle2f>();
+	//Updating the map
+			for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
+				int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
+				if(emitter.getKillLittleCircle() == circle.getKey().getRadius()){
+					remove_circle.add(circle.getKey());
+					((ExpandInfluence) influence).getPixels_influenced().removeAll(circle.getKey().constructPixelCircle());
+					List<Point2f> point_list = circle.getValue();
+					for(Point2f point : point_list){
+						z.put(point, 0);
+					}
 				}
+				else{
+					List<Point2f> point_list = circle.getValue();
+					for(Point2f point : point_list){
+						if(z.containsKey(point)){
+							z.put(point, z.get(point) + (int) (emitter.getAmplitude()*(Math.sin(dephasing)+1)/2));
+						}
+						else{
+							z.put(point, (int) (emitter.getAmplitude()*(Math.sin(dephasing))));
+						}
+						
+					}
+				}	
 			}
-			else{
-				List<Point2f> point_list = circle.getValue();
-				for(Point2f point : point_list){
-					if(z.containsKey(point)){
-						z.put(point, z.get(point) + (int) (emitter.getAmplitude()*(Math.sin(dephasing)+1)/2));
-					}
-					else{
-						z.put(point, (int) (emitter.getAmplitude()*(Math.sin(dephasing))));
-					}
-					
-				}
-			}	
-		}
-		for(Circle2f circle : remove_circle){
-			emitter.getCircleList().remove(circle);
-		}
+			for(Circle2f circle : remove_circle){
+				emitter.getCircleList().remove(circle);
+			}
 
-//Finding collision with map border and obstacle
-		
-		contactMap(environment,influenceCircle1, map, influence);
-		contactObstacle(environment,pixelCircle,(ExpandInfluence) influence);
+	//Finding collision with map border and obstacle
+			
+			contactMap(environment,influenceCircle1, map, influence);
+			//contactObstacle(environment,pixelCircle,(ExpandInfluence) influence);
+
+		}
 
 		return z;
 	}
@@ -219,7 +222,7 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 		environment.addAgents(s.getBody().getID(),s);
 	}
 	
-	private void contactObstacle(Environment environment,List<Point2f> pixelCircle, ExpandInfluence influence){
+	/*private void contactObstacle(Environment environment,List<Point2f> pixelCircle, ExpandInfluence influence){
 		Wave emitter = (Wave) environment.getAgents().get(influence.getEmitter());
 		for(Wall w : environment.getObstacle()){
 			
@@ -259,6 +262,6 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 					System.out.println(((WaveBody) emitter.getBody()).getForbidden_points());
 				}
 		}
-	}
+	}*/
 	
 }

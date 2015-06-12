@@ -15,6 +15,7 @@ import fr.utbm.info.vi51.framework.math.Point2f;
 public class WaveBody extends AgentBody {
 
 	private float speed; //expressed in pixels/seconds
+	private float lastExpand;
 	
 	private float radius;
 	
@@ -25,7 +26,7 @@ public class WaveBody extends AgentBody {
 	private boolean[] touchWall = new boolean[4];
 	
 	
-	public WaveBody(float freq, float ampl,Point2f source){
+	public WaveBody(float freq, float ampl,Point2f source,float time){
 		super(freq,ampl,source);
 		this.speed = (float) Math.sqrt(1/freq);
 		Circle2f new_circle = new Circle2f(source, 1);
@@ -38,9 +39,10 @@ public class WaveBody extends AgentBody {
 		touchWall[2] = false;
 		touchWall[3] = false;
 		this.forbiddenPoints = new ArrayList<Point2f>();
+		setLastExpand(time);
 	}
 
-	public WaveBody(Influence influence){
+	public WaveBody(Influence influence, float time){
 		super(influence);
 		this.speed = (float) Math.sqrt(1/((GenerateInfluence) influence).getFrequency());
 		Circle2f new_circle = new Circle2f(influence.getCenter(),radius);
@@ -75,9 +77,10 @@ public class WaveBody extends AgentBody {
 			touchWall[3] = false;
 		}
 		this.forbiddenPoints = new ArrayList<Point2f>();
+		setLastExpand(time);
 	}
 	
-	public WaveBody(float freq, float ampl,Point2f source, boolean[] touch_Wall){
+	public WaveBody(float freq, float ampl,Point2f source, boolean[] touch_Wall, float time){
 		super(freq,ampl,source);
 		this.speed = (float) Math.sqrt(1/freq);
 		Circle2f new_circle = new Circle2f(source, 1);
@@ -87,6 +90,7 @@ public class WaveBody extends AgentBody {
 		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
 		this.touchWall = touch_Wall;
 		this.forbiddenPoints = new ArrayList<Point2f>();
+		setLastExpand(time);
 	}
 	
 	public Point2f getCenter(){
@@ -131,6 +135,14 @@ public class WaveBody extends AgentBody {
 
 	public void setForbidden_points(List<Point2f> forbidden_points) {
 		this.forbiddenPoints = forbidden_points;
+	}
+
+	public float getLastExpand() {
+		return lastExpand;
+	}
+
+	public void setLastExpand(float lastExpand) {
+		this.lastExpand = lastExpand;
 	}
 	
 }

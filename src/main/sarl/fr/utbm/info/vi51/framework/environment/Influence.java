@@ -24,7 +24,6 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import fr.utbm.info.vi51.framework.math.Point2f;
-import fr.utbm.info.vi51.framework.math.Tuple2f;
 
 /**
  * Abstract implementation of an influence.
@@ -38,7 +37,6 @@ public abstract class Influence implements Serializable {
 	private static final long serialVersionUID = -3172105252469025247L;
 
 	protected UUID emitter = null;
-	
 	
 	/** Replies the emitter of the influence.
 	 * 
@@ -57,6 +55,8 @@ public abstract class Influence implements Serializable {
 		this.emitter = emitter;
 	}
 
-	abstract public Point2f getCenter();
-	
+	public Point2f getCenter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

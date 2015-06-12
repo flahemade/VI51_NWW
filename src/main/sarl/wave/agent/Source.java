@@ -48,10 +48,16 @@ public class Source extends Agent {
 	@Override
 	public boolean decide(float currentTime, Environment environment) {
 		if(mother!=null){
-			WaveBody bodymother = ((WaveBody) environment.getAgents().get(mother).getBody());
-			if(bodymother.getKillLittleCircle()>this.getBody().getPosition().distance(bodymother.getCenter())){
+			if(environment.getAgents().containsKey(mother)){
+				WaveBody bodymother = ((WaveBody) environment.getAgents().get(mother).getBody());
+				if(bodymother.getKillLittleCircle()>this.getBody().getPosition().distance(bodymother.getCenter())){
+					this.active = false;
+				}
+			}
+			else{
 				this.active = false;
 			}
+			
 		}
 		
 		if(nbHit == 0){
