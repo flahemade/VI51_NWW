@@ -96,6 +96,8 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 		Rectangle2f map = environment.getMap();
 		//Treating the influence as a Circle
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence.getEmitter()).getBody();
+		System.out.println(environment.getTimeManager().getCurrentTime());
+		System.out.println("expand"+emitter.getLastExpand()+(1/emitter.getSpeed())*environment.getTimeManager().getLastStepDuration());
 		if(environment.getTimeManager().getCurrentTime()>emitter.getLastExpand()+(1/emitter.getSpeed())*environment.getTimeManager().getLastStepDuration()){
 			//Building a new pixel circle
 			List<Point2f> pixelCircle = new ArrayList<Point2f>();
@@ -118,6 +120,8 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 			else{
 				emitter.incrementKillLittleCircle();
 			}
+			contactMap(environment,influenceCircle1, map, influence);
+		}
 			List<Circle2f> remove_circle = new ArrayList<Circle2f>();
 	//Updating the map
 			for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
@@ -149,10 +153,8 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 
 	//Finding collision with map border and obstacle
 			
-			contactMap(environment,influenceCircle1, map, influence);
+			
 			//contactObstacle(environment,pixelCircle,(ExpandInfluence) influence);
-
-		}
 
 		return z;
 	}

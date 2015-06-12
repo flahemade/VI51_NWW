@@ -9,7 +9,7 @@ import fr.utbm.info.vi51.framework.math.Point2f;
 public class ExpandInfluence extends Influence {
 
 	private float amplitude;
-	private float speed; //expressed in pixels/seconds
+	private float speed; //expressed in pixels/step
 	
 	private Point2f center;
 	private Set<Point2f> pixelsInfluenced;
