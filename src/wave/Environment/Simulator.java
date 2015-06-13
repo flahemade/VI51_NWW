@@ -1,7 +1,6 @@
 package wave.Environment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,16 +24,17 @@ public class Simulator {
 	    List<Influence> inf = new ArrayList<Influence>();
 	    InfluenceSolver solve = new InfluenceSolver(inf);
 	    Random rand = new Random();
-	    Map<UUID,Agent> next_agents = new HashMap<UUID, Agent>();
 	    long start,end;
+	    //loop of simulation
 	    for(int k=0;k<1000000000;++k){
 	    	start = System.currentTimeMillis();
+	    	//create a new source if k%3=0
 	    	if(k%3==0){
 	    		Source s = new Source((float) (Math.random()*10+0.30),rand.nextInt(80)+30,new Point2f(rand.nextInt(500) ,rand.nextInt(500)));
 				env.addAgents(s.getBody().getID(),s);
 	    	}
-	    	next_agents.clear();
 	    	solve.getInfluence().clear();
+	    	//trace new obstacle
 	    	if(!env.getObstacle().isEmpty()){
 	    		Wall w = env.getObstacle().get(env.getObstacle().size()-1);
 		    	if(!w.is_Draw()){
@@ -48,7 +48,7 @@ public class Simulator {
 		    		}
 		    	}
 	    	}
-	    	
+	    	//set influence
 	    	for(Entry<UUID, Agent> a : env.getAgents().entrySet()){
 	    		if(a.getValue().decide(k,env)){
 	    			Influence influence = a.getValue().getBody().getInfluence();
@@ -56,10 +56,12 @@ public class Simulator {
 	    			solve.getInfluence().add(influence);
 	    		}
 	    	}
+	    	//solve influence and update environment
 	    	Map<Point2f, Integer> change = solve.solveConflicts(env);
 			((Window) window).getmainPane().setWater(change);
 	    	end = System.currentTimeMillis() - start;
 	    	env.getTimeManager().increment();
+	    	//if loop is too quickly, wait
 	    	if(env.getTimeManager().getLastStepDuration() - end>0){
 	    		Thread.sleep((long) (env.getTimeManager().getLastStepDuration() - end));
 	    	}

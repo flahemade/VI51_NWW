@@ -23,8 +23,10 @@ public class WaveBody extends AgentBody {
 	
 	private List<Point2f> forbiddenPoints;
 	private Map<Circle2f,List<Point2f>> circleList = new HashMap<Circle2f,List<Point2f>>();
-	private boolean[] touchWall = new boolean[4];
-	
+	private boolean[] touchWall = new boolean[4]; /*
+	*if wave have touch a wall, or if center it's behind this wall
+	* the boolean it's true to don't create again a new source
+	*/
 	
 	public WaveBody(float freq, float ampl,Point2f source,float time){
 		super(freq,ampl,source);

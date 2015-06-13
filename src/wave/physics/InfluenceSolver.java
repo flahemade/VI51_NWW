@@ -91,11 +91,13 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 		Rectangle2f map = environment.getMap();
 		//Treating the influence as a Circle
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence.getEmitter()).getBody();
+		//test if it's time to expand
 		if(environment.getTimeManager().getCurrentTime()>emitter.getLastExpand()+(1/emitter.getSpeed())*environment.getTimeManager().getLastStepDuration()){
 			//Building a new pixel circle
 			List<Point2f> pixelCircle = new ArrayList<Point2f>();
 			Circle2f influenceCircle1=new Circle2f(influence.getCenter(),emitter.getRadius());
 			Wave w = ((Wave)(environment.getAgents().get(influence.getEmitter())));
+			//if mother source exists, the wave expands
 			if(((Source) environment.getAgents().get(w.getSource())) != null){
 				float newRadius = ((WaveBody) emitter).getRadius()+1;
 				emitter.setRadius(newRadius);
@@ -110,15 +112,17 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 				emitter.getCircleList().put(influenceCircle1, pixelCircle);
 				((ExpandInfluence) influence).getPixels_influenced().addAll(pixelCircle);
 			}
+			//if mother source is dead, we kill the interior of wave
 			else{
 				emitter.incrementKillLittleCircle();
 			}
+			//Finding collision with map border
 			contactMap(environment,influenceCircle1, map, influence);
 		}
 			List<Circle2f> remove_circle = new ArrayList<Circle2f>();
 	//Updating the map
 			for(Entry<Circle2f, List<Point2f>> circle: emitter.getCircleList().entrySet()){
-				int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
+				//remove circle
 				if(emitter.getKillLittleCircle() == circle.getKey().getRadius()){
 					remove_circle.add(circle.getKey());
 					((ExpandInfluence) influence).getPixels_influenced().removeAll(circle.getKey().constructPixelCircle());
@@ -127,7 +131,9 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 						z.put(point, 0);
 					}
 				}
+				//update circle
 				else{
+					int dephasing = (int) (2*Math.PI*(((emitter.getCenter().getX() - circle.getKey().getRadius())*emitter.getSpeed()/emitter.getFrequency())-environment.getTimeManager().getCurrentTime()*emitter.getFrequency()));
 					List<Point2f> point_list = circle.getValue();
 					for(Point2f point : point_list){
 						if(z.containsKey(point)){
@@ -144,7 +150,6 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 				emitter.getCircleList().remove(circle);
 			}
 
-	//Finding collision with map border and obstacle
 			
 			
 
@@ -189,23 +194,29 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 			}
 		}
 	}
-	
+	/*
+	 * This function find the new source with contactPoint and waveBody
+	 */
 	private void wallContact(Environment environment,Point2f contactPoint, WaveBody a){
 		Point2f sourcePoint;
 		int x,y;
 		if(contactPoint.getX()<a.getPosition().getX()){
+			//Left
 			x = (int) (contactPoint.getX()-a.getPosition().getX());
 		}
 		else if (contactPoint.getX()>a.getPosition().getX()){
+			//Right
 			x = (int) (contactPoint.getX()*2-a.getPosition().getX());
 		}
 		else{
 			x = (int) a.getPosition().getX();
 		}
 		if(contactPoint.getY()<a.getPosition().getY()){
+			//UP
 			y = (int) (contactPoint.getY()-a.getPosition().getY());
 		}
 		else if (contactPoint.getY()>a.getPosition().getY()){
+			//DOWN
 			y = (int) (contactPoint.getY()*2-a.getPosition().getY());
 		}
 		else{
