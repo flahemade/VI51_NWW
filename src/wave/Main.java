@@ -1,5 +1,3 @@
-package wave.Environment;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +8,7 @@ import java.util.UUID;
 
 import javax.swing.JFrame;
 
+import wave.Environment.Environment;
 import wave.GUI.Window;
 import wave.agent.Agent;
 import wave.agent.Source;
@@ -18,8 +17,8 @@ import wave.physics.InfluenceSolver;
 import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
-public class Simulator {
-	public static void main(String[] args) throws InterruptedException{
+public class Main {
+	  public static void main(String[] args) throws InterruptedException{
 		Environment env = new Environment();
 	    JFrame window = new Window(env);
 	    List<Influence> inf = new ArrayList<Influence>();
@@ -29,7 +28,7 @@ public class Simulator {
 	    long start,end;
 	    for(int k=0;k<1000000000;++k){
 	    	start = System.currentTimeMillis();
-	    	if(k%3==0){
+	    	if(k%5==0){
 	    		Source s = new Source((float) (Math.random()*10+0.30),rand.nextInt(80)+30,new Point2f(rand.nextInt(500) ,rand.nextInt(500)));
 				env.addAgents(s.getBody().getID(),s);
 	    	}
@@ -66,5 +65,5 @@ public class Simulator {
 	    	
 		}
 	    window.dispose();
-	  }
+	  }      
 }
