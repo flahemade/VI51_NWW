@@ -2,10 +2,10 @@ package wave.agent;
 
 import java.util.UUID;
 
-import Environment.Environment;
 import wave.behavior.KillInfluence;
 import wave.body.AgentBody;
 import wave.body.WaveBody;
+import Environment.Environment;
 import fr.utbm.info.vi51.framework.environment.Influence;
 import fr.utbm.info.vi51.framework.math.Point2f;
 

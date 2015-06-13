@@ -7,14 +7,16 @@ import javax.swing.JFrame;
 import Environment.Environment;
 
 public class Window extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3409559217627536841L;
 	private static Window instance;
 	private WorldPanel mainPane;
 	private Environment env;
 	private SelectionPanel selectPane;
 	public Window(Environment env){
 		this.setTitle("New Wave World");
-		float width = env.getWidth();
-		float heigth = env.getHeight();
 		this.env = env;
 		this.mainPane = new WorldPanel(this.env);
 		this.selectPane = new SelectionPanel(this.env);

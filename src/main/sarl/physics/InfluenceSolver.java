@@ -2,20 +2,15 @@ package physics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import com.google.common.collect.Sets;
 
 import wave.agent.Source;
 import wave.agent.Wave;
 import wave.behavior.ExpandInfluence;
 import wave.behavior.GenerateInfluence;
 import wave.behavior.KillInfluence;
-import wave.body.Wall;
 import wave.body.WaveBody;
 import Environment.Environment;
 import fr.utbm.info.vi51.framework.environment.Influence;

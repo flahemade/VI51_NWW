@@ -13,6 +13,10 @@ import Environment.Environment;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class WorldPanel extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2060576121750812425L;
 	private int width;
 	private int height;
 	private BufferedImage water;
@@ -57,7 +61,7 @@ public class WorldPanel extends JPanel{
 		//int colors[] = new int[3];
 		
 		for(Point2f p : change.keySet()){
-			int i = (int) p.getX() + (int) p.getY() * width;
+			//int i = (int) p.getX() + (int) p.getY() * width;
 			int color=128-change.get(p);
 			if(color<0)color=0;
 			if(water.getRGB((int)(p.getX()), (int)(p.getY())) != new Color(255,0,0).getRGB()){

@@ -23,6 +23,8 @@ package fr.utbm.info.vi51.framework.util;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+
 /**
  * This interface provides implementations to load resources according to
  * several heuristics:<ul>

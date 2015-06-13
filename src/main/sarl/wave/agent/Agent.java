@@ -1,7 +1,7 @@
 package wave.agent;
 
-import Environment.Environment;
 import wave.body.AgentBody;
+import Environment.Environment;
 
 public abstract class Agent {
 

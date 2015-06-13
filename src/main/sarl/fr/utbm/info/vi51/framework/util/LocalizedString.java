@@ -31,9 +31,9 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.Map.Entry;
 
 /**
  * This utility class permits a easier use of localized strings.

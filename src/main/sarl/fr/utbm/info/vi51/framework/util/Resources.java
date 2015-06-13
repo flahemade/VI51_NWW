@@ -26,6 +26,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+
 /**
  * This utility class provides to load resources according to
  * several heuristics:<ul>

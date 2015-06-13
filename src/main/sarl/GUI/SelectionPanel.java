@@ -16,6 +16,10 @@ import Environment.Environment;
 import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class SelectionPanel extends JPanel implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3997194381615531395L;
 	private JSlider frequence;
 	private JSlider force;
 	private JButton source_point;
