@@ -57,42 +57,13 @@ public class WorldPanel extends JPanel{
 	}
 	
 	public void setWater(Map<Point2f,Integer> change) {
-		//int[] pixels = ((DataBufferInt)water.getRaster().getDataBuffer()).getData();
-		//int colors[] = new int[3];
 		
 		for(Point2f p : change.keySet()){
-			//int i = (int) p.getX() + (int) p.getY() * width;
 			int color=128-change.get(p);
 			if(color<0)color=0;
 			if(water.getRGB((int)(p.getX()), (int)(p.getY())) != new Color(255,0,0).getRGB()){
 				water.setRGB((int)(p.getX()), (int)(p.getY()), (new Color(0, 0, color)).getRGB());
 			}
-			/*colors[0] = ((pixels[i] >> 16) & 0xff); // red;
-			colors[1] = ((pixels[i] >>  8) & 0xff); // green;
-			colors[2] = ( pixels[i] - change.get(p)       & 0xff); // blue;);
-			if(colors[2]<0){
-				colors[2]=0;
-			}
-			//System.out.println(colors[0]+ " "+colors[1]+" "+colors[2]);
-			Color col = new Color(colors[0], colors[1], colors[2],((pixels[i] >> 24) & 0xff));
-			pixels[i] = col.getRGB() + ((pixels[i] >> 24) & 0xff);
-			//tmp = System.currentTimeMillis() - start;
-			//System.out.println("Time loop " + tmp);
-		}
-		DirectColorModel cm = (DirectColorModel)
-				ColorModel.getRGBdefault();
-
-				// MemorImageSource vesion
-				MemoryImageSource source = new MemoryImageSource(width,
-				height, cm, pixels, 0, width, null);
-				Image image = Toolkit.getDefaultToolkit().createImage(source);
-
-				// BufferedImage version
-				DataBufferInt buffer = new DataBufferInt(pixels, width * height);
-				WritableRaster raster =
-				Raster.createPackedRaster(buffer, width, height, width, cm.getMasks(), null);
-				water = new BufferedImage(cm, raster,
-				cm.isAlphaPremultiplied(), null);*/
 		}
 		repaint();
 	}

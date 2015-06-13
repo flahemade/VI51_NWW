@@ -91,8 +91,6 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 		Rectangle2f map = environment.getMap();
 		//Treating the influence as a Circle
 		WaveBody emitter = (WaveBody) environment.getAgents().get(influence.getEmitter()).getBody();
-		System.out.println(environment.getTimeManager().getCurrentTime());
-		System.out.println("expand"+emitter.getLastExpand()+(1/emitter.getSpeed())*environment.getTimeManager().getLastStepDuration());
 		if(environment.getTimeManager().getCurrentTime()>emitter.getLastExpand()+(1/emitter.getSpeed())*environment.getTimeManager().getLastStepDuration()){
 			//Building a new pixel circle
 			List<Point2f> pixelCircle = new ArrayList<Point2f>();

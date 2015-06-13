@@ -49,7 +49,6 @@ public class Wall {
 		shadow_zone.add(new Circle2f(x,y-height/2,height/2));
 		//RIGHT
 		shadow_zone.add(new Circle2f(x+width,y-height/2,height/2));
-		System.out.println(shadow_zone);
 	}
 	
 	public Wall(Point2f position, int width, int height){
@@ -78,7 +77,6 @@ public class Wall {
 		shadow_zone.add(new Circle2f(x-1,y+height/2,height/2));
 		//RIGHT
 		shadow_zone.add(new Circle2f(x+width,y+height/2,height/2));
-		System.out.println(shadow_zone);
 	}
 	
 	public Point2f getPosition() {

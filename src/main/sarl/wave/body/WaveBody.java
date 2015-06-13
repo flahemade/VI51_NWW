@@ -31,7 +31,6 @@ public class WaveBody extends AgentBody {
 		this.speed = (float) Math.sqrt(1/freq);
 		Circle2f new_circle = new Circle2f(source, 1);
 		List<Point2f> pixelCircle = new_circle.constructPixelCircle();
-		System.out.println(pixelCircle);
 		this.circleList.put(new_circle,pixelCircle);
 		this.killLittleCircle = 0;
 		this.setInfluence(new ExpandInfluence(this.getID(), this.getAmplitude(), this.speed, this.getCenter(),new HashSet<Point2f>(pixelCircle)));
