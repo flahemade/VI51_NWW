@@ -13,9 +13,9 @@ import fr.utbm.info.vi51.framework.math.Point2f;
 
 public class Source extends Agent {
 
-	private SourceBody body;
+	private SourceBody body; 
 	
-	private UUID mother = null;
+	private UUID mother = null; //the UUID of wave who create source by hit a wall
 	
 	private boolean active;
 	
@@ -23,7 +23,7 @@ public class Source extends Agent {
 	
 	private int nbHit;
 	
-	private int beginRadius = 1;
+	private int beginRadius = 1; //1 if we create a source, the radius of mother wave if its wall contact
 	
 	public Source(float freq, float amp, Point2f pos){
 		this.body = new SourceBody(freq,amp,pos);

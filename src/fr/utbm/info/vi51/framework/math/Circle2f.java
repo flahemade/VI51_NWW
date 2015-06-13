@@ -121,50 +121,7 @@ public class Circle2f extends Shape2f<Circle2f> {
 		}
 		throw new IllegalArgumentException();
 	}
-
-	public List<Point2f> point_intersects(Shape2f<?> s){
-		List<Point2f> intersects = new ArrayList<Point2f>();
-		if(s instanceof Circle2f){
-			float radius0 = this.getRadius();
-			float centerx0 = this.getCenter().getX();
-			float centery0 = this.getCenter().getY();
-			
-			float radius1 = ((Circle2f) s).getRadius();
-			float centerx1 = ((Circle2f) s).getCenter().getX();
-			float centery1 = ((Circle2f) s).getCenter().getY();
-			
-			float radius0square = (float) Math.pow(radius0,2);
-			float centerx0square = (float) Math.pow(centerx0,2);
-			float centery0square = (float) Math.pow(centery0,2);
-			
-			float radius1square = (float) Math.pow(radius1,2);
-			float centerx1square = (float) Math.pow(centerx1,2);
-			float centery1square = (float) Math.pow(centery1,2);
-			
-			float ratiocenter = (centerx0 - centerx1)/(centery0 - centery1);
-			
-			float N = (radius1square - radius0square - centerx1square + centerx0square - centery1square + centery0square)/(2*(centery0-centery1));
-			
-			float A = (float) Math.pow(ratiocenter,2)+1;
-			float B = 2*centery0*ratiocenter - 2*N*ratiocenter - 2*centerx0;
-			float C = (float) (centerx0square + centery0square + Math.pow(N, 2) - radius0square - 2*centery0*N);
-			float delta = (float) Math.sqrt(Math.pow(B, 2) - 4*A*C);
-			
-			float x1 = (-B+delta)/(2*A);
-			float y1 = N - x1 * ratiocenter;
-			intersects.add(new Point2f(x1,y1));
-			
-			float x2 = (-B-delta)/(2*A);
-			float y2 = N - x2 * ratiocenter;
-			intersects.add(new Point2f(x2,y2));
-		}
-		
-		
-		
-		return intersects;
-		
-		
-	}
+	
 	@Override
 	public Circle2f translate(Tuple2f<?> vector) {
 		return new Circle2f(
@@ -192,8 +149,8 @@ public class Circle2f extends Shape2f<Circle2f> {
 		/**
 		 * 
 		 *  This function build a circle composed of pixels.
-		 *  From the center and the radius.
-		 * 
+		 *  From the center and the radius
+		 *   
 		 **/
 
     	
@@ -306,6 +263,8 @@ public ArrayList<Point2f> constructTruncatePixelCircle(List<Point2f> forbiddenPo
 	 * 
 	 *  This function build a circle composed of pixels.
 	 *  From the center and the radius.
+	 *  But doesn't add the pixel contains in forbiddenPoints
+	 *  This function serve to create "shadow zones" after an obstacle
 	 * 
 	 **/
 
