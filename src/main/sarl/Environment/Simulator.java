@@ -58,7 +58,6 @@ public class Simulator {
 	    	}
 	    	Map<Point2f, Integer> change = solve.solveConflicts(env);
 			((Window) window).getmainPane().setWater(change);
-	    	System.out.println("Current number of agents :"+env.getAgents().size());
 	    	end = System.currentTimeMillis() - start;
 	    	env.getTimeManager().increment();
 	    	if(env.getTimeManager().getLastStepDuration() - end>0){

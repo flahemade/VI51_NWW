@@ -35,7 +35,6 @@ public class Wave extends Agent{
 		}
 		else{
 			//The wave expands
-			//body.setInfluence(new ExpandInfluence(null, body.getID(), body.getAmplitude(), ((WaveBody) body).getSpeed(), ((WaveBody)body).getCenter()));
 			return true;
 		}
 	}
