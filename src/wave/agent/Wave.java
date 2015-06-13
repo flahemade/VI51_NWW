@@ -14,7 +14,6 @@ public class Wave extends Agent{
 	private UUID source;
 	
 	public Wave(float freq, float ampl,UUID source, boolean[] touch_wall, Point2f position, float time){
-		System.out.println("test"+touch_wall[1]);
 		this.body = new WaveBody(freq, ampl, position ,touch_wall,time);
 		this.source=source;
 	}
@@ -35,7 +34,6 @@ public class Wave extends Agent{
 		}
 		else{
 			//The wave expands
-			//body.setInfluence(new ExpandInfluence(null, body.getID(), body.getAmplitude(), ((WaveBody) body).getSpeed(), ((WaveBody)body).getCenter()));
 			return true;
 		}
 	}

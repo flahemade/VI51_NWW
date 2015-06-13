@@ -147,7 +147,6 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 	//Finding collision with map border and obstacle
 			
 			
-			//contactObstacle(environment,pixelCircle,(ExpandInfluence) influence);
 
 		return z;
 	}
