@@ -198,7 +198,7 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 			x = (int) (contactPoint.getX()-a.getPosition().getX());
 		}
 		else if (contactPoint.getX()>a.getPosition().getX()){
-			x = (int) (contactPoint.getX()+a.getPosition().getX());
+			x = (int) (contactPoint.getX()*2-a.getPosition().getX());
 		}
 		else{
 			x = (int) a.getPosition().getX();
@@ -207,7 +207,7 @@ public Map<Point2f,Integer> expand(Environment environment,Influence influence, 
 			y = (int) (contactPoint.getY()-a.getPosition().getY());
 		}
 		else if (contactPoint.getY()>a.getPosition().getY()){
-			y = (int) (contactPoint.getY()+a.getPosition().getY());
+			y = (int) (contactPoint.getY()*2-a.getPosition().getY());
 		}
 		else{
 			y = (int) a.getPosition().getY();

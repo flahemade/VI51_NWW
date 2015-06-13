@@ -28,7 +28,7 @@ public class SelectionPanel extends JPanel implements ActionListener{
 	
 	public SelectionPanel(Environment env){
 	    addSelectionButton();
-	    frequence = addSlider(frequence,SwingConstants.VERTICAL,1, 300, 10);
+	    frequence = addSlider(frequence,SwingConstants.VERTICAL,1, 1000, 500);
 	    amplitude = addSlider(amplitude,SwingConstants.VERTICAL,1,200,50);
 	    this.env = env;
 	    addPositionTextField();
@@ -42,7 +42,7 @@ public class SelectionPanel extends JPanel implements ActionListener{
 	    slider.setPaintLabels(true);
 	    slider.setMinorTickSpacing(max/20);
 	    slider.setMajorTickSpacing(max/5);
-	    slider.setVisible(false);
+	    slider.setVisible(true);
 	    return slider;
 	}
 	
@@ -63,60 +63,40 @@ public class SelectionPanel extends JPanel implements ActionListener{
 		this.add = new JButton("ADD");
 		add.setName("add");
 		this.add.setPreferredSize(new Dimension(70, 50));
-		this.add.setVisible(false);
+		this.add.setVisible(true);
 		this.add.addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String buttonName = ((JButton)e.getSource()).getName();
 		if(buttonName.equals("source_point")){
-			this.frequence.setVisible(true);
-			this.amplitude.setVisible(true);
-			this.pos_x.setVisible(true);
-			this.pos_y.setVisible(true);
-			this.add.setVisible(true);
 			b_source_obstacle = true;
 		}
 		else if(buttonName.equals("obstacle")){
 			System.out.println("obstacle");
-			this.pos_x.setVisible(true);
-			this.pos_y.setVisible(true);
-			this.add.setVisible(true);
 			b_source_obstacle = false;
 		}
 		
 		else if(buttonName.equals("add")){
 			System.out.println("add");
 			if(b_source_obstacle==true){
-				Source s = new Source(((float)this.frequence.getValue())/30,this.amplitude.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
+				Source s = new Source(((float)this.frequence.getValue())/100,this.amplitude.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
 				env.addAgents(s.getBody().getID(),s);
-				this.amplitude.setVisible(false);
-				this.frequence.setVisible(false);
 			}
 			else{
 				Wall w = new Wall(new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())),5,5);
 				env.getObstacle().add(w);
-				this.pos_x.setVisible(false);
-				this.pos_y.setVisible(false);
-				this.add.setVisible(false);
-				//Wave w = new Wave(this.frequence.getValue(),this.force.getValue(),new Point2f(Integer.parseInt(this.pos_x.getText()),Integer.parseInt(this.pos_y.getText())));
-				//env.addAgents(w.getBody().getID(),w);
 			}
-			
-			this.pos_x.setVisible(false);
-			this.pos_y.setVisible(false);
-			this.add.setVisible(false);
 		}
 	}
 	
 	public void addPositionTextField(){
 		this.pos_x = new JTextField("300");
 		this.add(this.pos_x);
-		this.pos_x.setVisible(false);
+		this.pos_x.setVisible(true);
 		this.pos_y = new JTextField("300");
 		this.add(this.pos_y);
-		this.pos_y.setVisible(false);
-		
+		this.pos_y.setVisible(true);
 		this.add(this.add);
 	}
 }

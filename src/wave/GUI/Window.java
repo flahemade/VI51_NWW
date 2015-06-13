@@ -1,8 +1,10 @@
 package wave.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import wave.Environment.Environment;
 
@@ -21,7 +23,14 @@ public class Window extends JFrame{
 		add(mainPane,BorderLayout.CENTER);
 		add(selectPane,BorderLayout.EAST);
 		this.setSize(((int)width+375),((int)height+40));
+		this.setResizable(false);
 		this.setVisible(true);
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		            System.exit(0);
+		    }
+		});
 	}
 	
 	public static Window getInstance() {
@@ -35,4 +44,10 @@ public class Window extends JFrame{
 	public SelectionPanel getSelectionPanel(){
 		return selectPane;
 	}
+	
+	public void dispose(){
+		System.exit(0);
+	}
+	
+
 }

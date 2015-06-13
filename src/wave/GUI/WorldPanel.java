@@ -19,30 +19,25 @@ public class WorldPanel extends JPanel{
 	
 	public WorldPanel(){
 		this.width = this.height = 0;
+		this.setSize(this.width, this.height);
+		
+		this.setBackground(new Color(0,0,128));
+		
 	}
 	
 	public WorldPanel(Environment env){
 		width = env.getWidth();
 		height = env.getHeight();
-		setBackground(new Color(0,0,128));
 		water = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        paintWater(new Color(0,0,128));
+		this.setSize(this.width, this.height);
+		this.setBackground(new Color(0,0,128));
+        
 	}
 	
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(water, null, null);
-    }
-	
-    public void paintWater(Color c) {
-        int color = c.getRGB();
-        for (int x = 0; x < water.getWidth(); x++) {
-            for (int y = 0; y < water.getHeight(); y++) {
-            	water.setRGB(x, y, color);
-            }
-        }
-        repaint();
     }
     
 	public BufferedImage getWater() {
@@ -53,20 +48,23 @@ public class WorldPanel extends JPanel{
 		this.water = water;
 	}
 	
-	public void setWater(Map<Point2f,Integer> change) {	
-		int color[] = null;
+	public void setWater(Map<Point2f,Integer> change) {
+		int color[] = new int[width*height];
 		for(Point2f p : change.keySet()){
 			int i = (int) p.getX() + (int) p.getY() * width;
 			if(water.getRGB((int)(p.getX()), (int)(p.getY())) != new Color(255,0,0).getRGB()){
 				color[i]=128-change.get(p);
 				if(color[i]<0)color[i]=0;
 				if(color[i]>255)color[i]=255;
+				color[i] = new Color(0,0,color[i]).getRGB();
 			}
 		}
-		water.setRGB(0,0,width,height,color,0,width);
+		if(color!=null){
+			water.setRGB(0,0,width,height,color,0,width);
+		}
+		
 		repaint();
 	}
-	
 	public void draw_Obstacle(Wall w){
 		int x = (int) w.getPosition().getX();
 		int y = (int) w.getPosition().getY();
